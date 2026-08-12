@@ -1,0 +1,29 @@
+# Base de datos SQLite (regenerable por el pipeline)
+data/*.db
+
+# Datos cacheados de APIs (regenerables)
+data/raw/
+data/processed/
+
+# Credenciales
+*API*.txt
+*KEY*.txt
+*.key
+
+# Logs del pipeline
+logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+.env
+
+# Outputs locales (GitHub Pages usa docs/ en su lugar)
+outputs/
+
+# OS
+.DS_Store
+Thumbs.db

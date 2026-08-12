@@ -1,0 +1,167 @@
+[
+  {
+    "fecha": "2022-07-02",
+    "titulo": "Renuncia de Martín Guzmán (ministro de Economía)",
+    "tipo": "institucional",
+    "severidad_esperada": "severo",
+    "direccion": "negativo",
+    "irpm_delta_esperado_min": -20,
+    "irpm_delta_esperado_max": -5,
+    "irpm_delta_observado": 3.18,
+    "fuente": "Guzmán renuncia el 2/7/2022. Silvina Batakis lo reemplaza. Crisis política interna FdT."
+  },
+  {
+    "fecha": "2022-07-28",
+    "titulo": "Renuncia Batakis — asume Massa como superministro",
+    "tipo": "institucional",
+    "severidad_esperada": "menor",
+    "direccion": "incierto",
+    "irpm_delta_esperado_min": -5,
+    "irpm_delta_esperado_max": 5,
+    "irpm_delta_observado": -3.08,
+    "fuente": "Batakis dura menos de un mes. Massa asume con poder ampliado el 28/7/2022."
+  },
+  {
+    "fecha": "2023-01-18",
+    "titulo": "Crisis de reservas BCRA — turbulencia cambiaria severa (Massa)",
+    "tipo": "fiscal",
+    "severidad_esperada": "severo",
+    "direccion": "negativo",
+    "irpm_delta_esperado_min": -20,
+    "irpm_delta_esperado_max": -8,
+    "irpm_delta_observado": -8.32,
+    "fuente": "Semana 16-24/1/2023. Pérdida acelerada de reservas netas. Brecha cambiaria en máximos. Massa sin margen de maniobra."
+  },
+  {
+    "fecha": "2023-08-13",
+    "titulo": "PASO 2023 — Milei primero con 30%, Bullrich 28%, Massa 22%",
+    "tipo": "electoral",
+    "severidad_esperada": "moderado",
+    "direccion": "incierto",
+    "irpm_delta_esperado_min": -5,
+    "irpm_delta_esperado_max": 10,
+    "irpm_delta_observado": 5.1,
+    "fuente": "Resultado sorpresivo: Milei lidera PASO. Dólar blue sube el lunes siguiente. Mercado recalibra probabilidad de cambio de programa."
+  },
+  {
+    "fecha": "2023-10-22",
+    "titulo": "Primera vuelta — Massa 36.7% / Milei 30% → ballotage",
+    "tipo": "electoral",
+    "severidad_esperada": "moderado",
+    "direccion": "negativo",
+    "irpm_delta_esperado_min": -12,
+    "irpm_delta_esperado_max": -3,
+    "irpm_delta_observado": -11.01,
+    "fuente": "Massa supera a Milei en primera vuelta. Incertidumbre sobre el ballotage. Continuidad del programa kirchnerista en riesgo."
+  },
+  {
+    "fecha": "2023-11-19",
+    "titulo": "Ballotage — Milei gana con 55.7%",
+    "tipo": "electoral",
+    "severidad_esperada": "severo",
+    "direccion": "positivo",
+    "irpm_delta_esperado_min": 10,
+    "irpm_delta_esperado_max": 25,
+    "irpm_delta_observado": 8.37,
+    "fuente": "Milei presidente electo. Mercado lee continuidad de acceso a crédito y programa ortodoxo pro-mercado."
+  },
+  {
+    "fecha": "2023-12-13",
+    "titulo": "Mega-devaluación — tipo de cambio oficial +118% (Caputo)",
+    "tipo": "fiscal",
+    "severidad_esperada": "moderado",
+    "direccion": "incierto",
+    "irpm_delta_esperado_min": -8,
+    "irpm_delta_esperado_max": 5,
+    "irpm_delta_observado": 2.6,
+    "fuente": "Caputo anuncia devaluación del 118% (367 → 800 $/USD) y ajuste fiscal. Shock terapia inicial. El mercado evalúa si el programa es sostenible."
+  },
+  {
+    "fecha": "2024-04-08",
+    "titulo": "Peak honeymoon Milei — IRPM en máximos del período",
+    "tipo": "institucional",
+    "severidad_esperada": "menor",
+    "direccion": "positivo",
+    "irpm_delta_esperado_min": 0,
+    "irpm_delta_esperado_max": 6,
+    "irpm_delta_observado": 0.11,
+    "fuente": "Máximo relativo del IRPM en la etapa honeymoon. Sin evento puntual — acumulación gradual de credibilidad post-devaluación."
+  },
+  {
+    "fecha": "2024-08-05",
+    "titulo": "Black Monday — colapso Nikkei / reversión carry trade yen (externo)",
+    "tipo": "externo",
+    "severidad_esperada": "moderado",
+    "direccion": "negativo",
+    "irpm_delta_esperado_min": -12,
+    "irpm_delta_esperado_max": -3,
+    "irpm_delta_observado": 5.8,
+    "fuente": "Nikkei cae 12% en un día. Reversión masiva del carry trade yen. Contracción de liquidez global impacta spreads EM incluyendo Argentina."
+  },
+  {
+    "fecha": "2024-12-16",
+    "titulo": "Máximo histórico IRPM (114.9) — pico de credibilidad del programa",
+    "tipo": "institucional",
+    "severidad_esperada": "menor",
+    "direccion": "positivo",
+    "irpm_delta_esperado_min": 0,
+    "irpm_delta_esperado_max": 5,
+    "irpm_delta_observado": -0.81,
+    "fuente": "Máximo histórico del IRPM. Bonos en máximos desde reestructuración 2020. Sin evento político puntual — momentum acumulado."
+  },
+  {
+    "fecha": "2025-04-02",
+    "titulo": "Shock Trump — anuncio de aranceles recíprocos globales (Liberation Day)",
+    "tipo": "externo",
+    "severidad_esperada": "moderado",
+    "direccion": "negativo",
+    "irpm_delta_esperado_min": -12,
+    "irpm_delta_esperado_max": -3,
+    "irpm_delta_observado": -6.59,
+    "fuente": "Trump anuncia aranceles del 10-34% sobre decenas de países. Derrumbe de mercados globales. Argentina impactada vía spread EM."
+  },
+  {
+    "fecha": "2025-04-14",
+    "titulo": "Argentina levanta el cepo cambiario — flotación libre del peso",
+    "tipo": "fiscal",
+    "severidad_esperada": "severo",
+    "direccion": "positivo",
+    "irpm_delta_esperado_min": 8,
+    "irpm_delta_esperado_max": 20,
+    "irpm_delta_observado": 9.96,
+    "fuente": "Caputo anuncia fin del cepo cambiario y flotación administrada. Nueva etapa del programa Milei. Acuerdo FMI de respaldo."
+  },
+  {
+    "fecha": "2025-09-01",
+    "titulo": "Inicio período pre-electoral — tensión máxima camino a legislativas 2025",
+    "tipo": "electoral",
+    "severidad_esperada": "severo",
+    "direccion": "negativo",
+    "irpm_delta_esperado_min": -25,
+    "irpm_delta_esperado_max": -8,
+    "irpm_delta_observado": -17.17,
+    "fuente": "Sep-Oct 2025 = período de mayor caída del IRPM en la historia del índice. Mínimo absoluto: 75.6 pts (15-sep-2025). Incertidumbre sobre resultado legislativo."
+  },
+  {
+    "fecha": "2025-10-26",
+    "titulo": "Legislativas 2025 — La Libertad Avanza consolida posición en el Congreso",
+    "tipo": "electoral",
+    "severidad_esperada": "severo",
+    "direccion": "positivo",
+    "irpm_delta_esperado_min": 12,
+    "irpm_delta_esperado_max": 28,
+    "irpm_delta_observado": 5.87,
+    "fuente": "Milei gana legislativas con margen significativo. LLA avanza en Diputados y Senadores. Mayor gobernabilidad hacia 2027."
+  },
+  {
+    "fecha": "2026-04-15",
+    "titulo": "Pax política — baja tensión, acuerdos interbloque (fecha aproximada)",
+    "tipo": "institucional",
+    "severidad_esperada": "menor",
+    "direccion": "positivo",
+    "irpm_delta_esperado_min": 2,
+    "irpm_delta_esperado_max": 10,
+    "irpm_delta_observado": 2.36,
+    "fuente": "Período de baja tensión política post-legislativas. Hito registrado en dashboard (Ses.15). Fecha aproximada — sin evento puntual identificado."
+  }
+]
