@@ -589,6 +589,20 @@ html, body {
 .footer-right { display: flex; gap: 20px; font-size: 12px; }
 .footer-right a { color: #a8a29e; text-decoration: none; }
 .footer-right a:hover { color: #b45309; }
+
+/* === RESPONSIVE: navegación sin recorte en móvil === */
+@media (max-width: 700px) {
+  #page-wrap { border: 0; }
+  .site-nav { padding: 0 14px; height: 54px; gap: 10px; }
+  .nav-brand-sub { display: none; }
+  .nav-links { gap: 10px; margin-left: auto; }
+  .nav-links a:not(.nav-cta):not([href="#metodologia"]) { display: none; }
+  .nav-links a { font-size: 12px; }
+  .nav-cta { padding: 6px 10px; font-size: 11px; white-space: nowrap; }
+  .site-footer { padding: 16px 20px; align-items: flex-start; }
+  .footer-left { font-size: 11px; }
+  .footer-right { width: 100%; gap: 14px; flex-wrap: wrap; font-size: 11px; }
+}
 """
 
 
