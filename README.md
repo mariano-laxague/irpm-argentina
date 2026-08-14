@@ -69,7 +69,8 @@ La automatización está diseñada para ejecutarse en días hábiles mediante Wi
 
 1. Copiá `config.ini.example` como `config.ini`.
 2. Configurá `paths.cred_ppi` con la ruta absoluta al archivo de credenciales de PPI. Ese archivo y `config.ini` están excluidos de Git.
-3. Instalá las dependencias de `requirements.txt` y ejecutá `py src/pipeline/update_daily.py`.
+3. Usá Python 3.12 (ver `.python-version`) e instalá el entorno bloqueado: `python -m pip install -r requirements.lock`.
+4. Ejecutá `python -m pip check` y luego `python src/pipeline/update_daily.py`.
 
 Las rutas de base de datos y backups son relativas a la raíz del repositorio. El pipeline requiere una base existente para una corrida diaria; la construcción del snapshot reproducible es un gate pendiente de la release.
 

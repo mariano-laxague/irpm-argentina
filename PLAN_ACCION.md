@@ -108,7 +108,7 @@ Hasta cerrar los gates de este plan, el IRPM debe presentarse como **producto ex
 
 | ID | Acción | Entregable | Criterio de aceptación | Estado |
 |---|---|---|---|---|
-| P4.1 | Completar y fijar dependencias | requirements/lock | Incluye scipy y statsmodels; instalación limpia verificada | ⬜ Pendiente |
+| P4.1 | Completar y fijar dependencias | requirements/lock | Incluye scipy y statsmodels; instalación limpia verificada | ✅ Completado 14/08 — Python 3.12, lock y 13 tests aislados |
 | P4.2 | Crear configuración de ejemplo | `config.ini.example` | Clone nuevo puede entender todas las claves sin exponer secretos | ✅ Completado 14/08 |
 | P4.3 | Añadir tests | Suite de cálculo, datos y regresión | Fórmulas, signos, missingness, splits, pagos y baseline cubiertos | ✅ Completado 14/08 — 10 pruebas deterministas sin DB ni APIs |
 | P4.4 | Añadir CI | Workflow read-only | Tests y generación del dashboard pasan en cada commit | ⬜ Pendiente |
@@ -219,4 +219,4 @@ Cada sesión debe:
 4. Actualizar el estado del ID y `tasks/lessons.md` si aparece una regla durable.
 5. No abrir tareas de distribución mientras exista un gate bloqueante.
 
-**Próximo trabajo recomendado:** P4.1 — completar y fijar dependencias para una instalación limpia; después P4.4 (CI).
+**Próximo trabajo recomendado:** P4.4 — añadir CI read-only para ejecutar la suite y generar el dashboard en cada commit.

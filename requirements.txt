@@ -1,9 +1,11 @@
-pandas
-numpy
-requests
-beautifulsoup4
-lxml
-pdfplumber
-yfinance
-openpyxl
-ppi-client
+# Dependencias directas del IRPM. Para una instalación reproducible usar
+# requirements.lock, generado y verificado con Python 3.12.
+numpy==2.3.5
+openpyxl==3.1.5
+pandas==3.0.1
+pdfplumber==0.11.9
+ppi-client==1.2.4
+requests==2.34.2
+scipy==1.18.0
+statsmodels==0.14.6
+yfinance==1.6.0
