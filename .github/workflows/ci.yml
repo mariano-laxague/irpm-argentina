@@ -29,7 +29,11 @@ jobs:
           $env:IRPM_DB_PATH = '.ci/dashboard.db'
           $env:IRPM_DASHBOARD_OUTPUT = '.ci/dashboard.html'
           $env:IRPM_DASHBOARD_DOCS_OUTPUT = '.ci/dashboard-docs.html'
+          $env:IRPM_DASHBOARD_MANIFEST_OUTPUT = '.ci/deploy_manifest.json'
           python src/dashboard/generate_dashboard.py
           if (!(Test-Path .ci/dashboard.html) -or ((Get-Item .ci/dashboard.html).Length -eq 0)) {
             throw 'El dashboard no se generó.'
+          }
+          if (!(Test-Path .ci/deploy_manifest.json)) {
+            throw 'El manifest de deploy no se generó.'
           }

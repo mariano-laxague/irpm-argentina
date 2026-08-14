@@ -185,7 +185,7 @@ def deploy_github(root: Path) -> None:
 
     today = datetime.now().strftime("%Y-%m-%d")
     cmds = [
-        ["git", "add", "docs/index.html"],
+        ["git", "add", "docs/index.html", "docs/deploy_manifest.json"],
         ["git", "commit", "-m", f"dashboard: update {today}"],
         ["git", "push", "origin", "main"],
     ]
@@ -199,6 +199,12 @@ def deploy_github(root: Path) -> None:
             print(f"  [deploy] warning: {r.stderr.strip()[:120]}")
             return
     print(f"  [deploy] GitHub Pages actualizado — {today}")
+    probe = subprocess.run(
+        [sys.executable, str(root / "src" / "pipeline" / "verify_public_deploy.py")],
+        cwd=root,
+    )
+    if probe.returncode != 0:
+        print("  [deploy] warning: GitHub Pages aún no refleja el build local")
 
 
 if __name__ == "__main__":

@@ -62,6 +62,7 @@ La automatización está diseñada para ejecutarse en días hábiles mediante Wi
 - [`docs/MARCO_VALIDACION_Y_GOBERNANZA.md`](docs/MARCO_VALIDACION_Y_GOBERNANZA.md): niveles de evidencia, protocolos y releases.
 - [`docs/SNAPSHOT_REPRODUCIBLE.md`](docs/SNAPSHOT_REPRODUCIBLE.md): corte de datos, hashes y restauración independiente de una release.
 - [`docs/WATCHDOG_OPERATIVO.md`](docs/WATCHDOG_OPERATIVO.md): monitor independiente del scheduler y configuración de alertas.
+- [`docs/VERIFICACION_DEPLOY.md`](docs/VERIFICACION_DEPLOY.md): manifest y probe del artefacto servido por GitHub Pages.
 - [`CONTEXTO.md`](CONTEXTO.md): arquitectura técnica, decisiones y log de desarrollo.
 - [`PLAN_ACCION.md`](PLAN_ACCION.md): hoja de ruta operativa vigente.
 

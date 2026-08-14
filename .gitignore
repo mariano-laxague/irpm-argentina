@@ -23,6 +23,7 @@ venv/
 
 # Outputs locales (GitHub Pages usa docs/ en su lugar)
 outputs/
+.ci/
 
 # OS
 .DS_Store

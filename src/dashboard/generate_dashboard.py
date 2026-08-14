@@ -5,9 +5,11 @@ Uso: python src/dashboard/generate_dashboard.py
 """
 
 import calendar
+import hashlib
 import json
 import os
 import sqlite3
+import subprocess
 import sys
 from pathlib import Path
 
@@ -17,6 +19,9 @@ ROOT    = Path(__file__).parent.parent.parent
 DB_PATH = Path(os.environ.get("IRPM_DB_PATH", ROOT / "data" / "iep.db"))
 OUTPUT = Path(os.environ.get("IRPM_DASHBOARD_OUTPUT", ROOT / "outputs" / "dashboard.html"))
 DOCS_OUTPUT = Path(os.environ.get("IRPM_DASHBOARD_DOCS_OUTPUT", ROOT / "docs" / "index.html"))
+DEPLOY_MANIFEST_OUTPUT = Path(os.environ.get(
+    "IRPM_DASHBOARD_MANIFEST_OUTPUT", DOCS_OUTPUT.parent / "deploy_manifest.json"
+))
 
 UTDT_ICG_PATH = ROOT / "data" / "utdt_icg.csv"
 UTDT_ICC_PATH = ROOT / "data" / "utdt_icc.csv"
@@ -455,6 +460,26 @@ def main():
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(html, encoding="utf-8", newline="\n")
         print(f"  -> {dest}")
+
+    source_revision = os.environ.get("IRPM_SOURCE_REVISION")
+    if not source_revision:
+        try:
+            source_revision = subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+            ).strip()
+        except (OSError, subprocess.CalledProcessError):
+            source_revision = "unknown"
+    manifest = {
+        "schema_version": 1,
+        "dashboard_sha256": hashlib.sha256(html.encode("utf-8")).hexdigest(),
+        "latest_data_date": data[-1]["d"],
+        "source_revision": source_revision,
+    }
+    DEPLOY_MANIFEST_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    DEPLOY_MANIFEST_OUTPUT.write_text(
+        json.dumps(manifest, indent=2) + "\n", encoding="utf-8", newline="\n"
+    )
+    print(f"  -> {DEPLOY_MANIFEST_OUTPUT}")
 
     print(f"Valor actual: {data[-1]['v']:.1f}")
     print(f"Ruedas: {len(data)}")
