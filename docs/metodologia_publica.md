@@ -45,6 +45,8 @@ Capa 2 requiere sus cinco señales (GD30D, AL30D, GD35D, *law spread* y EMBI). C
 
 La tabla local `iep_composicion` registra por fecha la versión metodológica, estado, fecha efectiva, señales disponibles, pesos de cada capa y motivo de degradación. La auditoría de las seis fechas históricas afectadas está en [`AUDITORIA_COMPLETITUD_20260814.md`](AUDITORIA_COMPLETITUD_20260814.md).
 
+Los splits, pagos y backfills que cambian cálculos se versionan en un registro independiente; sus reglas y pruebas están documentadas en [`REGISTRO_AJUSTES.md`](REGISTRO_AJUSTES.md).
+
 ## Qué evidencia existe
 
 ### Sensibilidad de pesos

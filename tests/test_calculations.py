@@ -14,7 +14,7 @@ from unittest.mock import patch
 import numpy as np
 import pandas as pd
 
-from src.pipeline import calcular_capa1, calcular_capa2, calcular_capa3, calcular_iep
+from src.pipeline import ajustes, calcular_capa1, calcular_capa2, calcular_capa3, calcular_iep
 
 
 class TestCapa1(unittest.TestCase):
@@ -167,6 +167,28 @@ class TestComposicion(unittest.TestCase):
                          {"capa1": 0.35, "capa2": 0.4, "capa3": 0.25})
         self.assertEqual(rows[1][1], "degradado")
         self.assertIn("capa2", rows[1][4])
+
+
+class TestRegistroAjustes(unittest.TestCase):
+    def test_registro_documenta_y_persiste_aplicacion_de_pago(self):
+        conn = sqlite3.connect(":memory:")
+        ajustes.ensure_adjustment_registry(conn)
+        registros = conn.execute(
+            "SELECT ajuste_id, prueba_regresion FROM iep_ajustes_extraordinarios ORDER BY ajuste_id"
+        ).fetchall()
+        self.assertEqual([row[0] for row in registros], [
+            "backfill_ppi_20260724_20260804", "bonos_pagos_v1", "ypfd_split_20260803"
+        ])
+        self.assertTrue(all("tests/test_calculations.py" in row[1] for row in registros))
+
+        ajustes.record_payment_fixes(conn, [(pd.Timestamp("2026-07-08").date(), "GD30D", "-13.1%")])
+        applied = conn.execute(
+            "SELECT ajuste_id, fecha_afectada, activo, detalle_json FROM iep_ajustes_aplicados"
+        ).fetchone()
+        conn.close()
+
+        self.assertEqual(applied[:3], ("bonos_pagos_v1", "2026-07-08", "GD30D"))
+        self.assertEqual(json.loads(applied[3])["caida_vs_pre_ventana"], "-13.1%")
 
     def test_falla_si_no_existe_el_baseline_exacto(self):
         index = pd.to_datetime(["2023-12-12"])

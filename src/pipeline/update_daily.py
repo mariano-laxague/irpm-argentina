@@ -84,6 +84,8 @@ def backup_db():
         print(f"  [backup] {removed} backup(s) antiguo(s) eliminado(s)")
 
 STEPS = [
+    ("Schema: migraciones y registro de ajustes",
+     ROOT / "src" / "pipeline" / "init_db.py"),
     ("Scrapers: bonos PPI (ultimos 7d)",
      ROOT / "src" / "scrapers" / "scraper_bonos.py"),
     ("Scrapers: acciones AR — basket Capa 3 (ultimos 7d)",

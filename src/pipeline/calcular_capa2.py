@@ -35,6 +35,10 @@ import pandas as pd
 
 ROOT    = Path(__file__).parent.parent.parent
 DB_PATH = ROOT / "data" / "iep.db"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from src.pipeline.ajustes import record_payment_fixes
 
 WINDOW      = 252
 MIN_PERIODS = 63
@@ -181,6 +185,7 @@ def compute_capa2() -> pd.DataFrame:
         "capa2": capa2,
         "n_componentes": n_componentes,
     })
+    result.attrs["payment_fixes"] = all_fixes
     return result
 
 
@@ -189,6 +194,7 @@ def compute_capa2() -> pd.DataFrame:
 def save_capa2(result: pd.DataFrame) -> int:
     conn = sqlite3.connect(DB_PATH)
     cur  = conn.cursor()
+    record_payment_fixes(conn, result.attrs.get("payment_fixes", []))
     saved = 0
     for fecha, row in result.iterrows():
         n = int(row["n_componentes"])

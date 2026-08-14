@@ -369,7 +369,7 @@ Estas cifras son hipótesis comerciales históricas, no forecast validado. Toda 
 |---|---|
 | Claim probabilístico sin calibración | Retirar el lenguaje de probabilidad; reabrirlo sólo con protocolo E5 |
 | Confusión entre política y macro/global | Acotar definición, mostrar VIX/contexto y evaluar identificación/ablaciones |
-| Faltantes de componentes | Gate estricto, estado degradado y metadata por fecha implementados; falta versionar ajustes extraordinarios (P2.5) |
+| Faltantes y ajustes de componentes | Gate estricto, estado degradado, metadata y registro durable de splits/pagos/backfills implementados |
 | Validación post hoc | Preregistro, episodios no solapados, benchmark nulo y holdout |
 | Dependencia de un scheduler local | Watchdog externo y probe posterior al deploy |
 | Divergencia código/dashboard/metodología | Release única con commit, manifest, snapshot y changelog |

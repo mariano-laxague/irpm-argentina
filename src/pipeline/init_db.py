@@ -8,9 +8,15 @@ v2 — agrega columna `tir` a raw_prices (TIR/YTM para bonos soberanos).
 """
 
 import sqlite3
+import sys
 from pathlib import Path
 
-DB_PATH = Path(__file__).parent.parent.parent / "data" / "iep.db"
+ROOT = Path(__file__).parent.parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from src.pipeline.ajustes import ensure_adjustment_registry
+
+DB_PATH = ROOT / "data" / "iep.db"
 
 
 def init_db():
@@ -58,6 +64,8 @@ def init_db():
     if "tir" not in existing:
         cur.execute("ALTER TABLE raw_prices ADD COLUMN tir REAL DEFAULT NULL")
         print("Migración: columna 'tir' añadida a raw_prices")
+
+    ensure_adjustment_registry(conn)
 
     conn.commit()
     conn.close()

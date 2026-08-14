@@ -85,7 +85,7 @@ Hasta cerrar los gates de este plan, el IRPM debe presentarse como **producto ex
 | P2.2 | Eliminar renormalización silenciosa | Gate de completitud o estado degradado explícito | Test que demuestra que falta de EMBI no cambia pesos sin flag | ✅ Completado 14/08 — 5 señales obligatorias en Capa 2 |
 | P2.3 | Registrar composición por observación | Campos/tabla de metadata | Cada fecha expone versión, componentes disponibles, fechas y pesos efectivos | ✅ Completado 14/08 — tabla `iep_composicion` |
 | P2.4 | Auditar seis fechas sin EMBI | Informe de impacto | Serie corregida o excepción documentada con delta cuantificado | ✅ Completado 14/08 — `docs/AUDITORIA_COMPLETITUD_20260814.md` |
-| P2.5 | Versionar ajustes extraordinarios | Registro de splits, pagos y backfills | Toda corrección histórica tiene razón, fecha y test de regresión | ⬜ Pendiente |
+| P2.5 | Versionar ajustes extraordinarios | Registro de splits, pagos y backfills | Toda corrección histórica tiene razón, fecha y test de regresión | ✅ Completado 14/08 — tablas `iep_ajustes_*` y `docs/REGISTRO_AJUSTES.md` |
 
 ### P3 — Validación metodológica
 
@@ -219,4 +219,4 @@ Cada sesión debe:
 4. Actualizar el estado del ID y `tasks/lessons.md` si aparece una regla durable.
 5. No abrir tareas de distribución mientras exista un gate bloqueante.
 
-**Próximo trabajo recomendado:** P2.5 — versionar ajustes extraordinarios de splits, pagos y backfills con registro durable y pruebas de regresión.
+**Próximo trabajo recomendado:** P4.1 — completar y fijar dependencias para una instalación limpia; después P4.4 (CI).
