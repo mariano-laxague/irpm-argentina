@@ -35,7 +35,7 @@ MIN_ROWS     = 10
 def _log_alert(msg: str):
     ts   = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = f"[{ts}] {msg}"
-    print(f"  ⚠️  SANITY FAIL: {msg}")
+    print(f"  [FAIL] SANITY: {msg}")
     ALERT_LOG.parent.mkdir(exist_ok=True)
     with open(ALERT_LOG, "a", encoding="utf-8") as f:
         f.write(line + "\n")
@@ -95,7 +95,7 @@ def assert_capa_sanity(capa: str) -> None:
         _log_alert(msg)
         failures.append(msg)
     else:
-        print(f"  ✓ z-score último día ({ultimo_fecha}): {ultimo_val:+.2f}  [±{ZSCORE_LIMIT:.0f}]")
+        print(f"  [OK] z-score último día ({ultimo_fecha}): {ultimo_val:+.2f}  [±{ZSCORE_LIMIT:.0f}]")
 
     # Check 2: delta diario < DELTA_LIMIT
     if penultimo_val is not None:
@@ -109,7 +109,7 @@ def assert_capa_sanity(capa: str) -> None:
             _log_alert(msg)
             failures.append(msg)
         else:
-            print(f"  ✓ Delta diario: {ultimo_val - penultimo_val:+.2f} z-units")
+            print(f"  [OK] Delta diario: {ultimo_val - penultimo_val:+.2f} z-units")
 
     # Check 3: datos frescos en los últimos STALE_DAYS días hábiles
     cutoff = _business_days_ago(STALE_DAYS)
@@ -124,12 +124,12 @@ def assert_capa_sanity(capa: str) -> None:
             _log_alert(msg)
             failures.append(msg)
         else:
-            print(f"  ✓ Freshness: última fecha {ultimo_fecha}  (cutoff {cutoff})")
+            print(f"  [OK] Freshness: última fecha {ultimo_fecha}  (cutoff {cutoff})")
     except ValueError:
         pass
 
     _exit_if_failures(failures)
-    print(f"  ✓ Sanity {capa}: OK")
+    print(f"  [OK] Sanity {capa}: OK")
 
 
 def _exit_if_failures(failures: list[str]) -> None:

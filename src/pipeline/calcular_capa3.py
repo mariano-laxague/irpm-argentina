@@ -38,6 +38,8 @@ import numpy as np
 
 ROOT    = Path(__file__).parent.parent.parent
 DB_PATH = ROOT / "data" / "iep.db"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 BASKET      = ["YPFD", "GGAL", "PAMP", "TECO2"]
 RV_WINDOW   = 20    # dias habiles para vol realizada
@@ -99,7 +101,9 @@ def compute_capa3():
     if not rv_series:
         raise ValueError("Sin datos de acciones. Correr scraper_acciones.py --backfill primero.")
 
-    vol_basket = pd.DataFrame(rv_series).mean(axis=1, skipna=True)
+    vol_components = pd.DataFrame(rv_series).reindex(columns=BASKET)
+    # La canasta no puede cambiar de integrantes entre fechas.
+    vol_basket = vol_components.mean(axis=1).where(vol_components.notna().all(axis=1))
     vol_basket.name = "vol_basket"
 
     z = rolling_zscore(vol_basket)

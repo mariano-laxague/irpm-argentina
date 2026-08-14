@@ -327,7 +327,7 @@ Estas limitaciones determinan el alcance de los claims permitidos y deben estar 
 
 **Contenido electoral indirecto.** La metodología actual no aísla una prima electoral 2027. El law spread y los niveles de bonos contienen riesgo soberano amplio. El ROFEX electoral kink permanece como hipótesis futura y sólo podrá activarse con historia suficiente, tests y versión metodológica nueva.
 
-**Composición variable en fechas incompletas.** La Capa 2 actual renormaliza pesos cuando falta un componente. Se observaron seis fechas con versión `sin-embi`, incluida la última fecha revisada. Antes de una release nueva debe implementarse el protocolo de completitud del marco de gobernanza.
+**Completitud y fecha efectiva.** Desde el 14/08/2026, Capa 2 exige sus cinco señales, Capa 3 exige el basket completo y el compuesto sólo publica cuando las tres capas pertenecen a la misma rueda. Las seis fechas sin EMBI se retiraron como observaciones ordinarias; `iep_composicion` expone versión, señales, fecha efectiva, pesos y motivo de degradación. Ver `docs/AUDITORIA_COMPLETITUD_20260814.md`.
 
 **Escala no calibrada.** Baseline, factor 10 y umbrales visuales son decisiones de presentación. No deben interpretarse como probabilidades, niveles fundamentales ni fronteras de decisión.
 
@@ -369,7 +369,7 @@ Estas cifras son hipótesis comerciales históricas, no forecast validado. Toda 
 |---|---|
 | Claim probabilístico sin calibración | Retirar el lenguaje de probabilidad; reabrirlo sólo con protocolo E5 |
 | Confusión entre política y macro/global | Acotar definición, mostrar VIX/contexto y evaluar identificación/ablaciones |
-| Composición variable por faltantes | Gate de completitud + metadata de pesos y fechas efectivas |
+| Faltantes de componentes | Gate estricto, estado degradado y metadata por fecha implementados; falta versionar ajustes extraordinarios (P2.5) |
 | Validación post hoc | Preregistro, episodios no solapados, benchmark nulo y holdout |
 | Dependencia de un scheduler local | Watchdog externo y probe posterior al deploy |
 | Divergencia código/dashboard/metodología | Release única con commit, manifest, snapshot y changelog |
@@ -775,5 +775,5 @@ ID del plan: [P#.#] | Criterio de aceptación: [evidencia observable]
 | Dominio y presencia online | iep.ar / iepargentina.com | Sin decidir |
 | Co-branding con broker | PPI / IOL | Pendiente Fase 2 |
 | IRPM vs. ICG-UTDT | Leading indicator | **No confirmado con N=32** — repetir bajo protocolo congelado |
-| Política de faltantes | Renormalizar vs. no publicar | **Abierta y bloqueante (P2.1–P2.3)** |
+| Política de faltantes | Renormalizar vs. no publicar | **No publicar; misma rueda o estado degradado — DECIDIDO (14/08/2026)** |
 | Umbrales 90/110 | Heurísticos vs. calibrados | **Heurísticos; revisar o retirar (P1.4)** |

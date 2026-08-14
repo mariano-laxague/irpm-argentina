@@ -1,6 +1,6 @@
 # IRPM — Metodología pública
 
-**Versión 1.1-experimental · Agosto 2026**
+**Versión 1.2-experimental · Agosto 2026**
 **Dashboard:** https://marianolaxague-crypto.github.io/irpm-argentina/
 
 > El IRPM es un índice experimental que sintetiza condiciones de mercado a partir de señales financieras sensibles al escenario político y económico argentino. No es una probabilidad electoral calibrada ni una recomendación de inversión.
@@ -37,11 +37,13 @@ Cada señal se transforma mediante z-score rolling de 252 ruedas, con un mínimo
 
 El factor 10 facilita la lectura. No surge de una calibración probabilística.
 
-## Completitud de datos
+## Completitud de datos y fecha efectiva
 
-La implementación revisada puede renormalizar internamente la Capa 2 cuando falta un componente. Esto ocurrió en una cantidad acotada de fechas y constituye una limitación de comparabilidad que se corregirá antes de `v0.1-experimental`.
+La fecha efectiva de una observación es la rueda de sus inputs. El IRPM sólo publica un valor cuando Capa 1, Capa 2 y Capa 3 están disponibles para esa misma fecha; no usa el último dato conocido de otra rueda ni renormaliza pesos si falta una señal.
 
-La política objetivo exige que cada valor publicado informe versión metodológica, fechas de inputs, componentes disponibles y pesos efectivos. Un valor con composición incompleta no debe publicarse como observación ordinaria.
+Capa 2 requiere sus cinco señales (GD30D, AL30D, GD35D, *law spread* y EMBI). Capa 3 requiere las cuatro acciones del basket. Si falta una señal necesaria, la observación queda en estado **degradado**, su IRPM es `NULL` y el pipeline no la trata como actualización publicable.
+
+La tabla local `iep_composicion` registra por fecha la versión metodológica, estado, fecha efectiva, señales disponibles, pesos de cada capa y motivo de degradación. La auditoría de las seis fechas históricas afectadas está en [`AUDITORIA_COMPLETITUD_20260814.md`](AUDITORIA_COMPLETITUD_20260814.md).
 
 ## Qué evidencia existe
 

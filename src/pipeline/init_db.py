@@ -37,6 +37,18 @@ def init_db():
             pesos_version   TEXT    NOT NULL DEFAULT '50-50-0'
         );
 
+        CREATE TABLE IF NOT EXISTS iep_composicion (
+            fecha                 DATE PRIMARY KEY,
+            version_metodologia   TEXT NOT NULL,
+            estado_publicacion    TEXT NOT NULL,
+            fecha_efectiva        DATE NOT NULL,
+            componentes_json      TEXT NOT NULL,
+            pesos_json            TEXT NOT NULL,
+            motivo_degradacion    TEXT,
+            calculado_en          DATETIME DEFAULT (datetime('now', 'localtime')),
+            FOREIGN KEY (fecha) REFERENCES iep_diario(fecha)
+        );
+
         CREATE INDEX IF NOT EXISTS idx_raw_activo_fecha
             ON raw_prices (activo, fecha);
     """)

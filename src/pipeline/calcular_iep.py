@@ -6,8 +6,9 @@ Pesos (arquitectura definitiva Fase 0):
     40% Capa 2 — Bonos soberanos USD + EMBI
     25% Capa 3 — Semi-volatilidad accionaria AR (proxy put-side opciones BYMA)
 
-Compatibilidad retroactiva (primeros ~12 dias habiles sin Capa 3):
-    50% Capa 1 + 50% Capa 2
+Política de completitud:
+    Las tres capas deben estar presentes en la misma fecha. Si falta una,
+    no se publica IRPM ni se renormalizan pesos.
 
 Escalado a indice con baseline = 100 el 11-dic-2023 (inicio gestión Milei):
     IEP = 100 + (IEP_raw - IEP_raw_baseline) * ESCALA
@@ -26,6 +27,7 @@ Uso:
 
 import sys
 import sqlite3
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -54,22 +56,16 @@ def load_iep_diario() -> pd.DataFrame:
 # ── Compuesto y escalado ───────────────────────────────────────────────────────
 
 def compute_iep(df: pd.DataFrame) -> pd.Series:
-    # Fechas con las 3 capas: pesos definitivos 35/40/25
-    has3 = df["capa1"].notna() & df["capa2"].notna() & df["capa3"].notna()
-    # Fechas sin Capa 3 (primeros dias): compatibilidad 50/50
-    has2 = df["capa1"].notna() & df["capa2"].notna() & ~has3
+    # Composición fija: sólo se publica cuando las tres capas existen en la
+    # misma fecha. Nunca se reemplazan pesos por una renormalización implícita.
+    complete = df[["capa1", "capa2", "capa3"]].notna().all(axis=1)
+    raw = (0.35 * df.loc[complete, "capa1"]
+         + 0.40 * df.loc[complete, "capa2"]
+         + 0.25 * df.loc[complete, "capa3"]).rename("iep_raw")
 
-    raw3 = (0.35 * df.loc[has3, "capa1"]
-          + 0.40 * df.loc[has3, "capa2"]
-          + 0.25 * df.loc[has3, "capa3"])
-    raw2 = (0.50 * df.loc[has2, "capa1"]
-          + 0.50 * df.loc[has2, "capa2"])
-
-    raw = pd.concat([raw2, raw3]).sort_index().rename("iep_raw")
-
-    # Baseline
-    idx_base = raw.index.get_indexer([BASELINE_DATE], method="nearest")[0]
-    baseline_val = raw.iloc[idx_base]
+    if BASELINE_DATE not in raw.index:
+        raise ValueError(f"Baseline exacto no disponible: {BASELINE_DATE.date()}")
+    baseline_val = raw.loc[BASELINE_DATE]
 
     iep = 100 + (raw - baseline_val) * ESCALA
     return iep.rename("iep_total")
@@ -77,18 +73,86 @@ def compute_iep(df: pd.DataFrame) -> pd.Series:
 
 # ── Guardar ────────────────────────────────────────────────────────────────────
 
-def save_iep(iep: pd.Series) -> int:
+def save_iep(iep: pd.Series, fechas: pd.Index) -> int:
     conn = sqlite3.connect(DB_PATH)
     cur  = conn.cursor()
     saved = 0
-    for fecha, valor in iep.items():
-        if pd.isna(valor):
-            continue
+    for fecha in fechas:
+        valor = iep.get(fecha)
         cur.execute("""
-            INSERT OR REPLACE INTO iep_diario (fecha, iep_total, pesos_version)
+            INSERT INTO iep_diario (fecha, iep_total, pesos_version)
             VALUES (?, ?, ?)
             ON CONFLICT(fecha) DO UPDATE SET iep_total=excluded.iep_total
-        """, (fecha.strftime("%Y-%m-%d"), float(valor), "50-50-0"))
+        """, (fecha.strftime("%Y-%m-%d"),
+              None if pd.isna(valor) else float(valor), "35-40-25-v4-full"))
+        saved += 1
+    conn.commit()
+    conn.close()
+    return saved
+
+
+def save_composition(df: pd.DataFrame) -> int:
+    """Registra por fecha la composición y el estado publicable/degradado."""
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    capas = {"capa1": 0.35, "capa2": 0.40, "capa3": 0.25}
+    expected = list(capas)
+    activos = [
+        "MEP", "ROFEX_1M_EQUIV", "GD30D", "AL30D", "GD35D", "EMBI",
+        "YPFD", "GGAL", "PAMP", "TECO2",
+    ]
+    placeholders = ", ".join("?" for _ in activos)
+    raw = cur.execute(
+        f"SELECT fecha, activo FROM raw_prices WHERE activo IN ({placeholders})", activos
+    ).fetchall()
+    disponibles_por_fecha = {}
+    for fecha, activo in raw:
+        disponibles_por_fecha.setdefault(fecha, set()).add(activo)
+
+    def detalle(fecha):
+        disponibles = disponibles_por_fecha.get(fecha, set())
+        capa1 = [a for a in ("MEP", "ROFEX_1M_EQUIV") if a in disponibles]
+        capa2 = [a for a in ("GD30D", "AL30D", "GD35D", "EMBI") if a in disponibles]
+        capa3 = [a for a in ("YPFD", "GGAL", "PAMP", "TECO2") if a in disponibles]
+        componentes = {
+            "capa1": {"disponibles": capa1, "fecha_efectiva": fecha},
+            "capa2": {"disponibles": capa2, "fecha_efectiva": fecha},
+            "capa3": {"disponibles": capa3, "fecha_efectiva": fecha},
+        }
+        pesos = {
+            "capas": capas,
+            "capa1": ({"MEP": 0.5, "ROFEX_1M_EQUIV": 0.5}
+                      if len(capa1) == 2 else {"MEP": 1.0}),
+            "capa2": {"GD30D": 0.20, "AL30D": 0.20, "GD35D": 0.10,
+                       "law_spread": 0.35, "EMBI": 0.15},
+            "capa3": {"YPFD": 0.25, "GGAL": 0.25, "PAMP": 0.25, "TECO2": 0.25},
+        }
+        return componentes, pesos
+
+    saved = 0
+    for fecha, row in df.iterrows():
+        available = [capa for capa in expected if pd.notna(row[capa])]
+        missing = [capa for capa in expected if capa not in available]
+        estado = "publicable" if not missing else "degradado"
+        motivo = None if not missing else "Faltan componentes: " + ", ".join(missing)
+        fecha_str = fecha.strftime("%Y-%m-%d")
+        componentes, pesos = detalle(fecha_str)
+        cur.execute("""
+            INSERT INTO iep_composicion
+                (fecha, version_metodologia, estado_publicacion, fecha_efectiva,
+                 componentes_json, pesos_json, motivo_degradacion)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(fecha) DO UPDATE SET
+                version_metodologia=excluded.version_metodologia,
+                estado_publicacion=excluded.estado_publicacion,
+                fecha_efectiva=excluded.fecha_efectiva,
+                componentes_json=excluded.componentes_json,
+                pesos_json=excluded.pesos_json,
+                motivo_degradacion=excluded.motivo_degradacion,
+                calculado_en=datetime('now', 'localtime')
+        """, (fecha_str, "v0.1-experimental-full-components",
+              estado, fecha_str, json.dumps(componentes),
+              json.dumps(pesos), motivo))
         saved += 1
     conn.commit()
     conn.close()
@@ -158,8 +222,10 @@ def main():
 
     df  = load_iep_diario()
     iep = compute_iep(df)
-    n   = save_iep(iep)
+    n   = save_iep(iep, df.index)
+    n_meta = save_composition(df)
     print(f"IEP guardado en iep_diario: {n} filas")
+    print(f"Composición registrada: {n_meta} filas")
 
     if DIAG:
         print_diagnostics(df, iep)

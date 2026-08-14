@@ -19,8 +19,8 @@ Pesos (OPT-1 — Ses. 14, Bekaert et al. 2014):
   gd35d:      10%  — bono ley NY 2035 (mayor contaminación secular)
   embi:       15%  — spread soberano genérico (señal macro, no política)
 
-Cobertura EMBI: solo desde 2025-05-08. Antes de esa fecha los pesos se
-renormalizan sobre los 4 componentes disponibles (÷ 0.85).
+Política de completitud: las cinco señales son obligatorias. Si falta una,
+Capa 2 se marca como no publicable; los pesos no se renormalizan.
 
 Uso:
     python src/pipeline/calcular_capa2.py
@@ -167,21 +167,19 @@ def compute_capa2() -> pd.DataFrame:
         "z_embi":       -rolling_zscore(embi),         # invertido
     })
 
-    # Media ponderada con normalización por componentes disponibles.
-    # Si EMBI no está (pre-2025-05): los pesos restantes suman 0.85 → se renormalizan.
+    # Media ponderada con composición fija: un faltante deja Capa 2 no publicable.
     num = pd.Series(0.0, index=z.index)
-    den = pd.Series(0.0, index=z.index)
     for col, w in PESOS_CAPA2.items():
         mask = z[col].notna()
         num[mask] += z.loc[mask, col] * w
-        den[mask] += w
-    capa2 = (num / den).where(den > 0)
+    n_componentes = z.notna().sum(axis=1)
+    capa2 = num.where(n_componentes == len(PESOS_CAPA2))
 
     result = pd.DataFrame({
         "law_spread": law_spread,
         **z,
         "capa2": capa2,
-        "n_componentes": z.notna().sum(axis=1),
+        "n_componentes": n_componentes,
     })
     return result
 
@@ -193,17 +191,16 @@ def save_capa2(result: pd.DataFrame) -> int:
     cur  = conn.cursor()
     saved = 0
     for fecha, row in result.iterrows():
-        if pd.isna(row["capa2"]):
-            continue
         n = int(row["n_componentes"])
-        pesos = "35-20-20-10-15-v3" if n == 5 else "35-20-20-10-v3-sin-embi"
+        pesos = "35-20-20-10-15-v4-full" if n == 5 else "incompleta-v4"
         cur.execute("""
             INSERT INTO iep_diario (fecha, capa2, pesos_version)
             VALUES (?, ?, ?)
             ON CONFLICT(fecha) DO UPDATE SET
                 capa2=excluded.capa2,
                 pesos_version=excluded.pesos_version
-        """, (fecha.strftime("%Y-%m-%d"), float(row["capa2"]), pesos))
+        """, (fecha.strftime("%Y-%m-%d"),
+              None if pd.isna(row["capa2"]) else float(row["capa2"]), pesos))
         saved += 1
     conn.commit()
     conn.close()
@@ -257,10 +254,10 @@ def print_diagnostics(result: pd.DataFrame) -> None:
         print(f"  Capa2 ~ GD30D:  r = {merged.capa2.corr(merged.gd30d):+.3f}  (esperado > 0.80)")
         print(f"  Capa2 ~ EMBI:   r = {merged.capa2.corr(merged.embi):+.3f}  (esperado < -0.80)")
 
-    print("\n=== Cobertura EMBI ===")
+    print("\n=== Completitud de Capa 2 ===")
     con_embi = result["n_componentes"] == 5
-    print(f"  Con EMBI (5 comp):  {con_embi.sum()} filas")
-    print(f"  Sin EMBI (4 comp):  {(~con_embi & result.capa2.notna()).sum()} filas")
+    print(f"  Completas (5 comp): {con_embi.sum()} filas")
+    print(f"  Degradadas:         {(~con_embi).sum()} filas (no publicables)")
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────

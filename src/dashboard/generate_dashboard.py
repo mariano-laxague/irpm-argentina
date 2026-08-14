@@ -94,7 +94,9 @@ def load_capa_signals():
     try:
         conn = sqlite3.connect(DB_PATH)
         df = pd.read_sql_query(
-            "SELECT capa1, capa2, capa3 FROM iep_diario WHERE capa1 IS NOT NULL ORDER BY fecha DESC LIMIT 1",
+            """SELECT capa1, capa2, capa3 FROM iep_diario
+               WHERE iep_total IS NOT NULL
+               ORDER BY fecha DESC LIMIT 1""",
             conn
         )
         conn.close()

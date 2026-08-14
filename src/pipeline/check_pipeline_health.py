@@ -44,7 +44,7 @@ SEP = "-" * 60
 def _log_alert(msg: str):
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = f"[{ts}] {msg}"
-    print(f"  ⚠️  ALERTA: {msg}")
+    print(f"  [ALERTA] {msg}")
     with open(ALERT_LOG, "a", encoding="utf-8") as f:
         f.write(line + "\n")
 
@@ -67,9 +67,11 @@ def load_iep_recent(days: int = 10) -> list[dict]:
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     cur.execute("""
-        SELECT fecha, capa1, capa2, capa3, iep_total
-        FROM iep_diario
-        ORDER BY fecha DESC
+        SELECT d.fecha, d.capa1, d.capa2, d.capa3, d.iep_total,
+               c.estado_publicacion, c.motivo_degradacion
+        FROM iep_diario d
+        LEFT JOIN iep_composicion c USING(fecha)
+        ORDER BY d.fecha DESC
         LIMIT ?
     """, (days,))
     rows = [dict(r) for r in cur.fetchall()]
@@ -90,12 +92,18 @@ def check_irpm_range(rows: list[dict]) -> bool:
     fecha  = ultimo.get("fecha", "?")
 
     if irpm is None:
+        if ultimo.get("estado_publicacion") == "degradado":
+            _log_alert(
+                f"dato degradado para {fecha}: {ultimo.get('motivo_degradacion')}; "
+                "publicación bloqueada"
+            )
+            return False
         _log_alert(f"iep_total es NULL para {fecha}")
         return False
 
     ok = CFG.irpm_min <= irpm <= CFG.irpm_max
     if ok:
-        print(f"  ✓ IRPM {fecha}: {irpm:.1f}  (rango esperado {CFG.irpm_min:.0f}–{CFG.irpm_max:.0f})")
+        print(f"  [OK] IRPM {fecha}: {irpm:.1f}  (rango esperado {CFG.irpm_min:.0f}–{CFG.irpm_max:.0f})")
     else:
         _log_alert(
             f"IRPM fuera de rango: {irpm:.1f} el {fecha}  "
@@ -123,7 +131,7 @@ def check_daily_delta(rows: list[dict]) -> bool:
 
     if ok:
         signo = "+" if irpm_hoy >= irpm_ayer else ""
-        print(f"  ✓ Delta diario: {signo}{irpm_hoy - irpm_ayer:+.1f} pts el {fecha_hoy}")
+        print(f"  [OK] Delta diario: {signo}{irpm_hoy - irpm_ayer:+.1f} pts el {fecha_hoy}")
     else:
         _log_alert(
             f"Delta diario anómalo: {delta:.1f} pts el {fecha_hoy}  "
@@ -149,7 +157,7 @@ def check_data_freshness(rows: list[dict]) -> bool:
 
     ok = ultimo_fecha >= cutoff
     if ok:
-        print(f"  ✓ Datos frescos: última fecha {ultimo_fecha}  (cutoff {cutoff})")
+        print(f"  [OK] Datos frescos: última fecha {ultimo_fecha}  (cutoff {cutoff})")
     else:
         _log_alert(
             f"Datos desactualizados: última fecha {ultimo_fecha}  "
@@ -175,7 +183,7 @@ def check_zscore_range(rows: list[dict]) -> bool:
             continue
         within = abs(val) <= CFG.capa_zscore_max
         if within:
-            print(f"  ✓ {capa} z-score: {val:+.2f}  (límite ±{CFG.capa_zscore_max:.0f})")
+            print(f"  [OK] {capa} z-score: {val:+.2f}  (límite ±{CFG.capa_zscore_max:.0f})")
         else:
             _log_alert(
                 f"{capa} z-score fuera de rango: {val:+.2f} el {fecha}  "
@@ -192,7 +200,7 @@ def write_last_run(all_ok: bool):
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     status = "OK" if all_ok else "WARNING"
     LAST_RUN.write_text(f"{ts}  {status}\n", encoding="utf-8")
-    print(f"\n  {'✓' if all_ok else '⚠️ '} last_run.txt actualizado: {ts}  [{status}]")
+    print(f"\n  {'[OK]' if all_ok else '[ALERTA]'} last_run.txt actualizado: {ts}  [{status}]")
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
@@ -219,10 +227,10 @@ def main():
     write_last_run(all_ok)
 
     if all_ok:
-        print(f"\n  ✓ Todos los checks pasaron.")
+        print(f"\n  [OK] Todos los checks pasaron.")
     else:
         n_fail = results.count(False)
-        print(f"\n  ⚠️  {n_fail}/{len(results)} check(s) fallaron — ver {ALERT_LOG.name}")
+        print(f"\n  [ALERTA] {n_fail}/{len(results)} check(s) fallaron — ver {ALERT_LOG.name}")
         sys.exit(1)
 
 

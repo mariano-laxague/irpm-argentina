@@ -34,6 +34,8 @@ import numpy as np
 
 ROOT    = Path(__file__).parent.parent.parent
 DB_PATH = ROOT / "data" / "iep.db"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 WINDOW      = 252
 MIN_PERIODS = 63
@@ -99,7 +101,9 @@ def compute_capa1(mep: pd.Series) -> pd.Series:
         return z_mep.dropna().rename("capa1")
 
     # Premium de devaluación implícita (ROFEX/MEP - 1)
-    mep_aligned = mep.reindex(rofex.index, method="nearest")
+    # No usar precios de otra fecha: si falta MEP en la rueda de ROFEX,
+    # la señal queda incompleta y el compuesto usa el fallback documentado.
+    mep_aligned = mep.reindex(rofex.index)
     premium = rofex / mep_aligned - 1
 
     # z_rofex: premium bajo (ROFEX ≈ MEP) = menos miedo devaluatorio = buena señal
