@@ -12,9 +12,10 @@
 /* === RESET & BASE === */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
-  height: 100%;
+  min-height: 100%;
   margin: 0; padding: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: #1c1917;
   -webkit-font-smoothing: antialiased;
@@ -23,7 +24,7 @@ html, body {
 #page-wrap {
   max-width: 1180px;
   margin: 0 auto;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: #faf7f2;
@@ -31,11 +32,7 @@ html, body {
   border-right: 1px solid #e8e0d5;
 }
 #slides-container {
-  flex: 1;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible;
 }
 .skip-link {
   position: absolute; left: 12px; top: -48px; z-index: 200;
@@ -48,9 +45,9 @@ html, body {
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
 .slide {
-  height: 100%;
-  scroll-snap-align: start;
-  overflow: hidden;
+  min-height: calc(100vh - 54px);
+  height: auto;
+  overflow: visible;
   position: relative;
 }
 
@@ -145,6 +142,7 @@ html, body {
 .what-text em { font-style: normal; color: #b45309; font-weight: 600; }
 .what-text p { margin-bottom: 14px; }
 .what-text p:last-child { margin-bottom: 0; }
+.what-text strong { color: #1c1917; }
 .what-divider {
   width: 32px; height: 2px; background: #e8e0d5;
   margin: 20px 0;
@@ -170,6 +168,7 @@ html, body {
   background: #b45309;
   flex-shrink: 0;
 }
+.what-caveat { margin-top: 18px; font-size: 12px; line-height: 1.55; color: #78716c; }
 .what-live-label-top {
   font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
   text-transform: uppercase; color: #a8a29e; margin-bottom: 10px;
@@ -351,11 +350,12 @@ html, body {
 /* === CHART SECTION === */
 .chart-section {
   padding: 0 40px 16px;
-  height: 100%;
+  min-height: calc(100vh - 54px);
+  height: auto;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
 }
 .chart-wrap { position: relative; min-height: 0; }
 
@@ -487,7 +487,7 @@ html, body {
 .chart-toggle.active { background: #f4e9dc; border-color: #b45309; color: #92400e; font-weight: 600; }
 .chart-toggle:focus-visible { outline: 3px solid rgba(180,83,9,.35); outline-offset: 2px; }
 .data-section {
-  height: 100%; padding: 44px 40px 24px; overflow-y: auto; background: #faf7f2;
+  min-height: calc(100vh - 54px); padding: 44px 40px 24px; overflow: visible; background: #faf7f2;
 }
 .data-alternative { max-width: 980px; margin: 20px auto 0; background: #fff; border: 1px solid #e8e0d5; border-radius: 12px; padding: 22px; }
 .data-summary { color: #57534e; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
@@ -506,11 +506,12 @@ html, body {
 /* === DIVERGENCE SECTION (mirrors .chart-section) === */
 .div-section {
   padding: 0 40px 16px;
-  height: 100%;
+  min-height: calc(100vh - 54px);
+  height: auto;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
 }
 .div-chart-wrap { position: relative; flex: 1; min-height: 0; }
 .div-legend {
@@ -547,11 +548,12 @@ html, body {
 /* === COMPARATIVA SECTION (mirrors .chart-section) === */
 .comp-section {
   padding: 0 40px 16px;
-  height: 100%;
+  min-height: calc(100vh - 54px);
+  height: auto;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
 }
 .comp-chart-wrap { position: relative; flex: 1; min-height: 0; }
 .comp-legend {
@@ -676,19 +678,22 @@ html, body {
       <div class="what-right">
         <div class="what-text">
           <p>
-            El IRPM es un índice experimental que sintetiza condiciones de mercado a partir de señales financieras
-            sensibles al escenario político y económico argentino.
+            El IRPM resume cómo están valuando los mercados las condiciones financieras argentinas vinculadas al
+            escenario político y económico. Combina mercado cambiario, deuda soberana y volatilidad accionaria en
+            una sola lectura comparable en el tiempo.
           </p>
           <p>
-            No es una probabilidad electoral ni identifica causalidad política. Las explicaciones de hitos son lecturas
-            editoriales que deben considerarse junto con factores macroeconómicos locales y globales.
+            <strong>Cómo leerlo:</strong> 100 es la referencia de diciembre de 2023. Por encima de 100, las señales
+            incluidas están, en conjunto, más favorables que esa base; por debajo, muestran mayor presión o fragilidad.
+            El cambio mensual muestra si esa lectura se está fortaleciendo o deteriorando.
           </p>
         </div>
         <div class="what-pills">
-          <span class="what-pill">Complementa las encuestas de opinión pública</span>
-          <span class="what-pill">Representa activos observados, no a la sociedad</span>
-          <span class="what-pill">Con el ojo puesto en 2027</span>
+          <span class="what-pill">Hoy: 105.1, levemente por encima de la base</span>
+          <span class="what-pill">Sube si mejoran las tres señales; baja si se tensionan</span>
+          <span class="what-pill">Sirve para detectar cambios de clima financiero</span>
         </div>
+        <p class="what-caveat">No predice elecciones ni prueba por sí solo la causa de un movimiento: aporta una señal de mercado que conviene contrastar con el contexto.</p>
       </div>
     </div>
   </div>

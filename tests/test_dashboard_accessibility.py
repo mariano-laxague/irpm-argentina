@@ -27,6 +27,18 @@ class TestDashboardAccessibility(unittest.TestCase):
         self.assertIn('.skip-link:focus', styles)
         self.assertIn('.chart-toggle:focus-visible', styles)
 
+    def test_scroll_principal_es_nativo_y_no_usa_slides_obligatorios(self):
+        styles = css()
+        self.assertIn('overflow-y: auto;', styles)
+        self.assertNotIn('scroll-snap-type: y mandatory', styles)
+        self.assertNotIn('overflow-y: scroll;', styles)
+
+    def test_inicio_explica_lectura_y_limite_del_indice(self):
+        body = html_body()
+        self.assertIn('Cómo leerlo:', body)
+        self.assertIn('más favorables que esa base', body)
+        self.assertIn('No predice elecciones', body)
+
     def test_incluye_alternativa_tabular_y_descarga_csv(self):
         body, script = html_body(), javascript()
         self.assertIn('id="datos"', body)
