@@ -34,6 +34,7 @@ Thumbs.db
 *.xlsx
 data/*.pdf
 data/*.html
+data/recovery-*.json
 data/rem.csv
 data/rem_icm.csv
 data/backups/

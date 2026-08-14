@@ -64,6 +64,7 @@ La automatización está diseñada para ejecutarse en días hábiles mediante Wi
 - [`docs/WATCHDOG_OPERATIVO.md`](docs/WATCHDOG_OPERATIVO.md): monitor independiente del scheduler y configuración de alertas.
 - [`docs/VERIFICACION_DEPLOY.md`](docs/VERIFICACION_DEPLOY.md): manifest y probe del artefacto servido por GitHub Pages.
 - [`docs/CHECKLIST_RELEASE.md`](docs/CHECKLIST_RELEASE.md): condiciones mínimas para etiquetar y publicar una release.
+- [`docs/RECUPERACION.md`](docs/RECUPERACION.md): restauración segura y ensayo desde un backup SQLite.
 - [`CONTEXTO.md`](CONTEXTO.md): arquitectura técnica, decisiones y log de desarrollo.
 - [`PLAN_ACCION.md`](PLAN_ACCION.md): hoja de ruta operativa vigente.
 
