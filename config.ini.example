@@ -1,0 +1,18 @@
+[paths]
+# Ruta absoluta al archivo de credenciales de PPI. No versionar ese archivo.
+# Ejemplo Windows: C:/Users/tu_usuario/ruta/a/API_KEY_PPI.txt
+cred_ppi = C:/ruta/a/API_KEY_PPI.txt
+
+[database]
+# Rutas relativas a la raíz del repositorio.
+db_path = data/iep.db
+backup_dir = data/backups
+backup_retain_days = 7
+
+[pipeline]
+# Umbrales para src/pipeline/check_pipeline_health.py.
+irpm_min = 60
+irpm_max = 140
+irpm_max_daily_change = 15
+capa_zscore_max = 5
+data_staleness_days = 5

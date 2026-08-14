@@ -6,6 +6,7 @@ Ejecuta los pasos en secuencia. Si un paso falla, los siguientes NO corren
 para que Task Scheduler pueda detectar el resultado.
 
 Pasos:
+  0. backup_db()              — copia iep.db a data/backups/ antes de modificar nada
   1. scraper_bonos.py          — precios PPI (ultimos 7 dias: GD30D, AL30D, GD35D, AL30)
   2. scraper_acciones.py       — acciones AR basket Capa 3 (ultimos 7d)
   3. scraper_rofex.py          — contratos DLR futuros PPI (acumulador electoral kink)
@@ -20,6 +21,7 @@ Pasos:
  12. calcular_iep.py           — indice compuesto (35/40/25)
  13. calcular_ajuste_global.py — IRPM ajustado por VIX (Bekaert/Nogues-Grandes)
  14. generate_dashboard.py     — regenera outputs/dashboard.html
+ 15. check_pipeline_health.py  — valida rangos, escribe logs/last_run.txt
 
 Uso:
     py src/pipeline/update_daily.py         # update normal
@@ -29,16 +31,57 @@ Task Scheduler: ver run_update.bat en la raiz del proyecto.
 Log: logs/update_YYYYMMDD.log
 """
 
+import shutil
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 ROOT    = Path(__file__).parent.parent.parent
 LOG_DIR = ROOT / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 
+sys.path.insert(0, str(ROOT))
+from src.config import CFG
+
 DRY = "--dry" in sys.argv
+
+
+# ── Backup del DB (paso 0, antes de cualquier modificación) ────────────────────
+
+def backup_db():
+    """Copia iep.db a data/backups/iep_YYYYMMDD.db y elimina backups > 7 días."""
+    db = CFG.db_path
+    if not db.exists():
+        print(f"  [backup] DB no encontrada en {db} — se omite backup")
+        return
+
+    backup_dir = CFG.backup_dir
+    backup_dir.mkdir(parents=True, exist_ok=True)
+
+    ts   = datetime.now().strftime("%Y%m%d")
+    dest = backup_dir / f"iep_{ts}.db"
+
+    if DRY:
+        print(f"  [DRY] backup {db.name} → {dest.name}")
+        return
+
+    shutil.copy2(db, dest)
+    print(f"  [backup] {db.name} → {dest.name} ({dest.stat().st_size / 1024:.0f} KB)")
+
+    # Rotación: borrar backups más viejos que retain_days
+    cutoff = datetime.now() - timedelta(days=CFG.backup_retain_days)
+    removed = 0
+    for f in sorted(backup_dir.glob("iep_*.db")):
+        try:
+            file_date = datetime.strptime(f.stem.replace("iep_", ""), "%Y%m%d")
+            if file_date < cutoff:
+                f.unlink()
+                removed += 1
+        except ValueError:
+            pass
+    if removed:
+        print(f"  [backup] {removed} backup(s) antiguo(s) eliminado(s)")
 
 STEPS = [
     ("Scrapers: bonos PPI (ultimos 7d)",
@@ -71,6 +114,8 @@ STEPS = [
      ROOT / "src" / "pipeline" / "calcular_ajuste_global.py"),
     ("Dashboard: generar HTML estatico",
      ROOT / "src" / "dashboard" / "generate_dashboard.py"),
+    ("Pipeline: healthcheck — rangos, staleness, last_run.txt",
+     ROOT / "src" / "pipeline" / "check_pipeline_health.py"),
 ]
 
 SEP = "-" * 60
@@ -102,6 +147,12 @@ def main():
 
     if DRY:
         print("  Modo --dry: imprime pasos sin ejecutar\n")
+
+    # Paso 0: backup del DB antes de cualquier modificación
+    print(f"\n{'-'*60}")
+    print(f"  Paso 0: backup DB")
+    print(f"{'-'*60}")
+    backup_db()
 
     for i, (label, script) in enumerate(STEPS, 1):
         code = run_step(label, script)

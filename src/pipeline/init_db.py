@@ -2,6 +2,9 @@
 Inicializa la base de datos SQLite del IEP.
 Crea las tablas raw_prices e iep_diario si no existen.
 Idempotente — se puede correr múltiples veces sin problema.
+
+v2 — agrega columna `tir` a raw_prices (TIR/YTM para bonos soberanos).
+     La migración usa ALTER TABLE IF NOT EXISTS (SQLite ≥3.37) con fallback.
 """
 
 import sqlite3
@@ -37,6 +40,12 @@ def init_db():
         CREATE INDEX IF NOT EXISTS idx_raw_activo_fecha
             ON raw_prices (activo, fecha);
     """)
+
+    # Migración idempotente: añadir columna tir si no existe
+    existing = {r[1] for r in cur.execute("PRAGMA table_info(raw_prices)").fetchall()}
+    if "tir" not in existing:
+        cur.execute("ALTER TABLE raw_prices ADD COLUMN tir REAL DEFAULT NULL")
+        print("Migración: columna 'tir' añadida a raw_prices")
 
     conn.commit()
     conn.close()

@@ -5,7 +5,29 @@ Este documento registra los gaps conceptuales del proyecto antes de avanzar en l
 
 ---
 
-## Tabla de Resolución — Sesión 6 (09/05/2026)
+## Reevaluación vigente — 13/08/2026
+
+La revisión del repositorio, la base de datos y el producto publicado encontró consecuencias nuevas. Varias resoluciones de mayo se basaban en documentar la limitación, pero la comunicación pública continuó elevando el claim. Por eso se reabren los puntos que afectan una release trazable.
+
+| # | Área | Estado vigente | Decisión operativa |
+|---|---|---|---|
+| 1 | Identificación política vs. macro/global | 🔴 Abierto | Reencuadrar como condiciones de mercado y evaluar identificación/ablaciones (P1/P3) |
+| 2 | Constructo | 🟡 Redefinido | Retirar “probabilidad implícita”; unidad = índice estandarizado, baseline convencional |
+| 3 | Validación | 🔴 Reabierto | Eventos v1 pasa a exploratorio; leading ICG no confirmado; aplicar protocolo preregistrado |
+| 4 | Baseline | 🟡 Documentado, no calibrado | Mantener 11/12/2023 como convención y revisar umbrales heurísticos |
+| 5 | Representatividad del mercado | 🟡 Limitación permanente | No extrapolar a sociedad ni consenso económico general |
+| 6 | Feedback loop | 🟡 Riesgo futuro | Metodología, T+1, provenance y monitoreo; no declarar “irrelevante” por etapa |
+| 7 | Escala accionable | 🔴 Abierto | Definir utilidad descriptiva; retirar zonas causales/probabilísticas no calibradas |
+| 8 | Ventaja competitiva | 🟡 Hipótesis comercial | Validar distribución después de gates técnicos/metodológicos |
+| 9 | Horizonte 2027 | 🔴 Abierto | Tratar contenido electoral como indirecto; kink futuro sujeto a historia y validación |
+
+**Fuentes vigentes:** `../PLAN_ACCION.md` y `MARCO_VALIDACION_Y_GOBERNANZA.md`.
+
+---
+
+## Tabla de resolución histórica — Sesión 6 (09/05/2026)
+
+> Esta tabla explica decisiones de mayo de 2026. Sus estados “cerrado” o “documentado” no reemplazan la reevaluación vigente anterior.
 
 | # | Gap | Clasificación | Estado | Decisión / Acción |
 |---|-----|--------------|--------|-------------------|

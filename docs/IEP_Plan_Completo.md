@@ -1,3 +1,5 @@
+> **DOCUMENTO FUNDACIONAL HISTÓRICO — NO VIGENTE.** Esta versión conserva la hipótesis y el plan de negocio originales. Incluye un baseline, componentes y claims probabilísticos que fueron reemplazados. Para el estado actual usar `../CONTEXTO.md`, `../PLAN_ACCION.md`, `metodologia_publica.md` y `MARCO_VALIDACION_Y_GOBERNANZA.md`.
+
 **INDICE DE EXPECTATIVA POLITICA**
 
 **IEP Argentina**

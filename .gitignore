@@ -27,3 +27,22 @@ outputs/
 # OS
 .DS_Store
 Thumbs.db
+
+# Archivos temporales generados por el pipeline
+*.tmp
+*.xlsx
+data/*.pdf
+data/*.html
+data/rem.csv
+data/rem_icm.csv
+data/backups/
+data/irpm_export.csv
+data/sensibilidad_pesos.csv
+
+# Docs de planificación interna
+PLAN.md
+config.ini
+
+# Material de investigación local; las fuentes y conclusiones vigentes se documentan en docs/.
+/Índice Electoral Argentino Basado en Mercado.pdf
+/Índice Electoral Argentino Basado en Mercado.txt

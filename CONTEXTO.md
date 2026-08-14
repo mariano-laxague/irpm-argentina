@@ -1,24 +1,28 @@
 # IRPM — Índice de Riesgo Político de Mercado
-**Probabilidad implícita de continuidad del programa económico post-2027 · Diario · Alta frecuencia**
-Versión del stack: v0.7 · Actualizado: Sesión 12 — Nombre IRPM + dashboard con tabs, granularidad y comparativa vs. UTDT (14/05/2026)
+**Índice experimental que sintetiza condiciones de mercado a partir de señales financieras sensibles al escenario político y económico argentino · Diario**
+Versión documental: v0.8 · Reevaluación metodológica y de producto: 13/08/2026
 
-> **Docs clave:** `CONTEXTO.md` (referencia técnica — pegar al inicio de cada sesión) · `PLAN.md` (hoja de ruta operativa)
+> **Estado oficial:** el IRPM es un índice experimental que sintetiza condiciones de mercado a partir de señales financieras sensibles al escenario político y económico argentino. Usa un baseline convencional; no es una probabilidad electoral calibrada, no identifica causalidad política y no constituye una recomendación de inversión.
+>
+> **Docs vigentes:** `CONTEXTO.md` (arquitectura y decisiones) · `PLAN_ACCION.md` (única hoja de ruta operativa) · `docs/MARCO_VALIDACION_Y_GOBERNANZA.md` (claims, protocolos y releases).
+>
+> `PLAN.md`, `docs/IEP_Plan_Completo.md` y las secciones de log conservan historia del proyecto; no son fuente del estado actual.
+> **Dashboard público:** https://marianolaxague-crypto.github.io/irpm-argentina/ · **Repo:** https://github.com/marianolaxague-crypto/irpm-argentina
+> **Newsletter:** https://elindice.substack.com (El Índice — lanzado Ses. 18)
 
 ---
 
 ## 1. Identidad del Proyecto
 
-El **IEP** es un índice cuantitativo diario que mide la **probabilidad implícita de mercado de que el programa económico de Milei continúe después de las elecciones de 2027**, operacionalizada a través del posicionamiento en activos de deuda soberana y señales cambiarias.
+El **IRPM** es un índice experimental que sintetiza condiciones de mercado a partir de señales financieras sensibles al escenario político y económico argentino. Se actualiza con frecuencia diaria cuando los inputs requeridos están completos.
 
-**Constructo central:** el IEP responde a la pregunta "¿qué cree el mercado hoy sobre quién va a ganar la elección de 2027 y qué programa va a gobernar?" La cadena causal es `precio_alto → alguien_va_a_pagar_esta_deuda_bajo_el_esquema_actual`, no `precio_alto → Milei_gana`. Milei es relevante en tanto su continuidad es el vehículo del programa vigente, pero el constructo apunta al PROGRAMA que gobernará post-2027, no a la persona.
+**Constructo operativo vigente:** condiciones de mercado asociadas a la credibilidad y continuidad del programa económico. La cadena causal defendible llega hasta `precios y coberturas → evaluación de riesgo y capacidad de pago por participantes del mercado`. El salto desde esos precios hacia un resultado electoral o una causa política específica es una interpretación editorial, no un output del estadístico.
 
-**Diferencia vs. versión original (v0.4):** el constructo anterior planteaba un horizonte de 3-6 meses. La evidencia empírica de mayo 2026 (spread CDS 1Y=238bps vs 2Y=509bps, diferencial yield Oct-2027 vs Oct-2028 ≈ 350bps) muestra que el mercado está priceando explícitamente el riesgo electoral 2027 en los instrumentos que el IEP ya monitorea. El índice no es una señal de estabilidad macro corriente — es un termómetro de la expectativa electoral de mediano plazo.
+**Horizonte:** la lectura editorial presta especial atención a octubre de 2027, pero los instrumentos también reaccionan a macroeconomía corriente, factores globales, liquidez y riesgo crediticio. El índice no puede separar esas contribuciones con la metodología actual.
 
-**Horizonte:** 18 meses hacia las elecciones de octubre 2027. A medida que se acorte el horizonte, la señal electoral se intensifica. Hoy (mayo 2026) el IEP en 106 dice: "el mercado cree que el programa llega a 2027" — coherente con lo que los analistas de mercado describen públicamente.
+**Unidad:** puntos de índice alrededor de un baseline convencional igual a 100 el 11/12/2023. Los puntos no son porcentajes ni probabilidades.
 
-**No es una encuesta.** Captura posicionamiento real — dinero puesto en juego — y lo procesa como probabilidad electoral implícita.
-
-> "El IEP extrae del mercado de bonos y divisas la probabilidad implícita de continuidad del programa post-2027."
+**Audiencia representada:** participantes del mercado de capitales observados, no la sociedad argentina.
 
 **Diferencial frente a instrumentos existentes:**
 
@@ -26,10 +30,10 @@ El **IEP** es un índice cuantitativo diario que mide la **probabilidad implíci
 |---|---|---|---|
 | Encuestas de opinión | Mensual / bimestral | Preferencia declarada | Rezago 3-6 semanas |
 | Índice Dintella / UTDT | Mensual | Confianza del consumidor | Sin granularidad política |
-| EMBI+ Argentina | Diario | Default soberano | No capta señal de continuidad del programa |
-| **IEP (este proyecto)** | **Diario** | **Probabilidad implícita de continuidad del programa post-2027** | No separa señal política de señal macro global |
+| EMBI+ Argentina | Diario | Riesgo soberano agregado | No separa política, macro local y factores globales |
+| **IRPM (este proyecto)** | **Diario** | **Condiciones estandarizadas de activos sensibles al escenario argentino** | No separa política, macro local y factores globales |
 
-**Ventaja competitiva:** combina comprensión del sistema político argentino + expertise en mercados locales (ROFEX, BYMA, bonos soberanos) + capacidad de comunicación. El diferencial específico es la frecuencia diaria y el formato de índice numérico, que ningún actor produce sistemáticamente.
+**Hipótesis de diferenciación:** frecuencia diaria + integración de señales + interpretación transparente. Es una propuesta a validar comercialmente, no un moat demostrado.
 
 ---
 
@@ -37,11 +41,15 @@ El **IEP** es un índice cuantitativo diario que mide la **probabilidad implíci
 
 ```
 IEP/
-├── CONTEXTO.md              # Referencia técnica (pegar al inicio de cada sesión)
-├── PLAN.md                  # Hoja de ruta operativa (sesión por sesión)
+├── CONTEXTO.md              # Arquitectura, decisiones y log técnico
+├── PLAN_ACCION.md           # Única hoja de ruta operativa vigente
+├── PLAN.md                  # Plan histórico; no usar para prioridades actuales
 │
 ├── docs/
-│   └── IEP_Plan_Completo.md # Documento fundacional — versión 1.0 (mayo 2025)
+│   ├── metodologia_publica.md
+│   ├── MARCO_VALIDACION_Y_GOBERNANZA.md
+│   ├── AREAS_CRITICAS.md
+│   └── IEP_Plan_Completo.md # Documento fundacional histórico
 │
 ├── data/
 │   ├── raw/                 # Datos crudos de fuentes (no modificar)
@@ -67,12 +75,12 @@ IEP/
 | Componente | Decisión | Motivo |
 |---|---|---|
 | Almacenamiento | **SQLite** — archivo único `data/iep.db` | Pandas-compatible, single file, migrable a Supabase en Fase 2 |
-| Normalización | **Z-score rolling 252 días hábiles** | Ventana fija 2020-2025 mezclaría regímenes Fernández/Milei |
-| Pesos fase 0-1 | **50% Capa 2 / 50% Capa 1** (provisorios) | Capa 3 no tiene historia; documentar explícitamente como "provisorios" |
-| Activación Capa 3 | Mínimo 90 días de historia propia | Las opciones argentinas son poco líquidas |
-| Pesos fase 2+ | 35/40/25 (Capa1/2/3) | Según documento fundacional — revisar con datos reales |
-| Dashboard | HTML estático / Next.js | Sin decidir |
-| Newsletter | Substack / Ghost | Sin decidir |
+| Normalización | **Z-score rolling 252 ruedas, min 63** | Comparación con historia reciente; requiere sensibilidad adicional |
+| Pesos externos actuales | **35/40/25 (Capa1/2/3)** | Activos desde 2022; robustez parcial, no optimalidad demostrada |
+| Capa 3 | Semi-volatilidad realizada a la baja, no opciones | Proxy pragmático; debe rotularse como tal |
+| Dashboard | HTML estático + Chart.js | Decidido; generador monolítico pendiente de modularización |
+| Newsletter | Substack | Lanzada; nueva distribución bloqueada por gates de hardening |
+| Estado metodológico | Experimental | No probabilidad, no causalidad, no asesoramiento financiero |
 
 **Tablas SQLite:**
 ```sql
@@ -89,32 +97,31 @@ pandas, sqlite3 (stdlib), requests, beautifulsoup4, lxml
 
 ## 3. Arquitectura del Índice
 
-### Pesos provisorios (Fase 0-1)
+### Pesos externos actuales
 
-| Capa | Activos | Peso provisional | Peso definitivo |
-|---|---|---|---|
-| **1 — Señales cambiarias y futuros** | Brecha MEP/CCL + ROFEX | 50% | 35% |
-| **2 — Bonos soberanos USD** | GD30/AL30/GD35 + EMBI + law spread | 50% | 40% |
-| **3 — Opciones BYMA** | YPF, Edenor, Telecom, Pampa | 0% hasta 90 días de historia | 25% |
+| Capa | Activos/señales | Peso |
+|---|---|---:|
+| **1 — Señales cambiarias y futuros** | MEP + ROFEX_1M_EQUIV | 35% |
+| **2 — Bonos soberanos USD** | GD30D/AL30D/GD35D + EMBI + law spread | 40% |
+| **3 — Volatilidad accionaria** | Semi-vol YPFD/GGAL/PAMP/TECO2 | 25% |
 
-> Los pesos definitivos son los del documento fundacional. Los provisorios se documentan como tales en todo output publicado.
-
-> **Principio de pesos dinámicos (implementar Fase 1):** el spread post-2027 tiene peso creciente a medida que se acerca diciembre 2027. Hoy ≈ 0% dentro de Capa 2, sube hasta dominar la capa en plena campaña 2027. La revisión semestral de pesos debe contemplar este ajuste temporal.
+> Los pesos son una especificación experimental. La sensibilidad realizada muestra estabilidad de extremos dentro de una grilla acotada, pero no demuestra optimalidad ni validez del constructo.
+>
+> Los pesos dinámicos y el kink electoral permanecen como hipótesis de diseño. No se implementarán antes de cerrar integridad, tests y protocolo de validación.
 
 ---
 
-## 3a. Capa 2 — Bonos Soberanos USD (50% provisional / 40% definitivo)
+## 3a. Capa 2 — Bonos Soberanos USD (40%)
 
-*Primera capa en implementar — mayor liquidez, datos más accesibles.*
+*Compuesto experimental de precios, spread jurisdiccional y EMBI.*
 
 | Componente | Señal política | Fuente | Estado |
 |---|---|---|---|
-| **GD30 paridad** | Precio del bono NY como % del valor nominal. Sube = el mercado cree que Argentina paga. | IOL / Rava | Pendiente scraper |
-| **AL30 paridad** | Mismo, pero bajo ley argentina. Spread vs. GD30 = riesgo de restructuración unilateral. | IOL / Rava | Pendiente scraper |
-| **GD35 paridad** | Bono más largo — captura expectativa de largo plazo. | IOL / Rava | Pendiente scraper |
-| **Law spread (GD30 − AL30)** | Cuando se amplía: el mercado teme una restructuración bajo ley local. Señal directa de riesgo político interno. | Calculado de los anteriores | Pendiente cálculo |
-| **EMBI+ Argentina** | Spread de riesgo soberano vs. treasuries (en bps). Indicador global más citado. | API BCRA (`api.bcra.gob.ar/estadisticas/v2.0/`) — sin autenticación | Pendiente scraper |
-| **Law spread (GD30−AL30)** ← **SEÑAL ELECTORAL PRINCIPAL** | Diferencial entre bono NY y bono ley argentina. Cuando sube: mercado teme reestructuración bajo ley local = gobierno kirchnerista. Validación empírica (Ses. 10): z=-2.11 en mínimo IEP sep-2025, z=+1.37 en máximo dic-2024 — correlación perfecta con todos los hitos históricos. r=0.349 con IEP. | Calculado: GD30D − AL30D | **ACTIVO** — Componente más directo de señal electoral |
+| **GD30D** | Precio de bono global 2030; sensible a riesgo soberano, liquidez y tasas | PPI API | **ACTIVO** |
+| **AL30D** | Precio de bono ley argentina 2030; sensible a los mismos factores y a jurisdicción | PPI API | **ACTIVO** |
+| **GD35D** | Precio de bono global 2035; mayor exposición a duration y estructura de flujos | PPI API | **ACTIVO** |
+| **Law spread GD30D−AL30D** | Diferencial jurisdiccional que reduce parte de la exposición común, sin aislar riesgo político puro | Calculado | **ACTIVO** — hipótesis de mayor contenido doméstico pendiente de validación v2 |
+| **EMBI Argentina** | Riesgo soberano agregado; alta contaminación macro/global | dolarito.ar | **ACTIVO** — no puede usarse como validador externo |
 | ~~Spread post-2027 (GD30D − GD35D)~~ | DESCARTADO en Ses. 10 tras validación. Tendencia secular (+1.86 en 2022 → +9.18 en 2024 → -10.86 en oct-2025-hoy) confundida con amortización de GD30 y cambio de estructura. Correlación con IEP: r=0.114 (no significativo). No es señal electoral limpia. | — | **RECHAZADO** |
 
 **Rangos históricos de referencia:**
@@ -122,21 +129,19 @@ pandas, sqlite3 (stdlib), requests, beautifulsoup4, lxml
 - Law spread: explotó en 2020 (restructuración), se comprimió en 2025
 - Spread post-2027: ~300 bps en mayo 2026 (calibrado por Gemini Deep Research, mayo 2026)
 
-**Benchmarks EMBI para calibración de escala IEP:**
-- Escenario reelección consolidada: EMBI < 400 bps
-- Escenario cambio de gobierno priceado: EMBI > 1.500 bps
+Los umbrales históricos de EMBI pueden usarse como contexto editorial, no como calibración de probabilidad electoral ni de la escala IRPM.
 
 ---
 
-## 3b. Capa 1 — Señales Cambiarias y Futuros (35% definitivo)
+## 3b. Capa 1 — Señales Cambiarias y Futuros (35% vigente)
 
 *Blend 50/50 de MEP y ROFEX_1M_EQUIV. Script: `calcular_capa1.py` (lee ROFEX de raw_prices).*
 
 | Componente | Señal política | Fuente | Estado |
 |---|---|---|---|
 | **MEP (AL30_ARS/AL30D_USD)** | Gap entre dólar financiero y oficial. Alto relativo = fuga a dólares = señal mala. z-score rolling 252d sobre log(MEP), invertido. | PPI API — ratio AL30/AL30D | **ACTIVO** — 1065 ruedas 2022-hoy |
-| **ROFEX_1M_EQUIV** | Precio forward implícito a 1 mes (equiv.). Premium alto sobre MEP = devaluación esperada = señal mala. z-score rolling 252d sobre premium, sin invertir. | SSPM (2022-2024-04) + BCR PDF (2024-04-2025-10) + PPI normalizado (2025-10-hoy) | **ACTIVO** — 6009 filas desde 2009. Script: `calcular_rofex_signal.py` |
-| **ROFEX electoral kink** (futuro) | DLR_DIC27/DLR_ENE27−1. Prima de devaluación post-electoral vs. pre-electoral. | PPI FUTUROS (acumulando desde oct-2025) | **PENDIENTE** — activar ~agosto 2026 cuando haya ≥63 días de DLR_ENE27 y DLR_DIC27 |
+| **ROFEX_1M_EQUIV** | Precio forward equivalente a 1 mes. Premium alto sobre MEP = mayor devaluación esperada; z-score invertido. | SSPM (2022-2024-04) + BCR PDF (2024-04-2025-10) + PPI normalizado (2025-10-hoy) | **ACTIVO** — script `calcular_rofex_signal.py` |
+| **ROFEX electoral kink** (futuro) | DLR_DIC27/DLR_ENE27−1. Hipótesis de prima cambiaria alrededor del horizonte electoral. | PPI FUTUROS | **PENDIENTE** — revisar desde dic-2026; activar sólo con historia suficiente y protocolo validado |
 
 **Blend actual:** `capa1 = 0.5 × z_mep + 0.5 × z_rofex_premium`
 
@@ -144,15 +149,15 @@ pandas, sqlite3 (stdlib), requests, beautifulsoup4, lxml
 
 ---
 
-## 3c. Capa 3 — Opciones BYMA (0% hasta 90 días de historia)
+## 3c. Capa 3 — Volatilidad accionaria realizada (25%)
 
-*Diferida. Arrancar a recolectar datos desde implementación; activar en el índice cuando haya historia suficiente.*
+*Proxy activo de estrés bajista; no utiliza opciones BYMA.*
 
-| Componente | Señal política | Activos monitoreados |
+| Componente | Transformación | Activos |
 |---|---|---|
-| IV sectorial | IV empresas reguladas (político) vs. exportadoras (macro) | YPF, Edenor, Telecom, Pampa |
-| Put/Call ratio | Aumento de puts = cobertura ante reversión política | YPF, Edenor, Telecom, Pampa |
-| Skew electoral | Asimetría de distribución implícita cerca de elecciones | YPF, Edenor, Telecom, Pampa |
+| Semi-volatilidad a la baja | Desvío de retornos negativos rolling 20 ruedas, anualizado; z-score 252 e invertido | YPFD, GGAL, PAMP, TECO2 |
+
+La capa puede reaccionar a commodities, noticias corporativas, riesgo global y factores regulatorios. No debe describirse como volatilidad política pura ni como put-side observado.
 
 ---
 
@@ -172,12 +177,12 @@ pandas, sqlite3 (stdlib), requests, beautifulsoup4, lxml
 ```python
 # Para cada serie de precios:
 z_score = (valor_hoy - media_rolling_252d) / std_rolling_252d
-# Mapeado a escala IEP con baseline=100 al 27-oct-2025
+# Mapeado a escala IRPM con baseline=100 al 11-dic-2023
 ```
 
 **Ventana de suavizado:** media móvil de 5 ruedas (semana bursátil) sobre el IEP compuesto diario.
 
-**Baseline = 100** → 11 de diciembre de 2023 (inicio de la gestión Milei). El índice mide cuánto se aleja el mercado, hacia arriba o hacia abajo, de la lectura que tenía cuando el programa empezó.
+**Baseline = 100** → 11 de diciembre de 2023. Es una convención narrativa. El índice mide la distancia del compuesto respecto de ese punto, no una diferencia de probabilidad.
 
 **Revisión de pesos:** semestral, o ante cambios estructurales de mercado.
 
@@ -187,27 +192,28 @@ z_score = (valor_hoy - media_rolling_252d) / std_rolling_252d
 
 | Fuente | Qué provee | Acceso | Estado | Prioridad |
 |---|---|---|---|---|
-| **PPI API** | GD30D / AL30D / GD35D (paridad USD) + MEP via ratio AL30/AL30D | ppi-client — credenciales en `INVERSIONES/ENGINE/API KEY PPI.txt` | **ACTIVA** — 1062 ruedas 2022-hoy | 1 |
-| **API BCRA** | EMBI+ Argentina (serie histórica) | v2.0 y v3.0 deprecadas — sin endpoint funcional | **INACTIVA** | 1 |
-| **Rava Bursatil** | EMBI/Riesgo Pais (bps reales, OHLC diario, ultimos ~366 dias) | Scraping `_chartData` de `/perfil/RIESGO%20PAIS` — sin auth | **ACTIVA** — 366 dias desde 2025-05-08 | 1 |
-| **GD30D via PPI (proxy EMBI)** | Precio bono como proxy EMBI para 2022-2025 | PPI API — ya disponible en DB | **ACTIVA** — backfill completo | 1 |
-| **dolarapi.com** | Dólar MEP / cotizaciones actuales | REST sin auth | Activa (solo tiempo real, sin historia) | 2 |
-| **Primary/Matba-Rofex** | Curva de futuros ROFEX | API REST con autenticación | Pendiente registrar | 2 |
-| **BYMA** | Opciones sobre acciones | API / scraping | Pendiente evaluar | 3 |
+| **PPI API** | GD30D/AL30D/GD35D/AL30, acciones y contratos DLR | `ppi-client` + credenciales locales | **ACTIVA** — fuente diaria principal | 1 |
+| **dolarito.ar** | EMBI Argentina histórico | API pública usada por `scraper_embi_historico.py` | **ACTIVA** — historia desde 1998; puede cerrar un día después que PPI | 1 |
+| **SSPM datos.gob.ar** | ROFEX 1M/2M/3M histórico | Dataset público | **ACTIVA para historia** | 2 |
+| **BCR boletines** | ROFEX 1M/2M/3M abr-2024 a oct-2025 | Extracción de PDF validada por spot-check | **ACTIVA para cubrir gap histórico** | 2 |
+| **Yahoo Finance** | VIX | `yfinance` | **ACTIVA** — control global experimental | 2 |
+| **UTDT** | ICG e ICC mensuales | PDF/web pública | **ACTIVA** — comparación externa | 2 |
+| **BCRA REM** | Expectativas mensuales de analistas | Archivo público | **ACTIVA** — capa analítica separada | 3 |
+| **BYMA opciones** | IV, skew y put/call | Sin acceso productivo actual | **NO ACTIVA** — no confundir con Capa 3 realizada | 3 |
 
-**Criterio de selección:** preferir API sobre scraping. Si hay scraping, verificar TOS. Priorizar fuentes con historia 2020-presente.
+**Criterio de selección:** preferir fuentes primarias/API, registrar fecha efectiva y mantener provenance. Si una fuente cierra después que otra, el valor compuesto no puede renormalizarse silenciosamente.
 
 ---
 
 ## 5. Escala de Interpretación
 
-| Rango IEP | Interpretación | Equivalente histórico |
-|---|---|---|
-| **> 110** | Mercado pricea reelección con mayor convicción que post-legislativas 2025 | — (zona nueva) |
-| **90 – 110** | Zona baseline — continuidad del programa creíble | Post-legislativas oct-2025 |
-| **70 – 89** | Optimismo moderado con ruido | H1 2025 (pre-acuerdo FMI) |
-| **40 – 69** | Incertidumbre activa | 2024 pre-estabilización |
-| **< 40** | Stress político severo | Período Massa/Guzmán (2022) |
+| Rango IRPM | Lectura descriptiva vigente |
+|---|---|
+| **> 110** | Compuesto más de 10 puntos por encima del baseline |
+| **90–110** | Entorno cercano al baseline convencional |
+| **< 90** | Compuesto más de 10 puntos por debajo del baseline |
+
+Los cortes ±10 son heurísticos de presentación. Las categorías anteriores de “reelección”, “optimismo” y “stress político” quedan retiradas hasta disponer de calibración empírica.
 
 ---
 
@@ -238,16 +244,64 @@ Argentina enfrenta un ciclo electoral de alta intensidad 2025-2027. Existe deman
 
 ## 8. Validación del Constructo
 
-**Principio:** los benchmarks de validación deben ser independientes de los componentes del índice. El EMBI es componente de Capa 2 y por lo tanto **no puede ser validador externo** (circularidad: validar un promedio contra uno de sus términos es metodológicamente inválido). El EMBI puede aparecer en análisis comparativo como contexto, no como criterio de validez.
+**Estado general:** la validación del constructo no está cerrada. Hay evidencia de implementación y robustez interna parcial; la validez descriptiva, incremental y predictiva permanece abierta. Los niveles y protocolos oficiales están en `docs/MARCO_VALIDACION_Y_GOBERNANZA.md`.
 
-| Validación | Hipótesis | Criterio de éxito | Criterio de falla |
+**Principio:** los benchmarks deben ser independientes. El EMBI es componente de Capa 2 y no puede utilizarse como validación externa; sí debe analizarse en ablaciones para medir redundancia.
+
+| Ejercicio | Qué permite afirmar | Qué no permite afirmar | Estado vigente |
 |---|---|---|---|
-| **vs. encuestas de aprobación** | IEP es leading indicator con lag k = 2-4 semanas respecto a encuestas de aprobación | Caída del IEP precede caída de aprobación | IEP no tiene valor predictivo sobre encuestas |
-| **Análisis de eventos** | Shocks en la serie del IEP deben corresponder con eventos políticos documentados | ≥ 70% de los 10 eventos más grandes tienen causa política identificable | Los shocks más grandes no tienen correlato político |
+| Sensibilidad de pesos | Los extremos son relativamente estables dentro de 14 combinaciones externas | Pesos óptimos o constructo válido | **Robustez parcial** |
+| IRPM vs. ICG | Existe covariación contemporánea débil/moderada en N=32 | Que el IRPM anticipe encuestas o que la complementariedad esté “confirmada” | **Hipótesis leading no confirmada** |
+| Análisis de eventos v1 | Hay correspondencias temporales exploratorias | 20 shocks independientes, causalidad o 70% de accuracy | **Resultado retirado como validación** |
 
-> **Nota sobre ICG/ICC-UTDT:** el IEP mide expectativas del mercado financiero; el ICG/ICC mide opiniones de la sociedad. Son constructos distintos por diseño. La baja correlación entre ellos no es un fallo metodológico del IEP — es justamente el espacio analítico interesante: los períodos en que mercado y sociedad leen la situación de forma divergente. Esta comparación se desarrolla como análisis propio en la **Idea A** del dashboard (panel de convergencia/divergencia).
+**Falsabilidad vigente:** cada nueva hipótesis debe declarar ex ante qué resultado la refutaría. El proyecto fallaría como indicador político incremental si, tras controlar inputs simples y factores macro/globales, no aporta información adicional reproducible o si sus asociaciones con eventos no superan benchmarks nulos fuera de muestra.
 
-**Falsabilidad:** el IEP fallaría como constructo si (a) los shocks en la serie no se corresponden con eventos políticos documentados, o (b) el IEP no tiene poder predictivo sobre encuestas de aprobación con ningún rezago entre 0 y 8 semanas.
+### Resultado H2.2 — Sensibilidad de pesos (exploratoria)
+
+**Script:** `src/analysis/analisis_sensibilidad_pesos.py` | Datos: 1044 ruedas (abr-2022 → ago-2026)
+
+**Grid:** Capa1 ∈ {25-45%}, Capa2 ∈ {35-50%}, Capa3 ∈ {15-30%}, suma=100% → 14 combinaciones.
+
+| Métrica | Resultado |
+|---|---|
+| Correlación vs. base (35/40/25) | r = 0.977 – 1.000 |
+| Δ mínimo histórico | −5.5 a +3.7 pts |
+| Δ máximo histórico | −1.7 a +0.9 pts |
+| Fecha del máximo (dic-2024) | **100% de combinaciones** — estable |
+| Fecha del mínimo (sep-2025) | **93%** — 1 escenario lo mueve 3 días (sep-12 vs sep-15) |
+
+Escenario más extremo: 25%/50%/25% → mínimo 70.1 (vs. 75.6 base, Δ=−5.5 pts). Requiere +10pp en Capa2 y −10pp en Capa1 simultáneamente.
+
+**Conclusión permitida:** las fechas extremas son estables dentro de la grilla analizada y la magnitud puede variar aproximadamente ±6 puntos. No se evaluaron todavía ventanas, pesos internos, componentes, missingness, baseline, escala ni ajuste VIX.
+
+Tabla completa: `data/sensibilidad_pesos.csv`
+
+---
+
+### Resultado H2.3 — IRPM vs. ICG-UTDT
+
+**Datos:** N=32 meses (dic-2023 → jul-2026). IRPM mensualizado promedio vs. ICG mensual UTDT. Script: `src/analysis/validacion_leading_indicator.py`.
+
+**Cross-lag correlations (Pearson):**
+
+| Lag | Descripción | r | p-valor |
+|---|---|---|---|
+| k=-1 | ICG adelanta 1m al IRPM | **+0.384** | 0.033 ✓ |
+| k=0 | Contemporáneo | +0.367 | 0.039 ✓ |
+| k=+1 | IRPM adelanta 1m al ICG | +0.324 | 0.075 ~ |
+| k=+2 a +4 | IRPM adelanta 2-4m | <0.28 | >0.12 |
+
+**Granger causality (IRPM → ICG):** F ≈ 0.2-0.5, p = 0.65-0.67 para lags 1-3. Sin evidencia estadística.
+
+**Directional accuracy:** 40% a lag+1 (esencialmente aleatorio).
+
+**Veredicto vigente: hipótesis de leading indicator no confirmada.**
+
+La hipótesis original era que el IRPM adelantaría al ICG. La mayor correlación observada está en la dirección contraria (`k=-1`) y Granger no encuentra poder predictivo IRPM→ICG. Con N=32 la potencia es baja, por lo que el resultado es negativo/inconcluso, no una confirmación de independencia o complementariedad.
+
+El panel de divergencias puede conservarse como herramienta descriptiva. No debe afirmar que “uno vio algo que el otro todavía no” sin evidencia adicional.
+
+**Próximo test:** congelar protocolo, evaluar estacionariedad y múltiples lags, repetir con N≥50 y mantener un holdout posterior.
 
 > **Integración futura (Fase 3):** cuando RadarPolitico.ai esté operativo como producto, el IG (Índice de Gobierno) puede sumarse como validador externo adicional. Por ahora no existe como fuente disponible.
 
@@ -255,23 +309,27 @@ Argentina enfrenta un ciclo electoral de alta intensidad 2025-2027. Existe deman
 
 ## 8b. Limitaciones y Alcance Declarado
 
-Estas limitaciones no invalidan el índice, pero deben estar explícitas en toda comunicación pública y en la metodología.
+Estas limitaciones determinan el alcance de los claims permitidos y deben estar visibles en toda comunicación pública.
 
 **Señal política no separable de señal macro.** El IRPM no puede aislar movimientos de origen político de movimientos de origen macroeconómico o global. Las tasas de la Fed, el sentimiento de emergentes y la liquidez internacional mueven los mismos activos. La interpretación política de los z-scores es editorial: está informada por el contexto, no producida por el estadístico. Esta limitación es compartida con el EMBI y con todos los índices de riesgo soberano.
 
-> **Cuantificación empírica (Bekaert et al. 2014):** en promedio, menos de un tercio del spread soberano de mercados emergentes refleja riesgo político puro. Los otros dos tercios corresponden a fundamentales macro locales y factores globales. Esto implica que el IRPM captura *riesgo soberano total con énfasis político*, no riesgo político puro. La excepción es el **law spread (GD30−AL30)**: al ser un diferencial relativo entre dos bonos del mismo emisor bajo distinta jurisdicción, cancela automáticamente los factores globales (β_global) y gran parte de los fundamentales locales. Es el componente teóricamente más limpio del índice. Para toda comunicación pública, la formulación correcta es: "el IRPM extrae del mercado la probabilidad de continuidad del programa" — no "el IRPM mide el riesgo político".
+> El law spread reduce parte de la exposición compartida entre bonos del mismo soberano, pero conserva diferencias de liquidez, jurisdicción, estructura y demanda. Se lo trata como componente con hipótesis de mayor contenido doméstico, no como aislador de riesgo político puro.
 
 > **Implicación operativa:** cuando el VIX supera 20 o los spreads EM se amplían globalmente, los movimientos del IRPM deben interpretarse con mayor cautela. El dashboard incluirá (OPT-2) una nota de contexto automática según umbral de VIX.
 
-**Baseline convencional, no técnico.** La elección de IRPM=100 el 11-dic-2023 (inicio de la gestión Milei) es una convención narrativa, no una estimación de valor fundamental. Es análoga al año base de un IPC: metodológicamente válida si se declara como tal. El baseline determina si la serie histórica aparece "sobre" o "bajo" 100 — lo que define la narrativa del índice: un IRPM por encima de 100 significa que el mercado cree más en la continuidad del programa que el primer día de gestión; por debajo, menos. Esta convención está documentada y no debe presentarse como resultado técnico.
+**Baseline convencional, no técnico.** La elección de IRPM=100 el 11-dic-2023 (inicio de la gestión Milei) es una convención narrativa, no una estimación de valor fundamental. Es análoga al año base de un índice: determina si el compuesto aparece sobre o bajo 100. Un valor superior sólo significa que las señales incluidas son relativamente más favorables que en el baseline; no cuantifica creencias sobre continuidad, reelección ni resultados políticos.
 
-**Consenso de participantes del mercado, no de la sociedad.** El mercado de capitales argentino es ilíquido, con cepo cambiario, intervención activa del BCRA y flujos concentrados en pocos operadores institucionales. El IEP representa "lo que el mercado de bonos y dólares financieros pricea hoy", no "lo que piensa la sociedad argentina". Es un instrumento útil para inversores, analistas y gestores de riesgo precisamente porque ese es su foco; pero no debe extenderse a representaciones sobre la sociedad en general.
+**Participantes del mercado, no sociedad.** El IRPM resume precios de mercados con liquidez y participación desiguales. No representa preferencias sociales ni un consenso amplio de actores económicos.
 
-**Riesgo de feedback loop (escala con adopción).** Si el IEP es citado en medios financieros y usado para operar, puede retroalimentar los precios que construye. Este riesgo es irrelevante en Fase 0 (uso interno), empieza a ser relevante en Fase 2 (co-branding con broker). Mitigación: publicar con rezago T+1 respecto a los precios usados en el cálculo; mantener metodología pública para que los participantes puedan descontar el sesgo.
+**Riesgo de feedback loop.** Si el índice gana adopción, puede influir en narrativas sobre los propios activos que utiliza. T+1 y metodología pública reducen opacidad, pero no eliminan el riesgo.
 
-**Instrumentos de deuda en pesos fuera del alcance.** El IRPM no captura bonos duales (CER/TAMAR), Lecaps ni otros instrumentos en moneda local. La demanda por duration post-2027 en pesos es una señal complementaria de continuidad del programa — la oversubscription 16x del AO28 en junio 2026 es un ejemplo concreto — pero no es incorporable al índice sin contaminar la señal con expectativas de inflación y tasas locales, que son factores no políticos empaquetados en el mismo precio. Los instrumentos en USD que usa el IRPM eliminan esa contaminación por construcción. Adicionalmente, la demanda de instrumentos en pesos puede reflejar captivos regulatorios (AFIP, FGS) más que convicción privada, reduciendo su valor como señal de mercado libre.
+**Instrumentos de deuda en pesos fuera del alcance.** El IRPM no captura bonos duales (CER/TAMAR), Lecaps ni otros instrumentos en moneda local. Esos precios agregan expectativas de inflación, tasas, regulación y liquidez difíciles de separar. Los instrumentos en dólares reducen algunas de esas exposiciones, pero conservan riesgo crediticio, macroeconómico, global y de liquidez; tampoco son una señal política pura.
 
-**Señal electoral parcialmente capturada — falta estructura de plazos.** El IEP captura la probabilidad electoral a través del law spread (señal más directa disponible) y los niveles de bonos. Lo que NO captura es el diferencial de plazos entre instrumentos que vencen antes vs. después de 2027. Este "kink electoral" existe en el mercado (evidencia mayo 2026: CDS 1Y=238bps vs 2Y=509bps; yield Oct-2027 ~5% vs Oct-2028 ~8.5%) pero no es capturable con los instrumentos actuales porque todos los bonos del IEP (GD30, AL30, GD35) vencen post-2027. **El ROFEX electoral kink** (diferencial de contratos DLR antes y después de oct-2027) resolverá este gap cuando esté disponible (~agosto 2026, cuando haya 63 días de historia en PPI). La señal `spread GD30D−GD35D` fue evaluada y DESCARTADA (Ses. 10) por tendencia secular no electoral (r=0.114 con IEP).
+**Contenido electoral indirecto.** La metodología actual no aísla una prima electoral 2027. El law spread y los niveles de bonos contienen riesgo soberano amplio. El ROFEX electoral kink permanece como hipótesis futura y sólo podrá activarse con historia suficiente, tests y versión metodológica nueva.
+
+**Composición variable en fechas incompletas.** La Capa 2 actual renormaliza pesos cuando falta un componente. Se observaron seis fechas con versión `sin-embi`, incluida la última fecha revisada. Antes de una release nueva debe implementarse el protocolo de completitud del marco de gobernanza.
+
+**Escala no calibrada.** Baseline, factor 10 y umbrales visuales son decisiones de presentación. No deben interpretarse como probabilidades, niveles fundamentales ni fronteras de decisión.
 
 ---
 
@@ -282,11 +340,13 @@ Estas limitaciones no invalidan el índice, pero deben estar explícitas en toda
 | **RadarPolitico.ai** | Contexto narrativo mediático (IG semanal) — para validar convergencia señal mercado/medios | Capa de mercado para enriquecer análisis del IG |
 | **LegiscopeAR** | Señal de alineamiento legislativo — si los aliados rompen, el mercado debería responder | Lectura del mercado sobre las alianzas políticas |
 
-**Hipótesis de convergencia:** cuando el IG (RadarPolitico) cae Y el IEP baja en los días siguientes = señal política fuerte. Cuando divergen = tensión a resolver con análisis editorial.
+**Hipótesis de convergencia:** la coincidencia o divergencia futura entre IG e IRPM puede definir casos para análisis editorial. No se tratará como “señal política fuerte” hasta contar con protocolo, muestra y benchmark registrados.
 
 ---
 
 ## 10. Modelo de Negocio
+
+Estas cifras son hipótesis comerciales históricas, no forecast validado. Toda distribución o monetización permanece bloqueada por los gates P0–P5 de `PLAN_ACCION.md`.
 
 | Vertical | Audiencia | Precio | Meta Año 1 |
 |---|---|---|---|
@@ -307,12 +367,14 @@ Estas limitaciones no invalidan el índice, pero deben estar explícitas en toda
 
 | Riesgo | Mitigación |
 |---|---|
-| Acceso a datos de opciones BYMA (escasos históricamente) | Arrancar con Capas 1 y 2. Capa 3 al 0% hasta tener historia. |
-| Correlación baja con encuestas | Diseñar la validación como investigación pública. Los resultados intermedios también son publicables. |
-| Contagio financiero externo (beta EM) | Incorporar filtro de componente beta de mercados emergentes como variable de control. |
-| Competencia de medios financieros | La ventaja es la interpretación política experta y la velocidad de llegada. Ser primero importa. |
-| Baja volatilidad política | En escenarios estables, el índice valida el consenso y sigue siendo útil como confirmación. |
-| Mezcla de regímenes en normalización | Z-score rolling 252d en lugar de ventana fija 2020-2025. ✅ Resuelto Ses. 2. |
+| Claim probabilístico sin calibración | Retirar el lenguaje de probabilidad; reabrirlo sólo con protocolo E5 |
+| Confusión entre política y macro/global | Acotar definición, mostrar VIX/contexto y evaluar identificación/ablaciones |
+| Composición variable por faltantes | Gate de completitud + metadata de pesos y fechas efectivas |
+| Validación post hoc | Preregistro, episodios no solapados, benchmark nulo y holdout |
+| Dependencia de un scheduler local | Watchdog externo y probe posterior al deploy |
+| Divergencia código/dashboard/metodología | Release única con commit, manifest, snapshot y changelog |
+| Reproducibilidad insuficiente | Dependencias fijadas, config de ejemplo, tests y CI |
+| UX mobile/accesibilidad no verificada | Breakpoints, semántica, teclado, alternativa textual y QA visual |
 
 ---
 
@@ -328,7 +390,7 @@ Estas limitaciones no invalidan el índice, pero deben estar explícitas en toda
 | Law spread AL/GD | Sí, como componente separado | Tratar como variante del mismo instrumento | Señal única: diferencia entre riesgo de restructuración bajo ley local vs. internacional | Ses. 2 |
 | EMBI histórico 2022-2025 | dolarito.ar API (`api/frontend/indices/riesgoPais`) | GD30D proxy temporal | Header auth-client necesario; 7072 registros desde 1998 en un solo GET | Ses. 8 |
 | Capa 3 señal | Semi-volatilidad a la baja del basket YPFD/GGAL/PAMP/TECO2 | IV opciones BYMA (sin historia) | Proxy del put-side con datos disponibles hoy; vol completa confunde euforia con miedo | Ses. 9 |
-| Pesos definitivos | 35/40/25 activados | Esperar Capa 3 con IV real | Las 3 capas convergen en −3.2 en sep-2025; coherencia empírica validada | Ses. 9 |
+| Pesos vigentes | 35/40/25 activados | Esperar Capa 3 con IV real | La convergencia observada en sep-2025 aportó face validity, no demuestra optimalidad ni valida el constructo | Ses. 9 |
 | ROFEX histórico gap | BCR Boletines PDF (scraping pdfplumber) | Modelar crawling peg extrapolado | BCR publica precio de ajuste DLR diariamente — fuente oficial, spot-check 13/13 OK | Ses. 10-11 |
 | Blend ROFEX en Capa 1 | 50/50 MEP + ROFEX_1M_EQUIV | Solo MEP | ROFEX agrega información de las expectativas de devaluación de corto plazo independiente del nivel del MEP | Ses. 11 |
 | Signo z_rofex | `rolling_zscore(premium)` sin inversión | `−rolling_zscore(premium)` | Premium alto (ROFEX cerca de MEP) = menos miedo devaluatorio = señal positiva para IEP | Ses. 11 |
@@ -337,7 +399,73 @@ Estas limitaciones no invalidan el índice, pero deben estar explícitas en toda
 
 ## 13. Log de Sesiones
 
-### Sesión 21 — 12/08/2026 · OPT-7 + split YPFD + OPT-4 (análisis de eventos)
+### Sesión 24 — 12/08/2026 · H2.2 + H2.3 — Sensibilidad de pesos + Relación IRPM/ICG
+
+**H2.2 — Sensibilidad de pesos:** extremos estables dentro de la grilla externa ensayada (min sep-2025, max dic-2024); la magnitud varía ±5.5 pts en el escenario extremo. Es robustez parcial. Ver §8 para detalle.
+
+**H2.3 — Relación IRPM/ICG:** r contemporánea=+0.367, p<0.05. La hipótesis original de anticipación no fue confirmada; no se redefine ese resultado como “esperado”. Ver §8 para detalle.
+
+**Script ejecutado:** `src/analysis/validacion_leading_indicator.py`
+- Fuentes: `data/irpm_export.csv` (IRPM diario mensualizado) + `data/utdt_icg.csv` (ICG mensual UTDT)
+- Cross-lag correlations k=-4 a +4. Granger causality (statsmodels). Directional analysis.
+- N=32 meses (dic-2023 → jul-2026).
+
+**Hallazgos clave:**
+- Contemporánea significativa: r=+0.367, p=0.039 ✓
+- k=-1 (ICG lidera IRPM): r=+0.384, p=0.033 — la dirección es inversa a la hipótesis
+- k=+1 (IRPM lidera ICG): r=+0.324, p=0.075 — por debajo del umbral
+- Granger IRPM→ICG: p=0.65-0.67 (sin evidencia)
+
+**Implicación operativa:** eliminado el claim "el mercado adelanta a las encuestas". El valor del IRPM es la señal del dinero puesto en juego y los períodos de divergencia vs. ICG, no su poder predictivo.
+
+**Archivos nuevos/modificados:**
+- `src/analysis/validacion_leading_indicator.py` — nuevo (con interpretación actualizada)
+- `data/irpm_export.csv` — nuevo (workaround SQLite I/O error en sandbox Linux)
+- `CONTEXTO.md` §8 — resultado H2.3 documentado
+
+---
+
+### Sesión 23 — 12/08/2026 · H1.4 — Sanity checks por capa
+
+**IRPM al cierre:** 103.6 bruto / 105.1 ajustado (12/08/2026).
+
+**H1.4 — Tests de sanity post-cálculo:**
+- `src/pipeline/sanity.py` — módulo compartido con `assert_capa_sanity(capa)`. Tres checks: z-score último día en ±5, delta diario < 3 z-units, freshness ≤ 5 días hábiles. Umbrales configurables en `config.ini [pipeline]`. Escribe alertas en `logs/health_alerts.log`, sale con exit code 1 si falla.
+- `calcular_capa1.py`, `calcular_capa2.py`, `calcular_capa3.py`: cada uno llama `assert_capa_sanity()` al final. Pipeline se detiene en el paso que falla.
+- Resultado hoy: capa1 z=-0.46 ✓ | capa2 z=-0.28 ✓ | capa3 z=+0.28 ✓
+
+**Archivos nuevos/modificados:**
+- `src/pipeline/sanity.py` — nuevo
+- `src/pipeline/calcular_capa1/2/3.py` — llamada a `assert_capa_sanity()` al final
+
+---
+
+### Sesión 22 — 12/08/2026 · H1.1 + H1.2 + H1.3 — Infraestructura de robustez
+
+**IRPM al cierre:** 103.6 bruto / 105.1 ajustado (12/08/2026).
+
+- `config.ini` + `src/config.py`: configuración centralizada. CRED_PATH eliminada de los 3 scrapers PPI — leer siempre `CFG.cred_ppi`.
+- `check_pipeline_health.py` (paso 15): valida IRPM en rango, delta diario, freshness, z-scores por capa. Escribe `logs/last_run.txt`.
+- `data/backups/`: backup automático de `iep.db` antes de cada corrida, rotación 7 días.
+
+**Archivos nuevos/modificados:**
+- `config.ini` — nuevo
+- `src/config.py` — nuevo
+- `src/pipeline/check_pipeline_health.py` — nuevo
+- `src/pipeline/update_daily.py` — paso 0 (backup) + paso 15 (healthcheck) + import CFG
+- `src/scrapers/scraper_bonos/acciones/rofex.py` — CRED_PATH → CFG
+
+---
+
+### Sesión 21b — 12/08/2026 · TIR diferida (H2.1) + limpieza
+
+**H2.1 — TIR diferida:** `estimate_bonds` PPI no funciona para bonos hard-dollar (GD30D/AL30D/GD35D) — retorna `"Quantity Type not found"` para todos los `quantityType`. `marketdata.search` tampoco incluye TIR. La columna `raw_prices.tir` queda en la DB. OPT-7 resuelve el problema operativo. Opción futura: YTM desde flujos via `scipy.optimize` con prospecto 2020.
+
+**Limpieza:** `scraper_tir_bonos.py` eliminado · step removido de `update_daily.py` · `calcular_capa2.py` revertido a paridad+OPT-7 simple · `PLAN_ACCION.md` H2.1 = DIFERIDO.
+
+---
+
+### Sesión 21 — 12/08/2026 · OPT-7 + split YPFD + OPT-4 + Deploy GitHub Pages
 
 **IRPM al cierre:** bruto=103.6 / ajustado=105.1 (VIX=14.9, MEP=1524.8, EMBI=466).
 
@@ -350,14 +478,25 @@ YPF hizo un split 10:1 el 3-ago. El precio pasó de 82,900 a 8,105 ARS. `calcula
 **OPT-4 — Análisis de eventos políticos:**
 `data/eventos_politicos.json` — 15 eventos Argentina 2022-2026 con tipo, severidad esperada, dirección y delta observado.
 `src/analysis/analisis_eventos.py` — cruza el JSON con la serie IRPM (ventana ±5 ruedas), verifica dirección/magnitud, y valida el criterio de ≥70% de los top shocks explicados. Correr con `--guardar` para actualizar `irpm_delta_observado` en el JSON.
-Resultado validación: **14/20 = 70% ✓ APROBADO**.
-Hallazgos sorpresivos documentados en PLAN.md §OPT-4: renuncia Guzmán (+3.2, mercado lo leyó positivo), ballotage (+8.4, ya priceado), Black Monday (+5.8, Argentina no correlacionó), legislativas 2025 (+5.9, ya anticipadas).
+Resultado reportado en esa sesión: **14/20 = 70%** y rotulado entonces como “aprobado”. La revisión del 13/08/2026 retiró ese estado porque las ventanas se solapan y varios movimientos pertenecen al mismo episodio; se conserva sólo como resultado exploratorio histórico.
+Los hallazgos narrativos de aquella corrida (renuncia de Guzmán, ballotage, Black Monday y legislativas 2025) son asociaciones ex post y no evidencia causal ni predictiva.
+
+**Deploy a GitHub Pages — DASHBOARD PÚBLICO LIVE:**
+- Repo público: `https://github.com/marianolaxague-crypto/irpm-argentina`
+- Dashboard en vivo: `https://marianolaxague-crypto.github.io/irpm-argentina/`
+- `generate_dashboard.py` escribe a `docs/index.html` además de `outputs/dashboard.html`
+- `update_daily.py` llama `deploy_github()` al final del pipeline (git commit + push automático)
+- `.gitignore` excluye: `data/*.db`, `outputs/`, `PLAN.md`, `config.ini`, archivos temporales
+- Archivos nuevos en repo: `.gitignore`, `requirements.txt`, `README.md`
 
 **Archivos nuevos/modificados:**
 - `src/pipeline/calcular_capa2.py` — OPT-7: `_PAYMENT_WINDOW`, `ffill_payment_dates()`
 - `src/pipeline/calcular_capa3.py` — `STOCK_SPLITS`, `apply_splits()`
+- `src/pipeline/update_daily.py` — función `deploy_github()` como paso final
+- `src/dashboard/generate_dashboard.py` — output duplicado a `docs/index.html`
 - `data/eventos_politicos.json` — nuevo
 - `src/analysis/analisis_eventos.py` — nuevo
+- `.gitignore`, `requirements.txt`, `README.md` — nuevos
 - `tasks/lessons.md` — 3 lecciones nuevas (OPT-7, split YPFD, gap Task Scheduler)
 
 ---
@@ -398,7 +537,7 @@ Pesos explícitos en `calcular_capa2.py` (v3): law_spread=35%, GD30=20%, AL30=20
 - **Hover editorial**: tooltip sigue el mouse, contenido específico por período (5 períodos con narrativa propia):
   - Feb-Jun 2024 (rojo): "el ajuste que el mercado celebra, la sociedad siente"
   - Jul 2024 (verde): "corrección compartida, honeymoon se agota"
-  - Ago-Oct 2024 (rojo): "el mercado anticipa el FMI, la ciudadanía todavía no"
+  - Ago-Oct 2024 (rojo): copy histórico de “anticipación del FMI”, retirado por exceder la evidencia disponible
   - Nov 2024–Dic 2025 (verde): "14 meses leyendo el mismo ciclo"
   - Ene 2026+ (rojo): "el mercado mira 2027, la sociedad evalúa el presente"
 
@@ -458,7 +597,7 @@ El IRPM ya era bastante inmune al VIX por diseño. La corrección es pequeña en
 - Constructo central (willingness to pay) alineado con la teoría dominante ✅
 - Law spread: teóricamente el componente más limpio — beta-neutral ✅
 - ROFEX electoral kink: directamente justificado por teoría de prima electoral en estructura de plazos ✅
-- Capa 3 basket (YPF/Edenor/Pampa/Telecom): validado por "Efecto Milei" sectorial ✅
+- Capa 3 basket (YPF/Edenor/Pampa/Telecom): selección histórica apoyada en face validity sectorial; no constituye validación del constructo
 - Tab 2 (divergencia mercado-sociedad): base en mecanismo "voting cues" Brasil 2022 ✅
 - Hitos como "desastres raros" persistentes: morfología de serie histórica coherente con la teoría ✅
 
@@ -502,7 +641,7 @@ El IRPM ya era bastante inmune al VIX por diseño. La corrección es pequeña en
 ---
 
 ### Sesión 10 — 13/05/2026 · Reencuadre conceptual + ROFEX gap cerrado con BCR Boletines
-- **Reencuadre del constructo:** de "expectativa de continuidad 3-6m" a "probabilidad implícita de continuidad del programa post-2027" (CDS spread evidencia)
+- **Reencuadre histórico del constructo:** se propuso “probabilidad implícita de continuidad del programa post-2027”. La revisión del 13/08/2026 retiró esa formulación porque el compuesto no está calibrado como probabilidad.
 - **Señal rechazada:** GD30D−GD35D — tendencia secular, r=0.114, no capturable con instrumentos disponibles
 - **Señal electoral disponible:** law spread GD30D−AL30D, r=0.349, ya activa en Capa 2
 - **ROFEX gap cerrado:** BCR Boletines PDF (`boletin-mercado-granos-{id}.pdf`, IDs 18541-18910) → 284 filas cubren abr-2024→oct-2025 con pdfplumber+regex
@@ -569,23 +708,33 @@ El IRPM ya era bastante inmune al VIX por diseño. La corrección es pequeña en
 
 ---
 
-## 14. Workflow Operativo (Fase 0)
+## 14. Workflow Operativo
 
-### Pipeline diario — 10 pasos automatizados (Task Scheduler Lun-Vie 18:30)
+### Pipeline diario — 16 pasos + deploy (Task Scheduler Lun-Vie 18:30)
 
 ```
 run_update.bat → src/pipeline/update_daily.py
-  1. scraper_bonos.py          → GD30D, AL30D, GD35D, AL30 (últimos 7d, PPI)
-  2. scraper_acciones.py       → YPFD, GGAL, PAMP, TECO2 (últimos 7d, PPI)
-  3. scraper_rofex.py          → DLR futuros PPI (acumulador electoral kink)
-  4. scraper_embi_historico.py → EMBI completo desde 1998 (dolarito.ar)
-  5. calcular_rofex_signal.py  → ROFEX_1M_EQUIV unificado (SSPM+BCR+PPI) → raw_prices
-  6. calcular_capa1.py         → blend MEP + ROFEX → iep_diario.capa1
-  7. calcular_capa2.py         → bonos soberanos + EMBI → iep_diario.capa2
-  8. calcular_capa3.py         → semi-vol accionaria → iep_diario.capa3
-  9. calcular_iep.py           → IEP compuesto 35/40/25 → iep_diario.iep_total
- 10. generate_dashboard.py     → outputs/dashboard.html
+  0. backup_db()
+  1. scraper_bonos.py
+  2. scraper_acciones.py
+  3. scraper_rofex.py
+  4. scraper_embi_historico.py
+  5. scraper_utdt.py
+  6. scraper_rem.py
+  7. calcular_rem_icm.py
+  8. scraper_vix.py
+  9. calcular_rofex_signal.py
+ 10. calcular_capa1.py + sanity
+ 11. calcular_capa2.py + sanity
+ 12. calcular_capa3.py + sanity
+ 13. calcular_iep.py
+ 14. calcular_ajuste_global.py
+ 15. generate_dashboard.py
+ 16. check_pipeline_health.py
+ deploy_github()
 ```
+
+**Limitación operativa:** el healthcheck sólo detecta problemas si el proceso arranca. El watchdog externo y el chequeo del deploy siguen pendientes en `PLAN_ACCION.md` P5.
 
 ### Corrida manual
 ```
@@ -595,20 +744,22 @@ py src/pipeline/update_daily.py
 ### Protocolo de inicio de sesión
 ```
 Retomemos el proyecto IEP.
-Pegar: CONTEXTO.md + PLAN.md
-Estado: [última corrida] | Objetivo de hoy: [UNA SOLA COSA]
+Leer: CONTEXTO.md + PLAN_ACCION.md + docs/MARCO_VALIDACION_Y_GOBERNANZA.md
+ID del plan: [P#.#] | Criterio de aceptación: [evidencia observable]
 ```
 
 ---
 
 ## 15. Reglas del Sistema
 
-1. **Los datos crudos son inmutables.** Los scores son siempre recalculables.
-2. **Los pesos provisorios (50/50) se documentan como tales en todo output publicado.** Cuando se activen los pesos definitivos, se recalcula toda la serie.
-3. **Una sola cosa por sesión.** Cada sesión tiene un único entregable.
-4. **Los benchmarks de validación son externos al índice.** El EMBI no puede validar el IEP porque es componente de Capa 2. Validadores válidos hoy: ICG-UTDT + encuestas de aprobación + análisis de eventos. RadarPolitico se suma cuando exista como producto.
-5. **Metodología abierta.** Los errores de validación también se publican — la transparencia es parte del diferencial.
-6. **Pegar siempre CONTEXTO.md + PLAN.md al inicio de cada sesión.**
+1. **Los datos crudos son inmutables.** Los scores son recalculables y versionados.
+2. **Ningún valor público cambia de composición silenciosamente.** Faltantes implican estado degradado o no publicable.
+3. **Dato, indicador e interpretación editorial se separan.**
+4. **Una sola unidad de plan por sesión.** Cada sesión cierra un ID y su evidencia.
+5. **Los benchmarks de validación son externos.** Los componentes sólo sirven para ablaciones y diagnóstico.
+6. **Las hipótesis y criterios se congelan antes del test.** Los resultados negativos no se reencuadran como confirmación.
+7. **Toda release une código, metodología, datos, tests y dashboard.**
+8. **Usar siempre `PLAN_ACCION.md`; `PLAN.md` es histórico.**
 
 ---
 
@@ -618,9 +769,11 @@ Estado: [última corrida] | Objetivo de hoy: [UNA SOLA COSA]
 |---|---|---|
 | Fuente principal bonos | IOL API vs. Rava scraping vs. PPI | **PPI API — DECIDIDO** (Ses. 3) |
 | Dashboard tech | HTML estático vs. Next.js + Recharts | **HTML estático** — funcional, sin servidor |
-| Newsletter plataforma | Substack vs. Ghost | Sin decidir |
-| Automatización pipeline | Windows Task Scheduler | **Task Scheduler — DECIDIDO** `run_update.bat`, Lun-Vie 18:30 |
-| Nombre público del índice | "IEP" / "Índice de Expectativa Política" | Confirmado |
+| Newsletter plataforma | Substack vs. Ghost | **Substack — DECIDIDO** |
+| Automatización pipeline | Windows Task Scheduler | **Implementado, observabilidad incompleta** — falta watchdog externo |
+| Nombre público del índice | IRPM / alternativa direccional | **IRPM actual; revisión de dirección semántica abierta (P1.2)** |
 | Dominio y presencia online | iep.ar / iepargentina.com | Sin decidir |
 | Co-branding con broker | PPI / IOL | Pendiente Fase 2 |
-| Validación externa IEP vs. ICG-UTDT | Correlación esperada r > 0.65 | Pendiente — próxima sesión analítica |
+| IRPM vs. ICG-UTDT | Leading indicator | **No confirmado con N=32** — repetir bajo protocolo congelado |
+| Política de faltantes | Renormalizar vs. no publicar | **Abierta y bloqueante (P2.1–P2.3)** |
+| Umbrales 90/110 | Heurísticos vs. calibrados | **Heurísticos; revisar o retirar (P1.4)** |

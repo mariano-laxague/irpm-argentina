@@ -194,3 +194,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    from src.pipeline.sanity import assert_capa_sanity
+    assert_capa_sanity("capa3")

@@ -4,6 +4,105 @@
 
 ---
 
+## 2026-08-13 — La documentación de una limitación no corrige un claim público
+
+**HALLAZGO:** el proyecto reconocía que los z-scores no separan política de macro y que el baseline es convencional, pero README, metodología y dashboard seguían usando “probabilidad implícita”, causalidad editorial y estados de validación más fuertes que la evidencia.
+
+**REGLA:** distinguir siempre entre implementación, robustez interna, validez descriptiva, información incremental y calibración predictiva. Ningún nivel hereda automáticamente el siguiente.
+
+**HALLAZGO:** el análisis de eventos contaba ventanas diarias solapadas como shocks distintos. Cinco de las diez mayores caídas pertenecían al mismo episodio de septiembre de 2025.
+
+**REGLA:** un evento o episodio es una unidad estadística. De-clusterizar, preregistrar, usar benchmark nulo y reservar holdout antes de rotular un análisis como validación.
+
+**HALLAZGO:** la hipótesis original IRPM→ICG no fue confirmada, pero una capa documental posterior describió la ausencia de anticipación como “resultado esperado”.
+
+**REGLA:** no mover el criterio de éxito después de observar el resultado. Separar resultado negativo de una nueva interpretación de producto.
+
+**HALLAZGO:** seis fechas del IRPM usaron una composición de Capa 2 sin EMBI; la última fecha revisada se publicó con pesos internos renormalizados.
+
+**REGLA:** ningún valor público puede cambiar silenciosamente de composición. Registrar componentes, fechas y pesos efectivos; un valor incompleto es degradado o no publicable.
+
+**HALLAZGO:** healthchecks internos no detectan que el scheduler nunca arrancó, y un deploy silenciosamente fallido puede dejar web y código desalineados.
+
+**REGLA:** monitorear desde fuera del proceso y verificar el artefacto público. La ausencia de ejecución es un estado que sólo un watchdog independiente puede detectar.
+
+**ENTREGABLES DOCUMENTALES:** `PLAN_ACCION.md` v2, `docs/MARCO_VALIDACION_Y_GOBERNANZA.md`, README y metodología pública reencuadrados, documentos históricos marcados.
+
+---
+
+## 2026-08-12 — Sesión 24: H2.1 + H2.2 + H2.3 + H2.4
+
+**H2.1 — TIR en Capa 2 — DIAGNÓSTICO (diferido):**
+- PPI tiene endpoint `estimate_bonds` (`1.0/MarketData/Bonds/Estimate`) pero NO funciona para bonos hard-dollar (GD30D, AL30D, GD35D) con ningún `quantityType`. Tampoco con tickers sin el sufijo "D". `search` y `current` tampoco incluyen TIR en el response.
+- **Conclusión:** PPI no expone rendimiento/YTM para bonos hard-dollar por API.
+- **Decisión:** diferir TIR. OPT-7 (forward-fill) resuelve el problema operativo. La columna `tir` queda en raw_prices para uso futuro.
+- **Camino futuro:** calcular YTM desde flujos de fondos con scipy.optimize usando el prospecto de reestructuración 2020 (cupones step-up + amortizaciones semestrales ene-9 / jul-9). Trabajo de media sesión cuando se tenga el prospecto a mano.
+
+**H2.2 — Sensibilidad de pesos:**
+- 14 combinaciones evaluadas. Narrativa (min sep-2025, max dic-2024) es invariante al 93-100% de combinaciones.
+- Magnitud varía ±5.5 pts en el escenario más extremo. Todas las correlaciones r>0.977.
+
+**H2.3 — Relación IRPM/ICG:**
+- Hipótesis leading IRPM→ICG no confirmada. Correlación contemporánea r=+0.367; la mayor correlación está en k=-1 con ICG adelantando. La complementariedad es una interpretación de producto posterior, no el criterio original del test.
+
+**H2.4 — Metodología pública:**
+- `docs/metodologia_publica.md` — 977 palabras. Tono analista financiero. Estructura: qué mide, cómo se construye, validación, limitaciones, fuentes.
+
+## 2026-08-12 — Sesión 24: H2.3 — Validación leading indicator (NO CONFIRMADO)
+
+**RESULTADO:** IRPM no es leading indicator del ICG-UTDT. La correlación más alta está en k=-1 (ICG lidera IRPM, r=+0.384, p=0.033), no en k=+1.
+
+**LECCIÓN — Resultados negativos también son resultados:** La hipótesis era que el mercado (IRPM) adelanta a la opinión pública (ICG). Los datos dicen lo contrario o simplemente que se mueven juntos sin que uno lidere al otro. Esto cambia el framing del producto (no predice encuestas) pero no lo invalida (mide algo distinto y complementario).
+
+**LECCIÓN — Potencia estadística baja con N=32:** El test de Granger requiere ≥60-80 observaciones para tener potencia suficiente con series mensuales. Con N=32, incluso un efecto real podría no detectarse. No descartar definitivamente la hipótesis — rerun obligatorio cuando N≥50 (~dic-2027).
+
+**LECCIÓN — SQLite I/O error en sandbox Linux:** el archivo `data/iep.db` activo en Windows no puede leerse desde el sandbox Linux montado (journal file activo). Workaround: `cp iep.db /tmp/iep_read.db` para lecturas, o exportar a CSV antes. La exportación a `data/irpm_export.csv` es el path correcto para análisis futuros que corran fuera de Windows.
+
+**LECCIÓN — Publicar resultados negativos:** el rigor de documentar el resultado negativo es parte del diferencial metodológico. "Testeamos si el mercado adelanta a las encuestas — los datos no lo confirman con N=32" es más creíble que omitir el test o cambiar la hipótesis ex-post.
+
+---
+
+## 2026-08-12 — Sesión 23: sanity checks por capa (H1.4)
+
+**ENTREGABLES:**
+- `src/pipeline/sanity.py`: módulo compartido con `assert_capa_sanity(capa)`. Corre 3 checks: z-score del último día dentro de ±5, delta diario < 3 z-units, freshness dentro de 5 días hábiles. Importa umbrales de `config.ini` vía `CFG`.
+- `calcular_capa1.py`, `calcular_capa2.py`, `calcular_capa3.py`: cada uno llama `assert_capa_sanity()` al final de su ejecución. Si falla → `sys.exit(1)` → el pipeline se detiene en ese paso.
+- `logs/health_alerts.log`: destino de todos los mensajes de alerta (comparte archivo con `check_pipeline_health.py`).
+
+**REGLA:** los umbrales (`ZSCORE_LIMIT=5`, `DELTA_LIMIT=3`, `STALE_DAYS=5`) están en `config.ini [pipeline]`. Ajustar ahí si la señal histórica cambia de rango.
+
+**RESULTADO DEL CHECK HOY (12/08/2026):**
+- capa1: z=-0.46, delta=-0.03 ✓ | capa2: z=-0.28, delta=-0.29 ✓ | capa3: z=+0.28, delta=+0.00 ✓
+
+**PATRÓN DE FALLO que estos checks habrían capturado:**
+- Split YPFD 10:1 (ago-2026): capa3 z=-12.27 → DELTA_LIMIT 3 z-units habría detenido el pipeline antes de calcular el IRPM.
+- Gap Task Scheduler Jul-Aug 2026: capa3 stale → STALE_DAYS check habría alertado.
+- z_rofex signo incorrecto (jul-2026): Capa 1 con valores sistemáticamente bajos → el DELTA check en el día de la corrección habría marcado la anomalía.
+
+---
+
+## 2026-08-12 — Sesión 22: infraestructura de robustez (H1.1 + H1.2 + H1.3)
+
+**ENTREGABLES:**
+- `config.ini` en la raíz del proyecto: fuente única de verdad para rutas y umbrales.
+- `src/config.py`: módulo compartido que lee `config.ini` y expone `CFG`. Importar con `from src.config import CFG`.
+- `src/pipeline/check_pipeline_health.py`: paso 15 del pipeline. Valida IRPM en rango, delta diario, freshness por capa y z-scores. Escribe `logs/last_run.txt` con timestamp y status. Escribe `logs/health_alerts.log` cuando detecta anomalías.
+- `data/backups/`: directorio creado. El pipeline (paso 0, antes de scrapers) copia `iep.db → iep_YYYYMMDD.db` con rotación de 7 días.
+
+**REGLA (credenciales):** nunca hardcodear `CRED_PATH` en los scrapers. Leer siempre `CFG.cred_ppi`. Si se cambia de laptop o de ubicación, editar solo `config.ini`.
+
+**REGLA (monitoreo):** verificar `logs/last_run.txt` al inicio de cada semana. Si la fecha tiene más de 3 días hábiles de antigüedad, el Task Scheduler falló. Investigar antes de correr el pipeline manualmente.
+
+**REGLA (alertas):** si el healthcheck falla (exit code 1), el pipeline se detiene. El detalle de la alerta está en `logs/health_alerts.log`. Los umbrales configurables están en `config.ini [pipeline]`.
+
+**RESULTADO DEL CHECK HOY (12/08/2026):**
+- IRPM 2026-08-12: 103.6 ✓
+- Delta diario: -1.3 pts ✓
+- Datos frescos: última fecha 2026-08-12 ✓
+- Capa 1 z-score: -0.46, Capa 2: -0.28, Capa 3: +0.28 ✓
+
+---
+
 ## 2026-08-12 — OPT-7: forward-fill en fechas de pago de bonos (calcular_capa2.py)
 
 **REGLA:** `calcular_capa2.py` aplica forward-fill sobre GD30D, AL30D y GD35D en una ventana de 2 días calendario antes de cada fecha de pago (9 de enero y 9 de julio). Solo actúa si la caída supera el 2.5% Y la fecha está en la ventana. El precio de referencia para la comparación es el último precio ANTES del inicio de la ventana completa (no el día anterior al día detectado), para evitar efecto en cadena cuando la caída se reparte en dos días consecutivos.
