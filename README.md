@@ -67,6 +67,7 @@ La automatización está diseñada para ejecutarse en días hábiles mediante Wi
 - [`docs/RECUPERACION.md`](docs/RECUPERACION.md): restauración segura y ensayo desde un backup SQLite.
 - [`docs/JOURNEYS_PRODUCTO.md`](docs/JOURNEYS_PRODUCTO.md): recorridos prioritarios para lectura, análisis y auditoría.
 - [`docs/QA_RESPONSIVE_20260814.md`](docs/QA_RESPONSIVE_20260814.md): evidencia y límites de la revisión inicial de breakpoints.
+- [`docs/QA_VISUAL_20260814.md`](docs/QA_VISUAL_20260814.md): recorridos inspeccionados y límites del QA visual local.
 - [`CONTEXTO.md`](CONTEXTO.md): arquitectura técnica, decisiones y log de desarrollo.
 - [`PLAN_ACCION.md`](PLAN_ACCION.md): hoja de ruta operativa vigente.
 
