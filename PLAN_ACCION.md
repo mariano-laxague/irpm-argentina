@@ -137,7 +137,7 @@ Hasta cerrar los gates de este plan, el IRPM debe presentarse como **producto ex
 | P6.2 | Recuperar controles analíticos necesarios | Dashboard | Período, series y contexto VIX accesibles sin saturar la portada | ✅ Completado 14/08 — selector temporal y toggles de series/VIX visibles |
 | P6.3 | Implementar responsive | CSS y pruebas | 360, 390, 768, 1280 y 1440 px sin recortes ni scroll bloqueado | 🟡 Implementado 14/08 — breakpoints iniciales capturados; QA completo en P6.6 |
 | P6.4 | Implementar semántica y teclado | HTML/JS | `h1`, `main`, labels, ARIA, foco y range operable por teclado | ✅ Completado 14/08 — landmarks, foco y rango operable con teclado |
-| P6.5 | Añadir alternativa a canvas | Tabla/resumen descargable | Datos y conclusiones principales accesibles sin percepción visual del gráfico | ⬜ Pendiente |
+| P6.5 | Añadir alternativa a canvas | Tabla/resumen descargable | Datos y conclusiones principales accesibles sin percepción visual del gráfico | ✅ Completado 14/08 — resumen, tabla y descarga CSV de IRPM |
 | P6.6 | Ejecutar QA visual | Capturas desktop/mobile | Todos los journeys y estados clave inspeccionados antes de publicar | ⬜ Pendiente |
 
 ### P7 — Distribución responsable

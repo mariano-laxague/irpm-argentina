@@ -486,6 +486,18 @@ html, body {
 }
 .chart-toggle.active { background: #f4e9dc; border-color: #b45309; color: #92400e; font-weight: 600; }
 .chart-toggle:focus-visible { outline: 3px solid rgba(180,83,9,.35); outline-offset: 2px; }
+.data-section {
+  height: 100%; padding: 44px 40px 24px; overflow-y: auto; background: #faf7f2;
+}
+.data-alternative { max-width: 980px; margin: 20px auto 0; background: #fff; border: 1px solid #e8e0d5; border-radius: 12px; padding: 22px; }
+.data-summary { color: #57534e; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+.data-actions { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+.data-actions h3 { font-size: 16px; }
+.data-download { border: 1px solid #b45309; border-radius: 6px; background: #fff; color: #92400e; padding: 7px 10px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+.data-table-wrap { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.data-table th, .data-table td { padding: 8px 10px; text-align: left; border-top: 1px solid #e8e0d5; white-space: nowrap; }
+.data-table th { color: #57534e; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
 .impact-pos { color: #15803d; }
 .impact-neg { color: #b91c1c; }
 
@@ -725,6 +737,25 @@ html, body {
     <div class="events-detail-title" id="event-card-title"></div>
     <div class="events-detail-text" id="event-card-text"></div>
     <div class="event-card-impact" id="event-card-impact"></div>
+  </div>
+</section>
+
+<section class="data-section slide" id="datos" aria-labelledby="datos-title">
+  <div class="section-eyebrow">Alternativa al gráfico</div>
+  <div class="section-title" id="datos-title">Datos del IRPM en texto y tabla</div>
+  <div class="data-alternative">
+    <p class="data-summary" id="data-summary"></p>
+    <div class="data-actions">
+      <h3>Últimas 10 observaciones</h3>
+      <button class="data-download" id="download-csv" type="button">Descargar serie CSV</button>
+    </div>
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <caption class="sr-only">Últimas diez observaciones de IRPM y series auxiliares</caption>
+        <thead><tr><th>Fecha</th><th>IRPM</th><th>Suavizado</th><th>Ajuste VIX</th></tr></thead>
+        <tbody id="data-table-body"></tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -1857,6 +1888,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initDivChart();
   initCompChart();
   buildEventsNav();
+  initDataAlternative();
   // initRangeSelector is called inside initChart() after chart is created
 
   document.getElementById('smooth-toggle')?.addEventListener('click', function() {
@@ -1873,6 +1905,25 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   // No popup-close listener needed
 });
+
+function initDataAlternative() {
+  const latest = ALL_DATA[ALL_DATA.length - 1];
+  const summary = document.getElementById('data-summary');
+  const body = document.getElementById('data-table-body');
+  if (!latest || !summary || !body) return;
+  summary.textContent = `Última observación: ${latest.d}. IRPM ${latest.v.toFixed(1)}; ` +
+    `suavizado ${latest.s == null ? 'no disponible' : latest.s.toFixed(1)}; ` +
+    `ajuste VIX ${latest.a == null ? 'no disponible' : latest.a.toFixed(1)}.`;
+  body.innerHTML = ALL_DATA.slice(-10).reverse().map(d => `<tr><td>${d.d}</td><td>${d.v.toFixed(1)}</td>` +
+    `<td>${d.s == null ? '—' : d.s.toFixed(1)}</td><td>${d.a == null ? '—' : d.a.toFixed(1)}</td></tr>`).join('');
+  document.getElementById('download-csv')?.addEventListener('click', () => {
+    const rows = ['fecha,irpm,suavizado,ajuste_vix', ...ALL_DATA.map(d =>
+      [d.d, d.v, d.s ?? '', d.a ?? ''].join(','))];
+    const url = URL.createObjectURL(new Blob([rows.join('\n') + '\n'], {type: 'text/csv;charset=utf-8'}));
+    const link = Object.assign(document.createElement('a'), {href: url, download: 'irpm_serie.csv'});
+    link.click(); URL.revokeObjectURL(url);
+  });
+}
 
 </script>
 </body>

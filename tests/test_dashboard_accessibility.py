@@ -26,3 +26,11 @@ class TestDashboardAccessibility(unittest.TestCase):
         self.assertIn('.sr-only', styles)
         self.assertIn('.skip-link:focus', styles)
         self.assertIn('.chart-toggle:focus-visible', styles)
+
+    def test_incluye_alternativa_tabular_y_descarga_csv(self):
+        body, script = html_body(), javascript()
+        self.assertIn('id="datos"', body)
+        self.assertIn('id="data-table-body"', body)
+        self.assertIn('id="download-csv"', body)
+        self.assertIn("download: 'irpm_serie.csv'", script)
+        self.assertIn('Última observación:', script)
