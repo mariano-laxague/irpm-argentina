@@ -86,6 +86,8 @@ Cubre pesos, orientación de señales, baseline, faltantes, splits y pagos mecá
 
 El workflow de GitHub Actions ejecuta el lock, `pip check`, la suite y una generación del dashboard con datos fixture en cada push y pull request.
 
+El generador conserva datos y composición en `src/dashboard/generate_dashboard.py`; las plantillas estáticas de HTML, CSS y JavaScript viven en `src/dashboard/templates.py`. La refactorización se verificó regenerando un HTML con el mismo SHA-256.
+
 ---
 
 *Desarrollado por Mariano Laxague. Publicación personal; no representa la opinión de ninguna institución y no constituye asesoramiento financiero.*
