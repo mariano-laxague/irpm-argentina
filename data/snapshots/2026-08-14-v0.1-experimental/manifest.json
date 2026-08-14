@@ -1,0 +1,44 @@
+{
+  "snapshot_version": "v0.1-experimental",
+  "generated_at_utc": "2026-08-14T13:18:10.640904+00:00",
+  "code_ref": "v0.1-experimental-20260814",
+  "source_database": "data/iep.db",
+  "files": {
+    "raw_prices.csv": {
+      "sha256": "14ec64b8e8bb1a7be5bbdcbeb9664c418b30f756889e82275e41518766616819",
+      "rows": 44527
+    },
+    "iep_diario.csv": {
+      "sha256": "fb591ff2b44fb66a46538d21396fa98566f4e51c9fefab3c43c63dc84c31ef8f",
+      "rows": 7254
+    },
+    "iep_composicion.csv": {
+      "sha256": "7dadfb8ffb8dc2db800c0d592dd0a277c32d02e3400d633124fe47922223682d",
+      "rows": 7254
+    },
+    "iep_ajustes_extraordinarios.csv": {
+      "sha256": "3c06d06e2f7191f4bffe18e28ccd2127466fe56ea3d6135a5390ac2b968eb9fd",
+      "rows": 3
+    },
+    "iep_ajustes_aplicados.csv": {
+      "sha256": "c8dc003329f84ad5721dbfdbce38ea1e01f715af0044dd8e57794e6298b69de6",
+      "rows": 22
+    },
+    "inputs\\utdt_icg.csv": {
+      "sha256": "63eec94eb395f4f85a40d923a2913ebd180e156f3e2c3ae3fb797271bca19f32",
+      "rows": null
+    },
+    "inputs\\utdt_icc.csv": {
+      "sha256": "f2ef544b2efaca3cd55cf0aadc1c3bb8cd158d4032955b70a3d9f0c2a67edb30",
+      "rows": null
+    },
+    "inputs\\rem.csv": {
+      "sha256": "f63d43dd5b74d2231ad435b8e7607867ad9b5ff458c50bf3fafdede64b307202",
+      "rows": null
+    },
+    "inputs\\rem_icm.csv": {
+      "sha256": "610afb93ca777ccaaba7ba3fd564856a2db30147accd5bc63dd53ef44c246fb1",
+      "rows": null
+    }
+  }
+}

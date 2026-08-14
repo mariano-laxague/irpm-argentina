@@ -113,7 +113,7 @@ Hasta cerrar los gates de este plan, el IRPM debe presentarse como **producto ex
 | P4.3 | Añadir tests | Suite de cálculo, datos y regresión | Fórmulas, signos, missingness, splits, pagos y baseline cubiertos | ✅ Completado 14/08 — 10 pruebas deterministas sin DB ni APIs |
 | P4.4 | Añadir CI | Workflow read-only | Tests y generación del dashboard pasan en cada commit | ✅ Completado 14/08 — GitHub Actions Windows/Python 3.12 |
 | P4.5 | Modularizar dashboard | Templates/CSS/JS separados o arquitectura equivalente | Se reduce el generador monolítico sin cambiar output | ✅ Completado 14/08 — 2.263→465 líneas, SHA-256 sin cambios |
-| P4.6 | Crear snapshot reproducible | CSV + manifest + hashes | Una release puede recalcularse sin depender del DB vivo | ⬜ Pendiente |
+| P4.6 | Crear snapshot reproducible | CSV + manifest + hashes | Una release puede recalcularse sin depender del DB vivo | ✅ Completado 14/08 — corte versionado, hashes verificados y restauración probada |
 
 ### P5 — Operación y releases
 
@@ -219,4 +219,4 @@ Cada sesión debe:
 4. Actualizar el estado del ID y `tasks/lessons.md` si aparece una regla durable.
 5. No abrir tareas de distribución mientras exista un gate bloqueante.
 
-**Próximo trabajo recomendado:** P4.6 — crear snapshot reproducible con CSV, manifest y hashes de una release.
+**Próximo trabajo recomendado:** P5.1 — configurar y probar el watchdog externo del scheduler.

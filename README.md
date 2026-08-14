@@ -60,6 +60,7 @@ La automatización está diseñada para ejecutarse en días hábiles mediante Wi
 
 - [`docs/metodologia_publica.md`](docs/metodologia_publica.md): explicación pública vigente.
 - [`docs/MARCO_VALIDACION_Y_GOBERNANZA.md`](docs/MARCO_VALIDACION_Y_GOBERNANZA.md): niveles de evidencia, protocolos y releases.
+- [`docs/SNAPSHOT_REPRODUCIBLE.md`](docs/SNAPSHOT_REPRODUCIBLE.md): corte de datos, hashes y restauración independiente de una release.
 - [`CONTEXTO.md`](CONTEXTO.md): arquitectura técnica, decisiones y log de desarrollo.
 - [`PLAN_ACCION.md`](PLAN_ACCION.md): hoja de ruta operativa vigente.
 
@@ -72,7 +73,7 @@ La automatización está diseñada para ejecutarse en días hábiles mediante Wi
 3. Usá Python 3.12 (ver `.python-version`) e instalá el entorno bloqueado: `python -m pip install -r requirements.lock`.
 4. Ejecutá `python -m pip check` y luego `python src/pipeline/update_daily.py`.
 
-Las rutas de base de datos y backups son relativas a la raíz del repositorio. El pipeline requiere una base existente para una corrida diaria; la construcción del snapshot reproducible es un gate pendiente de la release.
+Las rutas de base de datos y backups son relativas a la raíz del repositorio. El pipeline requiere una base existente para una corrida diaria. Cada release trazable debe incluir un snapshot versionado; ver [`docs/SNAPSHOT_REPRODUCIBLE.md`](docs/SNAPSHOT_REPRODUCIBLE.md).
 
 ## Pruebas
 
