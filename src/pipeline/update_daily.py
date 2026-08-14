@@ -40,9 +40,11 @@ from pathlib import Path
 ROOT    = Path(__file__).parent.parent.parent
 LOG_DIR = ROOT / "logs"
 LOG_DIR.mkdir(exist_ok=True)
+DEPLOY_STATUS = LOG_DIR / "deploy_status.json"
 
 sys.path.insert(0, str(ROOT))
 from src.config import CFG
+from src.pipeline.deploy_observability import alert_if_configured, write_status
 
 DRY = "--dry" in sys.argv
 
@@ -172,16 +174,28 @@ def main():
     print(f"  Dashboard: outputs/dashboard.html")
     print(f"{'='*60}\n")
 
-    deploy_github(ROOT)
-    sys.exit(0)
+    deploy_ok = deploy_github(ROOT)
+    sys.exit(0 if deploy_ok else 2)
 
 
-def deploy_github(root: Path) -> None:
-    """Pushea docs/index.html a GitHub Pages. Falla silenciosamente para no romper el pipeline."""
+def deploy_github(root: Path) -> bool:
+    """Publica y prueba Pages; el fallo queda separado del cálculo exitoso."""
+    def failed(detail: str) -> bool:
+        result = write_status(DEPLOY_STATUS, "FAILED", detail)
+        print(f"  [deploy] FAILED — {detail}")
+        try:
+            delivered = alert_if_configured(result)
+            if delivered:
+                print(f"  [deploy] {delivered}")
+            else:
+                print("  [deploy] sin webhook configurado para alertar")
+        except RuntimeError as error:
+            print(f"  [deploy] alerta no entregada: {error}")
+        return False
+
     docs_index = root / "docs" / "index.html"
     if not docs_index.exists():
-        print("  [deploy] docs/index.html no encontrado — skip")
-        return
+        return failed("docs/index.html no encontrado")
 
     today = datetime.now().strftime("%Y-%m-%d")
     cmds = [
@@ -194,17 +208,21 @@ def deploy_github(root: Path) -> None:
         if r.returncode != 0:
             out = r.stdout + r.stderr
             if "nothing to commit" in out:
-                print("  [deploy] sin cambios — skip push")
-                return
-            print(f"  [deploy] warning: {r.stderr.strip()[:120]}")
-            return
-    print(f"  [deploy] GitHub Pages actualizado — {today}")
+                print("  [deploy] sin cambios — se verifica Pages existente")
+                break
+            return failed(f"{' '.join(cmd)}: {r.stderr.strip()[:300]}")
+    else:
+        print(f"  [deploy] GitHub Pages actualizado — {today}")
+
     probe = subprocess.run(
         [sys.executable, str(root / "src" / "pipeline" / "verify_public_deploy.py")],
         cwd=root,
     )
     if probe.returncode != 0:
-        print("  [deploy] warning: GitHub Pages aún no refleja el build local")
+        return failed("GitHub Pages no refleja el build local")
+    write_status(DEPLOY_STATUS, "OK", "GitHub Pages coincide con el build local")
+    print("  [deploy] OK — GitHub Pages verificado")
+    return True
 
 
 if __name__ == "__main__":

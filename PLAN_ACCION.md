@@ -123,7 +123,7 @@ Hasta cerrar los gates de este plan, el IRPM debe presentarse como **producto ex
 |---|---|---|---|---|
 | P5.1 | Crear watchdog externo | Monitor independiente | Alerta si no hay run o publicación antes de la hora límite | 🟡 Implementado 14/08 — falta registrar la tarea y configurar/probar el webhook externo |
 | P5.2 | Verificar deploy público | Probe posterior al push | Fecha/commit visible en web coincide con build local | 🟡 Implementado 14/08 — pendiente primera publicación y verificación contra Pages |
-| P5.3 | No silenciar fallos de deploy | Estado separado pipeline/deploy | El cálculo puede quedar OK, pero publicación figura FAILED y alerta | ⬜ Pendiente |
+| P5.3 | No silenciar fallos de deploy | Estado separado pipeline/deploy | El cálculo puede quedar OK, pero publicación figura FAILED y alerta | 🟡 Implementado 14/08 — falta configurar/probar el webhook externo |
 | P5.4 | Formalizar release | Checklist y changelog | Release incluye código, docs, datos, tests y evidencia UX | ⬜ Pendiente |
 | P5.5 | Ensayar recuperación | Restore desde backup | Simulación documentada recupera DB y dashboard | ⬜ Pendiente |
 

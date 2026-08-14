@@ -23,6 +23,6 @@ python src/pipeline/verify_public_deploy.py `
   --manifest-url https://marianolaxague-crypto.github.io/irpm-argentina/deploy_manifest.json
 ```
 
-P5.3 debe convertir un fallo del probe en estado de deploy separado y alerta
-externa; P5.2 sólo prueba que el artefacto público coincida con el build que se
-intentó publicar.
+P5.3 persiste un fallo del probe como estado `FAILED` separado y reutiliza el
+webhook operativo para alertar. P5.2 prueba que el artefacto público coincida
+con el build que se intentó publicar.

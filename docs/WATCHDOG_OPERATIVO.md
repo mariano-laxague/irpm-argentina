@@ -29,6 +29,10 @@ Sin esa variable el monitor igual genera estado y código de salida no cero,
 pero no hay entrega externa: P5.1 no debe considerarse operativamente cerrado
 hasta configurar y comprobar ese destino.
 
+El mismo webhook recibe también los fallos de deploy. El estado de esa etapa se
+persiste de forma independiente en `logs/deploy_status.json`; así una corrida
+puede haber calculado correctamente y, aun así, declarar `FAILED` al publicar.
+
 ## Prueba controlada
 
 ```powershell
