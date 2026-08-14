@@ -373,7 +373,7 @@ Estas cifras son hipótesis comerciales históricas, no forecast validado. Toda 
 | Validación post hoc | Preregistro, episodios no solapados, benchmark nulo y holdout |
 | Dependencia de un scheduler local | Watchdog externo y probe posterior al deploy |
 | Divergencia código/dashboard/metodología | Release única con commit, manifest, snapshot y changelog |
-| Reproducibilidad insuficiente | Config de ejemplo, tests y lock Python 3.12 implementados; CI pendiente (P4.4) |
+| Reproducibilidad insuficiente | Config de ejemplo, tests, lock Python 3.12 y CI read-only implementados |
 | UX mobile/accesibilidad no verificada | Breakpoints, semántica, teclado, alternativa textual y QA visual |
 
 ---

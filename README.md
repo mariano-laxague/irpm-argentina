@@ -82,7 +82,9 @@ La suite determinista no toca la DB ni requiere credenciales. Desde la raíz del
 python -m unittest discover -s tests -v
 ```
 
-Cubre pesos, orientación de señales, baseline, faltantes, splits y pagos mecánicos. La política definitiva ante faltantes de componentes sigue abierta en P2.1–P2.3.
+Cubre pesos, orientación de señales, baseline, faltantes, splits y pagos mecánicos. La política de faltantes exige composición completa o estado degradado explícito.
+
+El workflow de GitHub Actions ejecuta el lock, `pip check`, la suite y una generación del dashboard con datos fixture en cada push y pull request.
 
 ---
 

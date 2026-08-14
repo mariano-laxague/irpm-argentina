@@ -6,15 +6,16 @@ Uso: python src/dashboard/generate_dashboard.py
 
 import calendar
 import json
+import os
 import sqlite3
 from pathlib import Path
 
 import pandas as pd
 
 ROOT    = Path(__file__).parent.parent.parent
-DB_PATH = ROOT / "data" / "iep.db"
-OUTPUT      = ROOT / "outputs" / "dashboard.html"
-DOCS_OUTPUT = ROOT / "docs" / "index.html"
+DB_PATH = Path(os.environ.get("IRPM_DB_PATH", ROOT / "data" / "iep.db"))
+OUTPUT = Path(os.environ.get("IRPM_DASHBOARD_OUTPUT", ROOT / "outputs" / "dashboard.html"))
+DOCS_OUTPUT = Path(os.environ.get("IRPM_DASHBOARD_DOCS_OUTPUT", ROOT / "docs" / "index.html"))
 
 UTDT_ICG_PATH = ROOT / "data" / "utdt_icg.csv"
 UTDT_ICC_PATH = ROOT / "data" / "utdt_icc.csv"
