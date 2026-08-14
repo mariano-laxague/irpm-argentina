@@ -449,6 +449,25 @@ html, body {
   font-size: 10px;
   color: #a8a29e;
 }
+.chart-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -8px 0 12px;
+}
+.chart-control-label { font-size: 11px; color: #78716c; }
+.chart-toggle {
+  border: 1px solid #d6cfc4;
+  border-radius: 999px;
+  background: #fff;
+  color: #57534e;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  padding: 5px 9px;
+}
+.chart-toggle.active { background: #f4e9dc; border-color: #b45309; color: #92400e; font-weight: 600; }
+.chart-toggle:focus-visible { outline: 3px solid rgba(180,83,9,.35); outline-offset: 2px; }
 .impact-pos { color: #15803d; }
 .impact-neg { color: #b91c1c; }
 
@@ -651,6 +670,11 @@ def html_body():
       <div class="range-handle" id="range-handle-right" data-side="right"></div>
     </div>
     <div class="range-labels" id="range-labels"></div>
+  </div>
+  <div class="chart-controls" aria-label="Series del gráfico">
+    <span class="chart-control-label">Series:</span>
+    <button class="chart-toggle active" id="smooth-toggle" type="button" aria-pressed="true">Suavizado</button>
+    <button class="chart-toggle" id="adj-toggle" type="button" aria-pressed="false">Ajuste VIX</button>
   </div>
 
   <!-- CHART — dominant element -->
@@ -1782,11 +1806,13 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('smooth-toggle')?.addEventListener('click', function() {
     showSmooth = !showSmooth;
     this.classList.toggle('active', showSmooth);
+    this.setAttribute('aria-pressed', String(showSmooth));
     if (iepChart) refreshAll();
   });
   document.getElementById('adj-toggle')?.addEventListener('click', function() {
     showAdj = !showAdj;
     this.classList.toggle('active', showAdj);
+    this.setAttribute('aria-pressed', String(showAdj));
     if (iepChart) refreshAll();
   });
   // No popup-close listener needed
