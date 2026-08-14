@@ -73,6 +73,16 @@ La automatización está diseñada para ejecutarse en días hábiles mediante Wi
 
 Las rutas de base de datos y backups son relativas a la raíz del repositorio. El pipeline requiere una base existente para una corrida diaria; la construcción del snapshot reproducible es un gate pendiente de la release.
 
+## Pruebas
+
+La suite determinista no toca la DB ni requiere credenciales. Desde la raíz del repositorio:
+
+```powershell
+python -m unittest discover -s tests -v
+```
+
+Cubre pesos, orientación de señales, baseline, faltantes, splits y pagos mecánicos. La política definitiva ante faltantes de componentes sigue abierta en P2.1–P2.3.
+
 ---
 
 *Desarrollado por Mariano Laxague. Publicación personal; no representa la opinión de ninguna institución y no constituye asesoramiento financiero.*
