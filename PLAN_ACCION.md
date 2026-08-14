@@ -86,6 +86,7 @@ Hasta cerrar los gates de este plan, el IRPM debe presentarse como **producto ex
 | P2.3 | Registrar composición por observación | Campos/tabla de metadata | Cada fecha expone versión, componentes disponibles, fechas y pesos efectivos | ✅ Completado 14/08 — tabla `iep_composicion` |
 | P2.4 | Auditar seis fechas sin EMBI | Informe de impacto | Serie corregida o excepción documentada con delta cuantificado | ✅ Completado 14/08 — `docs/AUDITORIA_COMPLETITUD_20260814.md` |
 | P2.5 | Versionar ajustes extraordinarios | Registro de splits, pagos y backfills | Toda corrección histórica tiene razón, fecha y test de regresión | ✅ Completado 14/08 — tablas `iep_ajustes_*` y `docs/REGISTRO_AJUSTES.md` |
+| P2.6 | Diseñar backcast histórico comparable | Contrato de inputs, transiciones y validaciones | No se empalma una serie histórica sin cobertura, procedencia y reglas de continuidad | 🟡 Diseño completado 14/08 — `docs/CONTRATO_BACKCAST_HISTORICO.md`; adquisición y auditoría pendientes |
 
 ### P3 — Validación metodológica
 
