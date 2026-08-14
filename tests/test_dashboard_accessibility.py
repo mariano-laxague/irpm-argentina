@@ -25,7 +25,7 @@ class TestDashboardAccessibility(unittest.TestCase):
         styles = css()
         self.assertIn('.sr-only', styles)
         self.assertIn('.skip-link:focus', styles)
-        self.assertIn('.chart-toggle:focus-visible', styles)
+        self.assertIn('.range-handle:focus-visible', styles)
 
     def test_scroll_principal_es_nativo_y_no_usa_slides_obligatorios(self):
         styles = css()
@@ -46,3 +46,10 @@ class TestDashboardAccessibility(unittest.TestCase):
         self.assertIn('id="download-csv"', body)
         self.assertIn("download: 'irpm_serie.csv'", script)
         self.assertIn('Última observación:', script)
+
+    def test_publica_una_unica_serie_irpm_y_retira_proxy_embi(self):
+        body, script = html_body(), javascript()
+        self.assertNotIn('smooth-toggle', body)
+        self.assertNotIn('adj-toggle', body)
+        self.assertIn("label: 'IRPM'", script)
+        self.assertIn('id="retired-comparativa"', body)

@@ -461,31 +461,13 @@ html, body {
   box-shadow: 0 0 0 4px rgba(180,83,9,0.15);
   cursor: grabbing;
 }
+.range-handle:focus-visible { outline: 3px solid rgba(180,83,9,.35); outline-offset: 3px; }
 .range-labels {
   display: flex;
   justify-content: space-between;
   font-size: 10px;
   color: #a8a29e;
 }
-.chart-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: -8px 0 12px;
-}
-.chart-control-label { font-size: 11px; color: #78716c; }
-.chart-toggle {
-  border: 1px solid #d6cfc4;
-  border-radius: 999px;
-  background: #fff;
-  color: #57534e;
-  cursor: pointer;
-  font: inherit;
-  font-size: 11px;
-  padding: 5px 9px;
-}
-.chart-toggle.active { background: #f4e9dc; border-color: #b45309; color: #92400e; font-weight: 600; }
-.chart-toggle:focus-visible { outline: 3px solid rgba(180,83,9,.35); outline-offset: 2px; }
 .data-section {
   min-height: calc(100vh - 54px); padding: 44px 40px 24px; overflow: visible; background: #faf7f2;
 }
@@ -544,28 +526,6 @@ html, body {
 .div-period { font-size: 10px; color: #a8a29e; }
 .div-vals { font-size: 10px; color: #78716c; }
 .div-gap { font-size: 11px; font-weight: 600; }
-
-/* === COMPARATIVA SECTION (mirrors .chart-section) === */
-.comp-section {
-  padding: 0 40px 16px;
-  min-height: calc(100vh - 54px);
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  overflow: visible;
-}
-.comp-chart-wrap { position: relative; flex: 1; min-height: 0; }
-.comp-legend {
-  display: flex; gap: 24px; flex-wrap: wrap;
-  flex-shrink: 0; margin-bottom: 8px;
-}
-.comp-leg-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #78716c; }
-.comp-leg-dot { width: 28px; height: 3px; border-radius: 2px; }
-.comp-note {
-  flex-shrink: 0; font-size: 11px; color: #a8a29e;
-  margin-top: 6px; font-style: italic;
-}
 
 /* === METHODOLOGY SECTION === */
 .met-section {
@@ -724,12 +684,6 @@ html, body {
     </div>
     <div class="range-labels" id="range-labels" aria-live="polite"></div>
   </div>
-  <div class="chart-controls" aria-label="Series del gráfico">
-    <span class="chart-control-label">Series:</span>
-    <button class="chart-toggle active" id="smooth-toggle" type="button" aria-pressed="true">Suavizado</button>
-    <button class="chart-toggle" id="adj-toggle" type="button" aria-pressed="false">Ajuste VIX</button>
-  </div>
-
   <!-- CHART — dominant element -->
   <div class="chart-wrap" style="position:relative;flex:1;min-height:0;">
     <canvas id="iepChart"></canvas>
@@ -756,8 +710,8 @@ html, body {
     </div>
     <div class="data-table-wrap">
       <table class="data-table">
-        <caption class="sr-only">Últimas diez observaciones de IRPM y series auxiliares</caption>
-        <thead><tr><th>Fecha</th><th>IRPM</th><th>Suavizado</th><th>Ajuste VIX</th></tr></thead>
+        <caption class="sr-only">Últimas diez observaciones del IRPM</caption>
+        <thead><tr><th>Fecha</th><th>IRPM</th></tr></thead>
         <tbody id="data-table-body"></tbody>
       </table>
     </div>
@@ -795,7 +749,7 @@ html, body {
   </div>
 </section>
 
-<section class="comp-section slide" id="comparativa">
+<template id="retired-comparativa">
   <div class="chart-header">
     <div>
       <div class="section-eyebrow">Comparativa histórica</div>
@@ -818,7 +772,7 @@ html, body {
     Proxy = 100 × (EMBI inicio de gestión / EMBI mes N). Mayor valor = mayor confianza del mercado en el programa político.
     Legislativas: Macri oct 2017 · Alberto nov 2021 · Milei oct 2025.
   </div>
-</section>
+</template>
 
 <section class="met-section slide" id="metodologia">
   <div class="met-inner">
@@ -898,8 +852,6 @@ let divChart           = null;
 let currentZoom        = null;
 let currentDivZoom     = null;
 let showDots           = true;
-let showSmooth         = true;
-let showAdj            = false;
 let currentBaseline    = null;
 let currentGranularity = 'daily';
 let selectedEvent      = null;
@@ -1219,20 +1171,6 @@ function initChart() {
           pointRadius: 0, tension: 0.12,
           fill: false, spanGaps: false, order: 1,
         },
-        {
-          label: 'IRPM ajustado VIX',
-          data: init.map(d => d.a),
-          borderColor: '#a8a29e', borderWidth: 1.5, borderDash: [5, 4],
-          pointRadius: 0, tension: 0.12,
-          fill: false, spanGaps: false, order: 2, hidden: true,
-        },
-        {
-          label: 'IRPM suavizado',
-          data: init.map(d => d.s),
-          borderColor: '#d6cfc4', borderWidth: 1.5, borderDash: [3, 3],
-          pointRadius: 0, tension: 0.12,
-          fill: false, spanGaps: false, order: 1, hidden: false,
-        },
       ],
     },
     options: {
@@ -1260,9 +1198,7 @@ function initChart() {
             label: ctx => {
               const v = ctx.parsed.y;
               if (v == null) return null;
-              const prefix = ctx.dataset.label === 'IRPM ajustado VIX' ? ' +VIX adj.: ' :
-                             ctx.dataset.label === 'IRPM suavizado'    ? ' Suavizado: ' : ' IRPM: ';
-              return prefix + v.toFixed(1);
+              return ' IRPM: ' + v.toFixed(1);
             },
           },
         },
@@ -1348,12 +1284,7 @@ function refreshAll() {
 
   iepChart.data.labels           = disp.map(d => d.d);
   iepChart.data.datasets[0].data = disp.map(d => d.v);
-  iepChart.data.datasets[1].data = disp.map(d => d.a);
-  iepChart.data.datasets[2].data = disp.map(d => d.s);
   iepChart.options.plugins.annotation.annotations = buildAnnotations(disp, true);
-
-  iepChart.setDatasetVisibility(1, showAdj);
-  iepChart.setDatasetVisibility(2, showSmooth);
 
   iepChart.update('none');
 }
@@ -1891,23 +1822,9 @@ document.addEventListener('DOMContentLoaded', function() {
   updateHero();
   initChart();
   initDivChart();
-  initCompChart();
   buildEventsNav();
   initDataAlternative();
   // initRangeSelector is called inside initChart() after chart is created
-
-  document.getElementById('smooth-toggle')?.addEventListener('click', function() {
-    showSmooth = !showSmooth;
-    this.classList.toggle('active', showSmooth);
-    this.setAttribute('aria-pressed', String(showSmooth));
-    if (iepChart) refreshAll();
-  });
-  document.getElementById('adj-toggle')?.addEventListener('click', function() {
-    showAdj = !showAdj;
-    this.classList.toggle('active', showAdj);
-    this.setAttribute('aria-pressed', String(showAdj));
-    if (iepChart) refreshAll();
-  });
   // No popup-close listener needed
 });
 
@@ -1916,14 +1833,11 @@ function initDataAlternative() {
   const summary = document.getElementById('data-summary');
   const body = document.getElementById('data-table-body');
   if (!latest || !summary || !body) return;
-  summary.textContent = `Última observación: ${latest.d}. IRPM ${latest.v.toFixed(1)}; ` +
-    `suavizado ${latest.s == null ? 'no disponible' : latest.s.toFixed(1)}; ` +
-    `ajuste VIX ${latest.a == null ? 'no disponible' : latest.a.toFixed(1)}.`;
-  body.innerHTML = ALL_DATA.slice(-10).reverse().map(d => `<tr><td>${d.d}</td><td>${d.v.toFixed(1)}</td>` +
-    `<td>${d.s == null ? '—' : d.s.toFixed(1)}</td><td>${d.a == null ? '—' : d.a.toFixed(1)}</td></tr>`).join('');
+  summary.textContent = `Última observación: ${latest.d}. IRPM ${latest.v.toFixed(1)}.`;
+  body.innerHTML = ALL_DATA.slice(-10).reverse().map(d =>
+    `<tr><td>${d.d}</td><td>${d.v.toFixed(1)}</td></tr>`).join('');
   document.getElementById('download-csv')?.addEventListener('click', () => {
-    const rows = ['fecha,irpm,suavizado,ajuste_vix', ...ALL_DATA.map(d =>
-      [d.d, d.v, d.s ?? '', d.a ?? ''].join(','))];
+    const rows = ['fecha,irpm', ...ALL_DATA.map(d => [d.d, d.v].join(','))];
     const url = URL.createObjectURL(new Blob([rows.join('\n') + '\n'], {type: 'text/csv;charset=utf-8'}));
     const link = Object.assign(document.createElement('a'), {href: url, download: 'irpm_serie.csv'});
     link.click(); URL.revokeObjectURL(url);
