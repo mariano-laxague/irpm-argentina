@@ -37,6 +37,16 @@ html, body {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
+.skip-link {
+  position: absolute; left: 12px; top: -48px; z-index: 200;
+  background: #fff; color: #1c1917; padding: 8px 12px; border-radius: 6px;
+  font-size: 13px; font-weight: 600; text-decoration: none;
+}
+.skip-link:focus { top: 8px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
 .slide {
   height: 100%;
   scroll-snap-align: start;
@@ -445,6 +455,7 @@ html, body {
   cursor: grab;
   transition: box-shadow .12s;
   z-index: 2;
+  padding: 0;
 }
 .range-handle:hover, .range-handle.dragging {
   box-shadow: 0 0 0 4px rgba(180,83,9,0.15);
@@ -616,7 +627,8 @@ html, body {
 <body>
 <div id="page-wrap">
 
-<nav class="site-nav">
+<a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+<nav class="site-nav" aria-label="Navegación principal">
   <a href="#" class="nav-brand">
     <span>IRPM<b>.</b></span>
     <span class="nav-brand-sub">&#205;ndice de Riesgo Pol&#237;tico del Mercado</span>
@@ -628,6 +640,8 @@ html, body {
     <a href="https://elindice.substack.com" target="_blank" class="nav-cta">Newsletter &#8594;</a>
   </div>
 </nav>
+<main id="main-content">
+<h1 class="sr-only">IRPM: Índice de Riesgo Político del Mercado</h1>
 <div id="slides-container">
 <section class="what-section slide">
   <div class="what-card">
@@ -686,10 +700,12 @@ html, body {
   <div class="range-selector-wrap">
     <div class="range-track" id="range-track">
       <div class="range-fill" id="range-fill"></div>
-      <div class="range-handle" id="range-handle-left" data-side="left"></div>
-      <div class="range-handle" id="range-handle-right" data-side="right"></div>
+      <button class="range-handle" id="range-handle-left" data-side="left" type="button"
+        role="slider" aria-label="Inicio del período" aria-valuemin="0" aria-valuemax="100"></button>
+      <button class="range-handle" id="range-handle-right" data-side="right" type="button"
+        role="slider" aria-label="Fin del período" aria-valuemin="0" aria-valuemax="100"></button>
     </div>
-    <div class="range-labels" id="range-labels"></div>
+    <div class="range-labels" id="range-labels" aria-live="polite"></div>
   </div>
   <div class="chart-controls" aria-label="Series del gráfico">
     <span class="chart-control-label">Series:</span>
@@ -822,6 +838,7 @@ html, body {
   </div>
 </section>
 </div>
+</main>
 
 <footer class="site-footer">
   <div class="footer-left">Elaborado por <strong>Mariano Laxague</strong> &#183; <a href="https://elindice.substack.com" target="_blank" style="color:#b45309;text-decoration:none">El Índice</a></div>
@@ -1323,6 +1340,13 @@ function initRangeSelector() {
     hRight.style.left = (rangeRight * 100) + '%';
     fill.style.left   = (rangeLeft  * 100) + '%';
     fill.style.width  = ((rangeRight - rangeLeft) * 100) + '%';
+    const lastIdx = ALL_DATA.length - 1;
+    const leftDatum = ALL_DATA[Math.round(rangeLeft * lastIdx)];
+    const rightDatum = ALL_DATA[Math.round(rangeRight * lastIdx)];
+    hLeft.setAttribute('aria-valuenow', String(Math.round(rangeLeft * 100)));
+    hRight.setAttribute('aria-valuenow', String(Math.round(rangeRight * 100)));
+    hLeft.setAttribute('aria-valuetext', leftDatum ? leftDatum.d : '');
+    hRight.setAttribute('aria-valuetext', rightDatum ? rightDatum.d : '');
   }
 
   function applyRange() {
@@ -1374,6 +1398,22 @@ function initRangeSelector() {
   hRight.addEventListener('mousedown', (e) => { e.preventDefault(); dragging = 'right'; hRight.classList.add('dragging'); });
   hLeft.addEventListener('touchstart',  () => { dragging = 'left';  }, { passive: true });
   hRight.addEventListener('touchstart', () => { dragging = 'right'; }, { passive: true });
+
+  function onKeydown(event, side) {
+    const step = event.shiftKey ? 0.10 : 0.02;
+    let next = side === 'left' ? rangeLeft : rangeRight;
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') next -= step;
+    else if (event.key === 'ArrowRight' || event.key === 'ArrowUp') next += step;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = 1;
+    else return;
+    event.preventDefault();
+    if (side === 'left') rangeLeft = Math.max(0, Math.min(next, rangeRight - 0.05));
+    else rangeRight = Math.min(1, Math.max(next, rangeLeft + 0.05));
+    applyRange();
+  }
+  hLeft.addEventListener('keydown', event => onKeydown(event, 'left'));
+  hRight.addEventListener('keydown', event => onKeydown(event, 'right'));
 
   document.addEventListener('mousemove', onMove);
   document.addEventListener('touchmove', onMove, { passive: true });
