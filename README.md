@@ -65,6 +65,7 @@ La automatización está diseñada para ejecutarse en días hábiles mediante Wi
 - [`docs/VERIFICACION_DEPLOY.md`](docs/VERIFICACION_DEPLOY.md): manifest y probe del artefacto servido por GitHub Pages.
 - [`docs/CHECKLIST_RELEASE.md`](docs/CHECKLIST_RELEASE.md): condiciones mínimas para etiquetar y publicar una release.
 - [`docs/RECUPERACION.md`](docs/RECUPERACION.md): restauración segura y ensayo desde un backup SQLite.
+- [`docs/JOURNEYS_PRODUCTO.md`](docs/JOURNEYS_PRODUCTO.md): recorridos prioritarios para lectura, análisis y auditoría.
 - [`CONTEXTO.md`](CONTEXTO.md): arquitectura técnica, decisiones y log de desarrollo.
 - [`PLAN_ACCION.md`](PLAN_ACCION.md): hoja de ruta operativa vigente.
 

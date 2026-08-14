@@ -133,7 +133,7 @@ Hasta cerrar los gates de este plan, el IRPM debe presentarse como **producto ex
 
 | ID | Acción | Entregable | Criterio de aceptación | Estado |
 |---|---|---|---|---|
-| P6.1 | Definir journeys prioritarios | Mapa de tareas | Lectura rápida, explicación del movimiento y auditoría metodológica cubiertas | ⬜ Pendiente |
+| P6.1 | Definir journeys prioritarios | Mapa de tareas | Lectura rápida, explicación del movimiento y auditoría metodológica cubiertas | ✅ Completado 14/08 — J1 lectura, J2 explicación y J3 auditoría definidos |
 | P6.2 | Recuperar controles analíticos necesarios | Dashboard | Período, series y contexto VIX accesibles sin saturar la portada | ⬜ Pendiente |
 | P6.3 | Implementar responsive | CSS y pruebas | 360, 390, 768, 1280 y 1440 px sin recortes ni scroll bloqueado | ⬜ Pendiente |
 | P6.4 | Implementar semántica y teclado | HTML/JS | `h1`, `main`, labels, ARIA, foco y range operable por teclado | ⬜ Pendiente |
