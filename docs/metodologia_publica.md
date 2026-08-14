@@ -15,6 +15,8 @@ El índice observa posicionamiento de mercado, no preferencias declaradas. Esto 
 
 El IRPM está anclado en 100 el 11 de diciembre de 2023. Valores superiores indican que el compuesto de señales se encuentra en condiciones más favorables que en esa fecha; valores inferiores indican condiciones menos favorables. El 100 es una convención de lectura. Los puntos del índice no son porcentajes ni probabilidades.
 
+La cobertura completa observada comienza el 20 de abril de 2022. No se publican comparaciones entre gobiernos mediante proxies rebased: el criterio y el plan para una reconstrucción histórica están en [`CONTRATO_BACKCAST_HISTORICO.md`](CONTRATO_BACKCAST_HISTORICO.md), y las decisiones de producto vigentes en [`DECISIONES_PRODUCTO_Y_HISTORIA_20260814.md`](DECISIONES_PRODUCTO_Y_HISTORIA_20260814.md).
+
 ## Cómo se construye
 
 ### Capa 1 — Señal cambiaria (35%)

@@ -135,7 +135,7 @@ Hasta cerrar los gates de este plan, el IRPM debe presentarse como **producto ex
 | ID | Acción | Entregable | Criterio de aceptación | Estado |
 |---|---|---|---|---|
 | P6.1 | Definir journeys prioritarios | Mapa de tareas | Lectura rápida, explicación del movimiento y auditoría metodológica cubiertas | ✅ Completado 14/08 — J1 lectura, J2 explicación y J3 auditoría definidos |
-| P6.2 | Recuperar controles analíticos necesarios | Dashboard | Período, series y contexto VIX accesibles sin saturar la portada | ✅ Completado 14/08 — selector temporal y toggles de series/VIX visibles |
+| P6.2 | Recuperar controles analíticos necesarios | Dashboard | Período accesible; una única serie pública evita modos que contradicen el valor vigente | ✅ Completado 14/08 — selector temporal y serie IRPM única; diagnóstico VIX fuera de la interfaz pública |
 | P6.3 | Implementar responsive | CSS y pruebas | 360, 390, 768, 1280 y 1440 px sin recortes ni scroll bloqueado | 🟡 Implementado 14/08 — breakpoints iniciales capturados; QA completo en P6.6 |
 | P6.4 | Implementar semántica y teclado | HTML/JS | `h1`, `main`, labels, ARIA, foco y range operable por teclado | ✅ Completado 14/08 — landmarks, foco y rango operable con teclado |
 | P6.5 | Añadir alternativa a canvas | Tabla/resumen descargable | Datos y conclusiones principales accesibles sin percepción visual del gráfico | ✅ Completado 14/08 — resumen, tabla y descarga CSV de IRPM |

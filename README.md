@@ -68,6 +68,8 @@ La automatización está diseñada para ejecutarse en días hábiles mediante Wi
 - [`docs/JOURNEYS_PRODUCTO.md`](docs/JOURNEYS_PRODUCTO.md): recorridos prioritarios para lectura, análisis y auditoría.
 - [`docs/QA_RESPONSIVE_20260814.md`](docs/QA_RESPONSIVE_20260814.md): evidencia y límites de la revisión inicial de breakpoints.
 - [`docs/QA_VISUAL_20260814.md`](docs/QA_VISUAL_20260814.md): recorridos inspeccionados y límites del QA visual local.
+- [`docs/DECISIONES_PRODUCTO_Y_HISTORIA_20260814.md`](docs/DECISIONES_PRODUCTO_Y_HISTORIA_20260814.md): serie pública única, retiro de proxies entre gobiernos, cobertura histórica y navegación.
+- [`docs/CONTRATO_BACKCAST_HISTORICO.md`](docs/CONTRATO_BACKCAST_HISTORICO.md): requisitos para reconstruir un IRPM comparable desde 2015.
 - [`CONTEXTO.md`](CONTEXTO.md): arquitectura técnica, decisiones y log de desarrollo.
 - [`PLAN_ACCION.md`](PLAN_ACCION.md): hoja de ruta operativa vigente.
 
