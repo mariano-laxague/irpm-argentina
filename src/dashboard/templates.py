@@ -1301,28 +1301,34 @@ function initRangeSelector() {
   if (!track || !fill || !hLeft || !hRight) return;
 
   function updateVisuals() {
+    // The handles describe the series currently drawn, not the raw data array.
+    // Otherwise a refreshed/filtered chart can show one date span while the
+    // range labels still point at another.
+    const chartLabels = iepChart?.data?.labels || [];
     hLeft.style.left  = (rangeLeft  * 100) + '%';
     hRight.style.left = (rangeRight * 100) + '%';
     fill.style.left   = (rangeLeft  * 100) + '%';
     fill.style.width  = ((rangeRight - rangeLeft) * 100) + '%';
-    const lastIdx = ALL_DATA.length - 1;
-    const leftDatum = ALL_DATA[Math.round(rangeLeft * lastIdx)];
-    const rightDatum = ALL_DATA[Math.round(rangeRight * lastIdx)];
+    const lastIdx = chartLabels.length - 1;
+    const leftDate = chartLabels[Math.round(rangeLeft * lastIdx)];
+    const rightDate = chartLabels[Math.round(rangeRight * lastIdx)];
     hLeft.setAttribute('aria-valuenow', String(Math.round(rangeLeft * 100)));
     hRight.setAttribute('aria-valuenow', String(Math.round(rangeRight * 100)));
-    hLeft.setAttribute('aria-valuetext', leftDatum ? leftDatum.d : '');
-    hRight.setAttribute('aria-valuetext', rightDatum ? rightDatum.d : '');
+    hLeft.setAttribute('aria-valuetext', leftDate || '');
+    hRight.setAttribute('aria-valuetext', rightDate || '');
   }
 
   function applyRange() {
     if (!iepChart) return;
-    const n    = ALL_DATA.length;
+    const chartLabels = iepChart.data.labels || [];
+    const n    = chartLabels.length;
+    if (!n) return;
     const from = Math.floor(rangeLeft  * n);
     const to   = Math.ceil(rangeRight  * n);
-    const slice = ALL_DATA.slice(from, to);
+    const slice = chartLabels.slice(from, to);
     // Update chart x-axis min/max by label
-    iepChart.options.scales['x'].min = slice[0]?.d;
-    iepChart.options.scales['x'].max = slice[slice.length - 1]?.d;
+    iepChart.options.scales['x'].min = slice[0];
+    iepChart.options.scales['x'].max = slice[slice.length - 1];
     iepChart.update('none');
     updateVisuals();
     updateRangeLabels(from, to);
@@ -1330,9 +1336,10 @@ function initRangeSelector() {
 
   function updateRangeLabels(from, to) {
     if (!labels) return;
-    const a = ALL_DATA[from];
-    const b = ALL_DATA[Math.min(to - 1, ALL_DATA.length - 1)];
-    if (a && b) labels.innerHTML = '<span>' + a.d + '</span><span>' + b.d + '</span>';
+    const chartLabels = iepChart?.data?.labels || [];
+    const a = chartLabels[from];
+    const b = chartLabels[Math.min(to - 1, chartLabels.length - 1)];
+    if (a && b) labels.innerHTML = '<span>' + a + '</span><span>' + b + '</span>';
   }
 
   let dragging = null;

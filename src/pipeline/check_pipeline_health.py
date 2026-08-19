@@ -71,6 +71,10 @@ def load_iep_recent(days: int = 10) -> list[dict]:
                c.estado_publicacion, c.motivo_degradacion
         FROM iep_diario d
         LEFT JOIN iep_composicion c USING(fecha)
+        WHERE d.iep_total IS NOT NULL
+          AND d.capa1 IS NOT NULL
+          AND d.capa2 IS NOT NULL
+          AND d.capa3 IS NOT NULL
         ORDER BY d.fecha DESC
         LIMIT ?
     """, (days,))
