@@ -1153,9 +1153,9 @@ const crosshairPlugin = {
 };
 
 // ── IEP Chart ─────────────────────────────────────────────────────────────────
-function initChart() {
-  const init = getDisplayData();
-  rangeData = init;
+function initChart(chartData = getDisplayData(), initializeSelector = true) {
+  const init = chartData;
+  if (!rangeData.length) rangeData = init;
   const ctx  = document.getElementById('iepChart').getContext('2d');
   iepChart = new Chart(ctx, {
     type: 'line',
@@ -1231,7 +1231,7 @@ function initChart() {
       },
     },
   });
-  initRangeSelector();
+  if (initializeSelector) initRangeSelector();
 }
 
 // ── Events navigator strip ───────────────────────────────────────────────────
@@ -1328,12 +1328,11 @@ function initRangeSelector() {
     const from = Math.floor(rangeLeft  * n);
     const to   = Math.ceil(rangeRight  * n);
     const slice = rangeData.slice(from, to);
-    // Slice the dataset itself. Category-scale min/max can retain a stale
-    // category range after updates, leaving the axis out of sync with labels.
-    iepChart.data.labels           = slice.map(d => d.d);
-    iepChart.data.datasets[0].data = slice.map(d => d.v);
-    iepChart.options.plugins.annotation.annotations = buildAnnotations(slice, true);
-    iepChart.update('none');
+    // Chart.js can retain category-scale caches after data mutations. Rebuild
+    // the chart with the selected rows so its axis and line always share the
+    // exact same date array.
+    iepChart.destroy();
+    initChart(slice, false);
     updateVisuals();
     updateRangeLabels(from, to);
   }
