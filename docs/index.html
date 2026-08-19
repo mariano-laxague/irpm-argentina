@@ -1157,6 +1157,7 @@ const crosshairPlugin = {
 // ── IEP Chart ─────────────────────────────────────────────────────────────────
 function initChart() {
   const init = getDisplayData();
+  rangeData = init;
   const ctx  = document.getElementById('iepChart').getContext('2d');
   iepChart = new Chart(ctx, {
     type: 'line',
@@ -1281,10 +1282,15 @@ function renderEventCard(idx) { selectChip(idx); }
 // ── Refresh ────────────────────────────────────────────────────────────────────
 function refreshAll() {
   const disp = getDisplayData();
+  rangeData = disp;
+  rangeLeft = 0.0;
+  rangeRight = 1.0;
 
   iepChart.data.labels           = disp.map(d => d.d);
   iepChart.data.datasets[0].data = disp.map(d => d.v);
   iepChart.options.plugins.annotation.annotations = buildAnnotations(disp, true);
+  delete iepChart.options.scales.x.min;
+  delete iepChart.options.scales.x.max;
 
   iepChart.update('none');
 }
@@ -1293,6 +1299,7 @@ function refreshAll() {
 // Range selector state: 0–1 fractions into ALL_DATA
 let rangeLeft  = 0.0;  // start = beginning of data
 let rangeRight = 1.0;  // end   = most recent
+let rangeData  = [];   // immutable source for the selector; chart data is its visible slice
 
 function initRangeSelector() {
   const track   = document.getElementById('range-track');
@@ -1303,17 +1310,13 @@ function initRangeSelector() {
   if (!track || !fill || !hLeft || !hRight) return;
 
   function updateVisuals() {
-    // The handles describe the series currently drawn, not the raw data array.
-    // Otherwise a refreshed/filtered chart can show one date span while the
-    // range labels still point at another.
-    const chartLabels = iepChart?.data?.labels || [];
+    const lastIdx = rangeData.length - 1;
     hLeft.style.left  = (rangeLeft  * 100) + '%';
     hRight.style.left = (rangeRight * 100) + '%';
     fill.style.left   = (rangeLeft  * 100) + '%';
     fill.style.width  = ((rangeRight - rangeLeft) * 100) + '%';
-    const lastIdx = chartLabels.length - 1;
-    const leftDate = chartLabels[Math.round(rangeLeft * lastIdx)];
-    const rightDate = chartLabels[Math.round(rangeRight * lastIdx)];
+    const leftDate = rangeData[Math.round(rangeLeft * lastIdx)]?.d;
+    const rightDate = rangeData[Math.round(rangeRight * lastIdx)]?.d;
     hLeft.setAttribute('aria-valuenow', String(Math.round(rangeLeft * 100)));
     hRight.setAttribute('aria-valuenow', String(Math.round(rangeRight * 100)));
     hLeft.setAttribute('aria-valuetext', leftDate || '');
@@ -1322,15 +1325,16 @@ function initRangeSelector() {
 
   function applyRange() {
     if (!iepChart) return;
-    const chartLabels = iepChart.data.labels || [];
-    const n    = chartLabels.length;
+    const n    = rangeData.length;
     if (!n) return;
     const from = Math.floor(rangeLeft  * n);
     const to   = Math.ceil(rangeRight  * n);
-    const slice = chartLabels.slice(from, to);
-    // Update chart x-axis min/max by label
-    iepChart.options.scales['x'].min = slice[0];
-    iepChart.options.scales['x'].max = slice[slice.length - 1];
+    const slice = rangeData.slice(from, to);
+    // Slice the dataset itself. Category-scale min/max can retain a stale
+    // category range after updates, leaving the axis out of sync with labels.
+    iepChart.data.labels           = slice.map(d => d.d);
+    iepChart.data.datasets[0].data = slice.map(d => d.v);
+    iepChart.options.plugins.annotation.annotations = buildAnnotations(slice, true);
     iepChart.update('none');
     updateVisuals();
     updateRangeLabels(from, to);
@@ -1338,10 +1342,9 @@ function initRangeSelector() {
 
   function updateRangeLabels(from, to) {
     if (!labels) return;
-    const chartLabels = iepChart?.data?.labels || [];
-    const a = chartLabels[from];
-    const b = chartLabels[Math.min(to - 1, chartLabels.length - 1)];
-    if (a && b) labels.innerHTML = '<span>' + a + '</span><span>' + b + '</span>';
+    const a = rangeData[from];
+    const b = rangeData[Math.min(to - 1, rangeData.length - 1)];
+    if (a && b) labels.innerHTML = '<span>' + a.d + '</span><span>' + b.d + '</span>';
   }
 
   let dragging = null;
@@ -1395,7 +1398,7 @@ function initRangeSelector() {
   document.addEventListener('touchend',  onUp);
 
   // Initial labels
-  updateRangeLabels(0, ALL_DATA.length);
+  updateRangeLabels(0, rangeData.length);
   updateVisuals();
 }
 
