@@ -663,7 +663,7 @@ def html_body():
     </div>
     <div class="chart-hint-bar">
       <span class="hint-dot-icon">⬦</span>
-      <span>Hacé clic en los puntos de la barra inferior para ver el detalle de cada hito</span>
+      <span>Las barras ordenan los procesos visibles; su posición es editorial, no una fecha exacta</span>
     </div>
   </div>
 
@@ -849,7 +849,6 @@ let iepChart           = null;
 let divChart           = null;
 let currentZoom        = null;
 let currentDivZoom     = null;
-let showDots           = true;
 let currentBaseline    = null;
 let currentGranularity = 'daily';
 let selectedEvent      = null;
@@ -1073,40 +1072,63 @@ function buildAnnotations(displayData = [], withHitos = true) {
       };
     });
 
-    // Event dots at bottom of chart — clickable
-    EVENTS_RICH.forEach(ev => {
-      const nearest = findNearest(displayData, ev.date);
-      if (!nearest) return;
+    // Reading rail: periods are packed left-to-right, rather than mapped to
+    // their exact calendar span. It stays legible and recalculates on zoom.
+    const firstDate = displayData[0].d;
+    const lastDate = displayData[displayData.length - 1].d;
+    const visiblePeriods = EVENTS_RICH
+      .filter(ev => (ev.end || ev.date) >= firstDate && (ev.start || ev.date) <= lastDate)
+      .sort((a, b) => (a.start || a.date).localeCompare(b.start || b.date));
+    const lastIndex = displayData.length - 1;
+    const gap = visiblePeriods.length > 1 ? Math.max(1, Math.floor(lastIndex * 0.004)) : 0;
+    const width = Math.max(1, Math.floor((lastIndex - gap * (visiblePeriods.length - 1)) / Math.max(visiblePeriods.length, 1)));
+
+    visiblePeriods.forEach((ev, order) => {
       const color = ev.impact === 'positive' ? '#15803d' : ev.impact === 'negative' ? '#b91c1c' : '#b45309';
+      const fill = ev.impact === 'positive' ? 'rgba(21,128,61,0.12)'
+        : ev.impact === 'negative' ? 'rgba(185,28,28,0.11)'
+        : 'rgba(180,83,9,0.11)';
       const evN = ev.n;
-      anns['ev_dot_' + evN] = {
-        type: 'point',
-        xValue: nearest.d, yValue: 63,
-        radius: 5,
-        backgroundColor: color, borderColor: '#fff', borderWidth: 1.5,
+      const startIdx = order * (width + gap);
+      const endIdx = order === visiblePeriods.length - 1 ? lastIndex : Math.min(lastIndex, startIdx + width);
+      const start = displayData[Math.min(startIdx, lastIndex)];
+      const end = displayData[Math.max(startIdx, endIdx)];
+      if (!start || !end) return;
+      const midpoint = displayData[Math.round((startIdx + endIdx) / 2)] || start;
+      const yMax = 129.35;
+      anns['ev_period_' + evN] = {
+        type: 'box',
+        xMin: start.d, xMax: end.d,
+        yMin: yMax - 1.45, yMax,
+        backgroundColor: fill, borderColor: color, borderWidth: 1.25,
         cursor: 'pointer',
+        label: {
+          display: true, content: String(evN), position: 'center',
+          color, backgroundColor: 'transparent',
+          padding: { top: 1, right: 3, bottom: 1, left: 3 },
+          font: { size: 8, weight: '700', family: 'Inter' },
+        },
         click({element}) {
           const idx = evSorted.findIndex(e => e.n === evN);
           if (idx >= 0) selectChip(idx);
         },
         enter({element}) {
-          element.options.radius = 7;
+          element.options.borderWidth = 2;
           iepChart.update('none');
           document.getElementById('iepChart').style.cursor = 'pointer';
         },
         leave({element}) {
-          element.options.radius = 5;
+          element.options.borderWidth = 1;
           iepChart.update('none');
           document.getElementById('iepChart').style.cursor = 'default';
         },
       };
-      anns['ev_num_' + evN] = {
-        type: 'label',
-        xValue: nearest.d, yValue: 63,
-        content: String(evN),
-        font: { size: 7, weight: '700', family: 'Inter' },
-        color: '#fff',
-        backgroundColor: 'transparent',
+      anns['ev_label_' + evN] = {
+        type: 'label', xValue: midpoint.d, yValue: yMax - 0.6,
+        content: ev.short || String(evN),
+        color, backgroundColor: 'transparent',
+        padding: 0,
+        font: { size: 8, weight: '700', family: 'Inter' },
         click() {
           const idx = evSorted.findIndex(e => e.n === evN);
           if (idx >= 0) selectChip(idx);
@@ -1201,7 +1223,7 @@ function initChart(chartData = getDisplayData(), initializeSelector = true) {
             },
           },
         },
-        annotation: { annotations: buildAnnotations(init, showDots) },
+        annotation: { annotations: buildAnnotations(init, true) },
       },
       scales: {
         x: {
@@ -1239,7 +1261,7 @@ let evSorted = [];
 let evCurrentIdx = -1;
 
 function buildEventsNav() {
-  evSorted = [...EVENTS_RICH].sort((a, b) => a.date.localeCompare(b.date));
+  evSorted = [...EVENTS_RICH].sort((a, b) => (a.start || a.date).localeCompare(b.start || b.date));
 }
 
 function selectChip(idx) {
@@ -1257,10 +1279,10 @@ function selectChip(idx) {
     const impactEl = document.getElementById('event-card-impact');
     if (impactEl) {
       if (ev.impact === 'positive') {
-        impactEl.textContent = '↑ Movimiento positivo del índice';
+        impactEl.textContent = '↑ Balance favorable durante el período';
         impactEl.className   = 'event-card-impact impact-pos';
       } else if (ev.impact === 'negative') {
-        impactEl.textContent = '↓ Movimiento negativo del índice';
+        impactEl.textContent = '↓ Balance adverso durante el período';
         impactEl.className   = 'event-card-impact impact-neg';
       } else {
         impactEl.textContent = '→ Período de transición';
