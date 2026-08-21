@@ -1074,8 +1074,9 @@ function buildAnnotations(displayData = [], withHitos = true) {
       };
     });
 
-    // Reading rail: periods are packed left-to-right, rather than mapped to
-    // their exact calendar span. It stays legible and recalculates on zoom.
+    // Reading rail: periods are packed left-to-right to avoid overlaps. Their
+    // widths, however, follow the portion of each process visible in the
+    // current range, so zooming never gives every process the same span.
     const firstDate = displayData[0].d;
     const lastDate = displayData[displayData.length - 1].d;
     const visiblePeriods = EVENTS_RICH
@@ -1083,7 +1084,18 @@ function buildAnnotations(displayData = [], withHitos = true) {
       .sort((a, b) => (a.start || a.date).localeCompare(b.start || b.date));
     const lastIndex = displayData.length - 1;
     const gap = visiblePeriods.length > 1 ? Math.max(1, Math.floor(lastIndex * 0.004)) : 0;
-    const width = Math.max(1, Math.floor((lastIndex - gap * (visiblePeriods.length - 1)) / Math.max(visiblePeriods.length, 1)));
+    const usableSpan = Math.max(0, lastIndex - gap * (visiblePeriods.length - 1));
+    // A small floor keeps labels readable; the remaining span is allocated
+    // proportionally to the number of visible observations in each process.
+    const minSpan = Math.min(22, Math.max(1, Math.floor(usableSpan / Math.max(visiblePeriods.length, 1))));
+    const visibleLengths = visiblePeriods.map(ev => {
+      const start = ev.start || ev.date;
+      const end = ev.end || ev.date;
+      return Math.max(1, displayData.filter(row => row.d >= start && row.d <= end).length);
+    });
+    const totalVisibleLength = visibleLengths.reduce((sum, length) => sum + length, 0);
+    const distributableSpan = Math.max(0, usableSpan - minSpan * visiblePeriods.length);
+    let cursor = 0;
 
     visiblePeriods.forEach((ev, order) => {
       const color = ev.impact === 'positive' ? '#15803d' : ev.impact === 'negative' ? '#b91c1c' : '#b45309';
@@ -1091,8 +1103,14 @@ function buildAnnotations(displayData = [], withHitos = true) {
         : ev.impact === 'negative' ? 'rgba(185,28,28,0.11)'
         : 'rgba(180,83,9,0.11)';
       const evN = ev.n;
-      const startIdx = order * (width + gap);
-      const endIdx = order === visiblePeriods.length - 1 ? lastIndex : Math.min(lastIndex, startIdx + width);
+      const extraSpan = totalVisibleLength
+        ? Math.floor(distributableSpan * visibleLengths[order] / totalVisibleLength)
+        : 0;
+      const startIdx = cursor;
+      const endIdx = order === visiblePeriods.length - 1
+        ? lastIndex
+        : Math.min(lastIndex, startIdx + minSpan + extraSpan);
+      cursor = endIdx + gap;
       const start = displayData[Math.min(startIdx, lastIndex)];
       const end = displayData[Math.max(startIdx, endIdx)];
       if (!start || !end) return;
