@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "dashboard_sha256": "c807c0038ebf49e1664216d79eabb1ca485cbecac12601322a1cdbab61d8704b",
-  "latest_data_date": "2026-08-21",
-  "source_revision": "a7e796c32a0a58c546670ecc9a20e649d8aed704"
+  "dashboard_sha256": "641bc4aae68fdf704c43797f87030f06c910be6426f8d03e19d17715a106071e",
+  "latest_data_date": "2026-08-24",
+  "source_revision": "47bbc2c80247f143a471d430e0318137cad5f122"
 }
