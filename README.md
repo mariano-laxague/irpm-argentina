@@ -2,7 +2,7 @@
 
 > **Estado: experimental.** El IRPM es un índice experimental que sintetiza condiciones de mercado a partir de señales financieras sensibles al escenario político y económico argentino. No es una probabilidad electoral calibrada ni una recomendación de inversión.
 
-**Dashboard:** https://marianolaxague-crypto.github.io/irpm-argentina/
+**Dashboard:** https://mariano-laxague.github.io/irpm-argentina/
 
 **Newsletter:** [El Índice en Substack](https://elindice.substack.com)
 
