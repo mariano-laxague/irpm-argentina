@@ -14,6 +14,7 @@ import sys
 import os
 import sqlite3
 import re
+import time
 from datetime import datetime, timedelta, date
 from pathlib import Path
 
@@ -34,6 +35,8 @@ BONOS = [
 
 # PPI paginación: máximo ~365 días por request
 MAX_DAYS = 365
+PPI_LOGIN_ATTEMPTS = 4
+PPI_LOGIN_RETRY_SECONDS = 15
 
 
 # ── Credenciales ───────────────────────────────────────────────────────────────
@@ -57,9 +60,23 @@ def _connect_ppi():
         print("[ERROR] pip install ppi-client")
         sys.exit(1)
     api_key, api_secret = _read_credentials()
-    ppi = PPI(sandbox=False)
-    ppi.account.login_api(api_key=api_key, api_secret=api_secret)
-    return ppi
+    last_error = None
+    for attempt in range(1, PPI_LOGIN_ATTEMPTS + 1):
+        try:
+            ppi = PPI(sandbox=False)
+            ppi.account.login_api(api_key=api_key, api_secret=api_secret)
+            return ppi
+        except Exception as error:
+            last_error = error
+            if attempt == PPI_LOGIN_ATTEMPTS:
+                break
+            wait = PPI_LOGIN_RETRY_SECONDS * attempt
+            print(f"  [WARN] Login PPI falló (intento {attempt}/{PPI_LOGIN_ATTEMPTS}): {error}")
+            print(f"  [WARN] Reintentando en {wait}s...")
+            time.sleep(wait)
+    raise RuntimeError(
+        f"No se pudo iniciar sesión en PPI tras {PPI_LOGIN_ATTEMPTS} intentos"
+    ) from last_error
 
 
 # ── Fetch con paginación ───────────────────────────────────────────────────────
