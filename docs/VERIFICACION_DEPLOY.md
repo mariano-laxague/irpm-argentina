@@ -19,8 +19,8 @@ Para un diagnóstico manual:
 
 ```powershell
 python src/pipeline/verify_public_deploy.py `
-  --dashboard-url https://marianolaxague-crypto.github.io/irpm-argentina/ `
-  --manifest-url https://marianolaxague-crypto.github.io/irpm-argentina/deploy_manifest.json
+  --dashboard-url https://mariano-laxague.github.io/irpm-argentina/ `
+  --manifest-url https://mariano-laxague.github.io/irpm-argentina/deploy_manifest.json
 ```
 
 P5.3 persiste un fallo del probe como estado `FAILED` separado y reutiliza el

@@ -7,7 +7,7 @@ Versión documental: v0.8 · Reevaluación metodológica y de producto: 13/08/20
 > **Docs vigentes:** `CONTEXTO.md` (arquitectura y decisiones) · `PLAN_ACCION.md` (única hoja de ruta operativa) · `docs/MARCO_VALIDACION_Y_GOBERNANZA.md` (claims, protocolos y releases).
 >
 > `PLAN.md`, `docs/IEP_Plan_Completo.md` y las secciones de log conservan historia del proyecto; no son fuente del estado actual.
-> **Dashboard público:** https://marianolaxague-crypto.github.io/irpm-argentina/ · **Repo:** https://github.com/marianolaxague-crypto/irpm-argentina
+> **Dashboard público:** https://mariano-laxague.github.io/irpm-argentina/ · **Repo:** https://github.com/mariano-laxague/irpm-argentina
 > **Newsletter:** https://elindice.substack.com (El Índice — lanzado Ses. 18)
 
 ---
@@ -482,8 +482,8 @@ Resultado reportado en esa sesión: **14/20 = 70%** y rotulado entonces como “
 Los hallazgos narrativos de aquella corrida (renuncia de Guzmán, ballotage, Black Monday y legislativas 2025) son asociaciones ex post y no evidencia causal ni predictiva.
 
 **Deploy a GitHub Pages — DASHBOARD PÚBLICO LIVE:**
-- Repo público: `https://github.com/marianolaxague-crypto/irpm-argentina`
-- Dashboard en vivo: `https://marianolaxague-crypto.github.io/irpm-argentina/`
+- Repo público: `https://github.com/mariano-laxague/irpm-argentina`
+- Dashboard en vivo: `https://mariano-laxague.github.io/irpm-argentina/`
 - `generate_dashboard.py` escribe a `docs/index.html` además de `outputs/dashboard.html`
 - `update_daily.py` llama `deploy_github()` al final del pipeline (git commit + push automático)
 - `.gitignore` excluye: `data/*.db`, `outputs/`, `PLAN.md`, `config.ini`, archivos temporales

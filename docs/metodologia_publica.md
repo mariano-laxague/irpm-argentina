@@ -1,7 +1,7 @@
 # IRPM — Metodología pública
 
 **Versión 1.2-experimental · Agosto 2026**
-**Dashboard:** https://marianolaxague-crypto.github.io/irpm-argentina/
+**Dashboard:** https://mariano-laxague.github.io/irpm-argentina/
 
 > El IRPM es un índice experimental que sintetiza condiciones de mercado a partir de señales financieras sensibles al escenario político y económico argentino. No es una probabilidad electoral calibrada ni una recomendación de inversión.
 

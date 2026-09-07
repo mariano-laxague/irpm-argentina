@@ -7,7 +7,7 @@ import sys
 from urllib.error import URLError
 from urllib.request import urlopen
 
-DEFAULT_DASHBOARD_URL = "https://marianolaxague-crypto.github.io/irpm-argentina/"
+DEFAULT_DASHBOARD_URL = "https://mariano-laxague.github.io/irpm-argentina/"
 DEFAULT_MANIFEST_URL = DEFAULT_DASHBOARD_URL + "deploy_manifest.json"
 
 
