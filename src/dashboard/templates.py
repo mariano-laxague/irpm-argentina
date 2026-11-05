@@ -643,7 +643,7 @@ def html_body():
           </p>
         </div>
         <div class="what-pills">
-          <span class="what-pill">Hoy: __IEP_NOW__, levemente por encima de la base</span>
+          <span class="what-pill">Hoy: __IEP_NOW__ puntos</span>
           <span class="what-pill">Sube si mejoran las tres señales; baja si se tensionan</span>
           <span class="what-pill">Sirve para detectar cambios de clima financiero</span>
         </div>
@@ -816,7 +816,7 @@ def html_body():
       <div class="met-text">
         <p>Cada z-score mide cuántos desvíos estándar se aleja la señal de su media rolling de 252 ruedas. Los tres se combinan y se reescalan como distancia respecto de un baseline convencional.</p>
         <p>El EMBI (riesgo país) está incluido como uno de varios inputs de la capa de deuda soberana, no como el único indicador. Esto permite capturar divergencias: el riesgo país puede estar tranquilo mientras el mercado cambiario muestra presión, o viceversa.</p>
-        <p>Una grilla de 14 combinaciones mostró estabilidad de las fechas extremas, con variaciones de magnitud de hasta ~5,5 puntos. Es evidencia de robustez acotada, no validación del constructo ni de pesos óptimos. <a href="metodologia_publica.md">Ver metodología experimental &#8594;</a></p>
+        <p>Una grilla de 14 combinaciones mostró estabilidad de las fechas extremas, con variaciones de magnitud de hasta ~5,5 puntos. Es evidencia de robustez acotada, no validación del constructo ni de pesos óptimos. <a href="#metodologia">Ver metodología experimental &#8594;</a></p>
       </div>
     </div>
   </div>
