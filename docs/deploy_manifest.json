@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "dashboard_sha256": "a677018a85e3b6f8e4988faafdc9cadfa6cb1966c84edca94e7af55f0f018177",
+  "dashboard_sha256": "a9aa51e9c7c7e358dca65d4a6eff129baf1533b9332167dcce637108e4d9f0a0",
   "latest_data_date": "2026-11-04",
-  "source_revision": "dce9e85cbdc917a90bcde1c11bdaf25316c7a0f2",
+  "source_revision": "e511f143abfbdaae3b20b9f1a56de93de11068a4",
   "candidate_id": "v0.2-experimental-capa1-strict",
   "candidate_status": "experimental; formal release gates remain open",
-  "source_state": "staging source snapshot; source files are not included in this dashboard-only push",
-  "source_tree_sha256": "9fa6958ed6205fb5000a39690e9fdb6c3ea6afeb798ae927e21e3883ca1c6494",
+  "source_state": "staging source snapshot; calculation and scraper source files are not included in this dashboard update",
+  "source_tree_sha256": "cf3e1ca8e7dd4741b99b7ece9d1da5aa8285fa912353c8c9d3429c6036add2d0",
   "staging_database_sha256": "03ba86be59bcb2d40790f30b1a4ea34dbf8af307c40ed81dcfd3cf8453df9ea4",
-  "publication_scope": "dashboard HTML and manifest only"
+  "publication_scope": "dashboard HTML, manifest, and minimal baseline-copy fix"
 }
