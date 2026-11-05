@@ -1,6 +1,12 @@
 {
   "schema_version": 1,
-  "dashboard_sha256": "01c05f8c9ee972fb630e3e306b8b24723e7043794577a118bcf1b4510b31d792",
-  "latest_data_date": "2026-09-24",
-  "source_revision": "8c8b67b67082802b21da65e99bdc6d7e1a77cab0"
+  "dashboard_sha256": "a677018a85e3b6f8e4988faafdc9cadfa6cb1966c84edca94e7af55f0f018177",
+  "latest_data_date": "2026-11-04",
+  "source_revision": "dce9e85cbdc917a90bcde1c11bdaf25316c7a0f2",
+  "candidate_id": "v0.2-experimental-capa1-strict",
+  "candidate_status": "experimental; formal release gates remain open",
+  "source_state": "staging source snapshot; source files are not included in this dashboard-only push",
+  "source_tree_sha256": "9fa6958ed6205fb5000a39690e9fdb6c3ea6afeb798ae927e21e3883ca1c6494",
+  "staging_database_sha256": "03ba86be59bcb2d40790f30b1a4ea34dbf8af307c40ed81dcfd3cf8453df9ea4",
+  "publication_scope": "dashboard HTML and manifest only"
 }
